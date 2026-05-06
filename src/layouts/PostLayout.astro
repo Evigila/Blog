@@ -1,5 +1,12 @@
 ---
 import SiteLayout from './SiteLayout.astro';
+import { siteConfig } from '../data/site';
+
+interface TocHeading {
+	depth: number;
+	slug: string;
+	text: string;
+}
 
 interface Props {
 	title: string;
@@ -7,9 +14,19 @@ interface Props {
 	publishDate: Date;
 	readingTime: string;
 	tags: string[];
+	headings: TocHeading[];
 }
 
-const { title, excerpt, publishDate, readingTime, tags } = Astro.props;
+const { title, excerpt, publishDate, readingTime, tags, headings } = Astro.props;
+const postNavigation = siteConfig.navigation.map((item) => ({
+	...item,
+	label: item.href === '/' ? '主页' : item.label,
+	isCurrent: item.href === '/#posts',
+}));
+const postFooterLinks = siteConfig.socials.map((item) => ({
+	...item,
+	label: item.label === '邮箱' ? 'Email' : item.label,
+}));
 
 const publishedLabel = publishDate.toLocaleDateString('zh-CN', {
 	year: 'numeric',
@@ -20,23 +37,203 @@ const publishedLabel = publishDate.toLocaleDateString('zh-CN', {
 
 <SiteLayout title={`${title} | Evigila`} description={excerpt}>
 	<main class="post-shell">
-		<a class="post-back ui-button" href="/">返回首页</a>
-		<article class="post-article">
-			<header class="post-hero">
-				<p class="post-kicker">Static Journal</p>
-				<h1>{title}</h1>
-				<p class="post-excerpt">{excerpt}</p>
-				<div class="post-meta">
-					<span>{publishedLabel}</span>
-					<span>{readingTime}</span>
+		<div class="post-layout">
+			<aside class="post-left-rail" aria-label="作者信息与站点导航">
+				<div class="post-side-stack">
+					<section class="post-panel post-author-card" aria-label="作者信息">
+						<p class="post-panel__kicker">Author</p>
+						<div class="post-author-card__header">
+							<div class="post-author-card__avatar">
+								<img
+									src={siteConfig.author.avatar}
+									alt={`${siteConfig.author.name} avatar`}
+									width="120"
+									height="120"
+									loading="eager"
+								/>
+							</div>
+							<div>
+								<p class="post-panel__title">{siteConfig.author.name}</p>
+								<p class="post-author-card__signature">{siteConfig.author.signature}</p>
+							</div>
+						</div>
+						<p class="post-author-card__bio">{siteConfig.author.bio}</p>
+					</section>
+
+					<nav class="post-panel post-nav-card" aria-label="站点导航">
+						<p class="post-panel__kicker">Navigate</p>
+						<p class="post-panel__title">导航</p>
+						<div class="post-nav-card__list">
+							{postNavigation.map((item) => (
+								<a
+									class:list={['post-nav-card__link', 'chip-link', 'ui-button']}
+									href={item.href}
+									aria-current={item.isCurrent ? 'page' : undefined}
+								>
+									{item.label}
+								</a>
+							))}
+						</div>
+					</nav>
+
+					<div class="post-action-panel" aria-label="页面快捷操作" role="group">
+						<button
+							class="post-dock__button post-action-button action-button ui-button theme-toggle"
+							type="button"
+							data-theme-toggle
+							aria-pressed="false"
+							aria-label="切换主题"
+						>
+							<svg class="post-action-icon" viewBox="0 0 24 24" aria-hidden="true">
+								<path d="m13 22v1c0 .553-.448 1-1 1s-1-.447-1-1v-1c0-.553.448-1 1-1s1 .447 1 1zm-1-19c.552 0 1-.448 1-1v-1c0-.552-.448-1-1-1s-1 .448-1 1v1c0 .552.448 1 1 1zm11 8h-1c-.553 0-1 .448-1 1s.447 1 1 1h1c.553 0 1-.448 1-1s-.447-1-1-1zm-21 0h-1c-.552 0-1 .448-1 1s.448 1 1 1h1c.552 0 1-.448 1-1s-.448-1-1-1zm2.222 7.364-.707.707c-.391.391-.391 1.023 0 1.414s1.023.391 1.414 0l.707-.707c.391-.391.391-1.023 0-1.414s-1.023-.391-1.414 0zm14.849-14.849-.707.707c-.391.391-.391 1.023 0 1.414s1.023.391 1.414 0l.707-.707c.391-.391.391-1.023 0-1.414s-1.023-.391-1.414 0zm.707 14.85c-.391-.391-1.023-.391-1.414 0s-.391 1.023 0 1.414l.707.707c.391.391 1.023.391 1.414 0s.391-1.023 0-1.414zm-15.556-12.729c.391.391 1.023.391 1.414 0s.391-1.023 0-1.414l-.707-.707c-.391-.391-1.023-.391-1.414 0s-.391 1.023 0 1.414zm14.778 6.364c0 3.859-3.141 7-7 7s-7-3.141-7-7 3.14-7 7-7 7 3.14 7 7zm-2 0c0-2.757-2.243-5-5-5v10c2.757 0 5-2.243 5-5z" fill="currentColor"></path>
+							</svg>
+							<span class="sr-only">切换主题，当前</span>
+							<strong class="sr-only" data-theme-label>浅色</strong>
+						</button>
+						<button
+							class="post-dock__button post-action-button action-button ui-button"
+							type="button"
+							title="点赞功能待接入"
+							aria-label="点赞，功能待接入"
+						>
+							<svg class="post-action-icon" viewBox="0 0 24 24" aria-hidden="true">
+								<path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z" fill="currentColor"></path>
+							</svg>
+							<span class="sr-only">点赞</span>
+						</button>
+						<button
+							class="post-dock__button post-action-button action-button ui-button"
+							type="button"
+							title="分享功能待接入"
+							aria-label="分享，功能待接入"
+						>
+							<svg class="post-action-icon" viewBox="0 0 24 24" aria-hidden="true">
+								<path d="M19.333,14.667a4.66,4.66,0,0,0-3.839,2.024L8.985,13.752a4.574,4.574,0,0,0,.005-3.488l6.5-2.954a4.66,4.66,0,1,0-.827-2.643,4.633,4.633,0,0,0,.08.786L7.833,8.593a4.668,4.668,0,1,0-.015,6.827l6.928,3.128a4.736,4.736,0,0,0-.079.785,4.667,4.667,0,1,0,4.666-4.666ZM19.333,2a2.667,2.667,0,1,1-2.666,2.667A2.669,2.669,0,0,1,19.333,2ZM4.667,14.667A2.667,2.667,0,1,1,7.333,12,2.67,2.67,0,0,1,4.667,14.667ZM19.333,22A2.667,2.667,0,1,1,22,19.333,2.669,2.669,0,0,1,19.333,22Z" fill="currentColor"></path>
+							</svg>
+							<span class="sr-only">分享</span>
+						</button>
+						<a
+							class="post-dock__button post-action-button action-button ui-button"
+							href="#post-comments"
+							aria-label="跳转到评论区"
+						>
+							<svg class="post-action-icon" viewBox="0 0 24 24" aria-hidden="true">
+								<path d="M20,0H4A4,4,0,0,0,0,4V16a4,4,0,0,0,4,4H6.9l4.451,3.763a1,1,0,0,0,1.292,0L17.1,20H20a4,4,0,0,0,4-4V4A4,4,0,0,0,20,0Zm2,16a2,2,0,0,1-2,2H17.1a2,2,0,0,0-1.291.473L12,21.69,8.193,18.473h0A2,2,0,0,0,6.9,18H4a2,2,0,0,1-2-2V4A2,2,0,0,1,4,2H20a2,2,0,0,1,2,2Z M7,7h5a1,1,0,0,0,0-2H7A1,1,0,0,0,7,7Z M17,9H7a1,1,0,0,0,0,2H17a1,1,0,0,0,0-2Z M17,13H7a1,1,0,0,0,0,2H17a1,1,0,0,0,0-2Z" fill="currentColor"></path>
+							</svg>
+							<span class="sr-only">评论</span>
+						</a>
+						</button>
+					</div>
 				</div>
-				<div class="post-tags">
-					{tags.map((tag) => <span>{tag}</span>)}
-				</div>
-			</header>
-			<div class="post-content">
-				<slot />
+			</aside>
+
+			<div class="post-main">
+				<article class="post-article" data-post-article>
+					<header class="post-hero">
+						<p class="post-kicker">Static Journal</p>
+						<h1>{title}</h1>
+						<p class="post-excerpt">{excerpt}</p>
+						<div class="post-meta">
+							<span>{publishedLabel}</span>
+							<span>{readingTime}</span>
+						</div>
+						<div class="post-tags">
+							{tags.map((tag) => <span>{tag}</span>)}
+						</div>
+					</header>
+					<div class="post-content" data-post-content>
+						<slot />
+					</div>
+				</article>
+
+				<section class="post-panel post-comments-placeholder" id="post-comments" aria-label="评论区占位">
+					<p class="post-panel__kicker">Comments</p>
+					<p class="post-panel__title">评论区</p>
+					<p class="post-comments-placeholder__body">
+						评论系统暂未接入，这里会预留给后续的讨论、回复与延展阅读内容。
+					</p>
+				</section>
 			</div>
-		</article>
+
+			<aside class="post-sidebar" aria-label="文章目录与阅读进度">
+				<div class="post-panel post-outline" data-post-outline style="--reading-progress: 0%;">
+					<div class="post-outline__top">
+						<div>
+							<p class="post-panel__kicker">Contents</p>
+							<p class="post-panel__title">目录</p>
+						</div>
+						<p class="post-outline__progress" data-reading-progress-value>0%</p>
+					</div>
+					<div class="post-outline__bar" aria-hidden="true">
+						<span></span>
+					</div>
+
+					{headings.length > 0 ? (
+						<ol class="post-outline__list">
+							{headings.map((heading) => (
+								<li
+									class={`post-outline__item post-outline__item--depth-${Math.min(Math.max(heading.depth, 2), 6)}`}
+								>
+									<a
+										class="post-outline__link"
+										href={`#${heading.slug}`}
+										data-toc-link
+										data-target-id={heading.slug}
+									>
+										<span>{heading.text}</span>
+									</a>
+								</li>
+							))}
+						</ol>
+					) : (
+						<p class="post-outline__empty">当前文章暂无可同步的分节标题。</p>
+					)}
+				</div>
+			</aside>
+		</div>
+
+		<nav class="post-dock" aria-label="文章快捷操作">
+			<button class="post-dock__button post-dock__secondary action-button ui-button" type="button" data-scroll-top>
+				顶端
+			</button>
+			<a class="post-dock__button post-dock__home action-button ui-button" href="/">返回首页</a>
+			<a class="post-dock__button post-dock__secondary action-button ui-button" href="#post-comments">
+				评论区
+			</a>
+		</nav>
 	</main>
+
+	<footer class="post-footer" aria-label="文章页底部信息">
+		<div class="post-footer__inner">
+			<div class="post-footer__brand">
+				<p class="post-footer__kicker">STATIC JOURNAL</p>
+				<p class="post-footer__title">{siteConfig.title}</p>
+				<p class="post-footer__text">{siteConfig.description}</p>
+			</div>
+
+			<div class="post-footer__group">
+				<p class="post-footer__label">导航</p>
+				<div class="post-footer__links">
+					{postNavigation.map((item) => (
+						<a class="post-footer__link" href={item.href}>{item.label}</a>
+					))}
+				</div>
+			</div>
+
+			<div class="post-footer__group">
+				<p class="post-footer__label">联系</p>
+				<div class="post-footer__links">
+					{postFooterLinks.map((item) => (
+						<a class="post-footer__link" href={item.href}>{item.label}</a>
+					))}
+				</div>
+			</div>
+		</div>
+	</footer>
+
+	<script>
+		import { initPostPage } from '../scripts/post';
+
+		initPostPage();
+	</script>
 </SiteLayout>

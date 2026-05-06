@@ -1,17 +1,17 @@
 export const siteConfig = {
 	name: 'Evigila',
 	title: 'Evigila的个人博客',
-	description: '一个以 Astro 为核心、强调速度与低脚本占比的极简静态博客原型。',
+	description: '极简静态博客，由 Astro 提供驱动。',
 	author: {
 		name: 'Evigila',
 		avatar: '/avatar.svg',
-		bio: '坚持学习，追求自我，热爱技术，享受生活。',
-		signature: '.NET | C# | Windows | MultiPlatform | GameDev',
+		bio: '~Ciallo ⭐ 早上好下午好晚上好~',
+		signature: '.NET | C# | Windows',
 	},
 	stageSeed: '3141592653589793238462643383279',
 	navigation: [
 		{ label: '首页', href: '/' },
-		{ label: '文章', href: '#posts' },
+		{ label: '文章', href: '/#posts' },
 		{ label: '友链', href: '/friend' },
 	],
 	socials: [

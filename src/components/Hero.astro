@@ -61,6 +61,16 @@ Astro.props;
 				))}
 			</nav>
 			<div class="hero-row hero-row--search" aria-label="站内搜索占位">
+				<button
+					class="chip-button ui-button hero-browse-toggle"
+					type="button"
+					data-tags-expand-toggle
+					aria-pressed="true"
+					aria-expanded="true"
+					aria-controls="hero-tag-shelf"
+				>
+					标签
+				</button>
 				<label class="hero-search" for="hero-search-input">
 					<span class="sr-only">搜索全站内容</span>
 					<input
@@ -72,16 +82,7 @@ Astro.props;
 						autocomplete="off"
 					/>
 				</label>
-				<button
-					class="chip-button ui-button hero-browse-toggle"
-					type="button"
-					data-tags-expand-toggle
-					aria-pressed="true"
-					aria-expanded="true"
-					aria-controls="hero-tag-shelf"
-				>
-					标签
-				</button>
+				
 			</div>
 		</div>
 	</div>
