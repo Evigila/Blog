@@ -74,6 +74,10 @@
 	color: var(--text-0);
 }
 
+.post-author-card .post-panel__kicker {
+	margin-bottom: 4px;
+}
+
 .post-author-card__header {
 	display: grid;
 	grid-template-columns: 4.5rem minmax(0, 1fr);

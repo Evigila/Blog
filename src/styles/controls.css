@@ -195,12 +195,17 @@
 	font-weight: 700;
 }
 
+.post-card__cta,
+.post-card__index {
+	font-family: var(--font-ui);
+}
+
 .post-card__tags span {
 	flex: none;
 	padding: 0.35rem 0.55rem;
 	border: 1px solid var(--border-0);
 	background: rgba(255, 255, 255, 0.22);
-	font-family: var(--font-mono);
+	font-family: var(--font-ui);
 	font-size: 0.7rem;
 	text-transform: uppercase;
 	letter-spacing: 0.06em;
@@ -211,7 +216,7 @@
 	padding: 0.35rem 0.55rem;
 	border: 1px solid var(--border-0);
 	background: rgba(255, 255, 255, 0.22);
-	font-family: var(--font-mono);
+	font-family: var(--font-ui);
 	font-size: 0.7rem;
 	text-transform: uppercase;
 	letter-spacing: 0.06em;

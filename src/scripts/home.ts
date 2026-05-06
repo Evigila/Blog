@@ -33,8 +33,14 @@ export const initHomePage = () => {
 		filterButtons.forEach((button) => {
 			const isActive = button.getAttribute('data-tag-filter') === activeFilter;
 			button.classList.toggle('is-active', isActive);
-			button.setAttribute('aria-pressed', String(isActive));
+			button.setAttribute('aria-checked', String(isActive));
+			button.tabIndex = isActive ? 0 : -1;
 		});
+	};
+
+	const moveFilterFocus = (currentIndex: number, nextIndex: number) => {
+		const safeIndex = (nextIndex + filterButtons.length) % filterButtons.length;
+		filterButtons[safeIndex]?.focus();
 	};
 
 	const applyFilter = (tag: string, force = false) => {
@@ -134,6 +140,37 @@ export const initHomePage = () => {
 	filterButtons.forEach((button) => {
 		button.addEventListener('click', () => {
 			applyFilter(button.getAttribute('data-tag-filter') || FILTER_ALL);
+		});
+
+		button.addEventListener('keydown', (event) => {
+			const currentIndex = filterButtons.indexOf(button);
+
+			if (currentIndex === -1) {
+				return;
+			}
+
+			if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+				event.preventDefault();
+				moveFilterFocus(currentIndex, currentIndex + 1);
+				return;
+			}
+
+			if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+				event.preventDefault();
+				moveFilterFocus(currentIndex, currentIndex - 1);
+				return;
+			}
+
+			if (event.key === 'Home') {
+				event.preventDefault();
+				filterButtons[0]?.focus();
+				return;
+			}
+
+			if (event.key === 'End') {
+				event.preventDefault();
+				filterButtons[filterButtons.length - 1]?.focus();
+			}
 		});
 	});
 

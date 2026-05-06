@@ -12,6 +12,7 @@ html {
 body {
 	margin: 0;
 	min-height: 100vh;
+	font-family: var(--font-body);
 	background:
 		radial-gradient(circle at top left, var(--page-tint), transparent 32rem),
 		radial-gradient(circle at 85% 15%, var(--page-tint-alt), transparent 26rem),

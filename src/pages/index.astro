@@ -21,12 +21,14 @@ const tags = getSortedTagNamesByCount(posts);
 		<Hero />
 
 		<section class="hero-tag-shelf" id="hero-tag-shelf" data-tag-shelf hidden>
-			<div class="hero-tag-shelf__inner" aria-label="全部标签筛选">
+			<div class="hero-tag-shelf__inner" aria-label="全部标签筛选" role="radiogroup">
 				<button
 					class="chip-button ui-button hero-shelf-tag is-active"
 					type="button"
 					data-tag-filter="all"
-					aria-pressed="true"
+					role="radio"
+					aria-checked="true"
+					tabindex="0"
 				>
 					无过滤
 				</button>
@@ -35,7 +37,9 @@ const tags = getSortedTagNamesByCount(posts);
 						class="chip-button ui-button hero-shelf-tag"
 						type="button"
 						data-tag-filter={tag}
-						aria-pressed="false"
+						role="radio"
+						aria-checked="false"
+						tabindex="-1"
 					>
 						{tag}
 					</button>

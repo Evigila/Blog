@@ -4,8 +4,8 @@ export const siteConfig = {
 	description: '极简静态博客，由 Astro 提供驱动。',
 	author: {
 		name: 'Evigila',
-		avatar: '/avatar.svg',
-		bio: '~Ciallo ⭐ 早上好下午好晚上好~',
+		avatar: '/avatar.jpg',
+		bio: 'Ciallo ～(∠・ω< )⌒★! Have a nice day.',
 		signature: '.NET | C# | Windows',
 	},
 	stageSeed: '3141592653589793238462643383279',
