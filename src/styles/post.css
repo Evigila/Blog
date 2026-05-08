@@ -544,9 +544,24 @@
 	transform: translateX(2px);
 }
 
+.post-sidebar-spacer {
+	width: 17rem;
+	min-width: 0;
+	pointer-events: none;
+	visibility: hidden;
+}
+
 @media (max-width: 1200px) {
 	.post-layout {
 		grid-template-columns: minmax(0, 70rem) 17rem;
+	}
+
+	.post-layout--no-sidebar {
+		grid-template-columns: minmax(0, 70rem);
+	}
+
+	.post-sidebar-spacer {
+		display: none;
 	}
 
 	.post-left-rail {
