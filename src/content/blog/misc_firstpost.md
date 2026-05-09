@@ -1,9 +1,8 @@
 ---
 title: 这是一篇初始博客
 excerpt: 本站的首篇博客，这里保存着整个网站的记忆。
-description: a
-publishDate: 2026-05-03
-readingTime: 4 min read
+publishDate: 2026-05-01
+updatedAt: 2026-05-09
 tags:
   - 闲聊
 ---
@@ -14,10 +13,7 @@ tags:
 
 如果你有些许闲暇之余，原意倾听作者的自言自语，或者是回顾网站的历史过去，这里也非常适合你。
 
-试着在评论区添加一句问好吧~
-
-> 本站唯一网址：https://evigila.net  
-> 点击左侧分享按钮快速复制当前文章网址：https://evigila.net/posts/misc_firstpost/
+试着在评论区添加一句问好吧~~
 
 ## 前言
 

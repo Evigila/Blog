@@ -1,9 +1,8 @@
 ---
 title: 时间管理的误区
 excerpt: 有效的时间管理依赖于优先级，而不是时间分配。关键在于识别最重要的任务。
-description: a
-publishDate: 2026-04-23
-readingTime: 4 min read
+publishDate: 2026-05-01
+updatedAt: 2026-05-01
 tags:
   - 哲学
   - 时间

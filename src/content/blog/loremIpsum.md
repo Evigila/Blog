@@ -1,9 +1,8 @@
 ---
 title: Lorem Ipsum
 excerpt: Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...
-description: a
 publishDate: 2026-05-01
-readingTime: 10 min read
+updatedAt: 2026-05-01
 tags:
   - 杂项
 ---

@@ -1,6 +1,6 @@
 ---
 import { getCollection, render, type CollectionEntry } from 'astro:content';
-import { getPostSlug } from '../../data/blog';
+import { getPostSlug, calcReadingTime, calcWordCount, getUpdatedAt } from '../../data/blog';
 import PostLayout from '../../layouts/PostLayout.astro';
 
 interface Props {
@@ -18,13 +18,20 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content, headings } = await render(post);
+const publishDate = post.data.publishDate;
+const updatedAt = getUpdatedAt(post);
+const wordCount = calcWordCount(post.body ?? '');
+const readingTime = calcReadingTime(wordCount);
 ---
 
 <PostLayout
 	title={post.data.title}
 	excerpt={post.data.excerpt}
-	publishDate={post.data.publishDate}
-	readingTime={post.data.readingTime}
+	publishDate={publishDate}
+	updatedAt={updatedAt}
+	readingTime={readingTime}
+	wordCount={wordCount}
+	license={post.data.license}
 	tags={post.data.tags}
 	headings={headings}
 >

@@ -1,9 +1,8 @@
 ---
 title: 使用Astro构建静态博客网站
 excerpt: 从零开始使用Astro构建网站，并搭配Github/Cloudflare部署至公网。
-description: a
-publishDate: 2026-05-03
-readingTime: 4 min read
+publishDate: 2026-05-01
+updatedAt: 2026-05-09
 tags:
   - Astro
   - Github
@@ -12,9 +11,6 @@ tags:
 ---
 
 本篇文章将从零教学如何使用Astro部署静态博客网站，将资源托管在Github仓库中，并搭配使用CloudFlare的工人和Github Action的CICD完成自动部署在公共互联网中。这也是本网站的构建历史。
-
-> 本站唯一网址：https://evigila.net  
-> 点击左侧分享按钮快速复制当前文章网址：https://evigila.net/posts/astro_build/
 
 ## 关于 Astro
 

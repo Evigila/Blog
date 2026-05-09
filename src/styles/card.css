@@ -58,6 +58,8 @@
 	align-items: flex-end;
 	margin-bottom: 1.2rem;
 	line-height: 1.4;
+	font-family: var(--font-body);
+	font-size: 0.82rem;
 }
 
 .post-card__excerpt {

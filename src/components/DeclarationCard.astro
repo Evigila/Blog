@@ -1,0 +1,168 @@
+---
+interface Props {
+	publishDate: Date;
+	license: string;
+}
+
+const { publishDate, license } = Astro.props;
+
+const SITE_URL = 'https://evigila.net';
+const postPath = Astro.url.pathname;
+const canonicalUrl = SITE_URL + postPath;
+
+const publishedLabel = publishDate.toLocaleDateString('zh-CN', {
+	year: 'numeric',
+	month: 'long',
+	day: 'numeric',
+});
+---
+
+<div class="decl-card" data-decl-card>
+	<!-- CC watermark SVG -->
+	<svg class="decl-card__watermark" viewBox="0 0 24 24" aria-hidden="true">
+		<path d="M11.979,0c5.404,0,10.519,3.906,11.719,9.225C23.903,10.135,24,11.068,24,12c0,1.643-0.289,3.182-0.868,4.618   C21.354,21.03,16.699,24,11.979,24C6.145,24,1.047,19.528,0.141,13.791C0.048,13.199,0,12.6,0,12C0,6.212,4.33,1.109,10.032,0.161   C10.675,0.054,11.327,0,11.979,0z M12.021,2.164c-5.289,0-9.857,4.541-9.857,9.836c0,5.279,4.611,9.793,9.857,9.793   c5.35,0,9.814-4.458,9.814-9.793C21.836,6.632,17.393,2.164,12.021,2.164z M11.871,10.007l-1.607,0.836   c-0.171-0.357-0.382-0.607-0.632-0.75C9.382,9.95,9.15,9.879,8.936,9.879c-1.071,0-1.607,0.707-1.607,2.121   c0,0.643,0.136,1.157,0.407,1.543c0.271,0.386,0.671,0.579,1.2,0.579c0.7,0,1.193-0.343,1.479-1.029l1.479,0.75   c-0.314,0.586-0.75,1.047-1.307,1.382c-0.557,0.336-1.171,0.504-1.843,0.504c-1.071,0-1.936-0.329-2.593-0.986   C5.493,14.086,5.164,13.172,5.164,12c0-1.143,0.332-2.05,0.997-2.722c0.664-0.671,1.503-1.007,2.518-1.007   C10.164,8.272,11.229,8.85,11.871,10.007z M18.793,10.007l-1.586,0.836c-0.171-0.357-0.382-0.607-0.632-0.75   c-0.25-0.143-0.489-0.214-0.718-0.214c-1.071,0-1.607,0.707-1.607,2.121c0,0.643,0.136,1.157,0.407,1.543   c0.271,0.386,0.671,0.579,1.2,0.579c0.7,0,1.193-0.343,1.479-1.029l1.5,0.75c-0.329,0.586-0.771,1.047-1.329,1.382   c-0.557,0.336-1.164,0.504-1.821,0.504c-1.086,0-1.954-0.329-2.603-0.986c-0.65-0.657-0.975-1.571-0.975-2.743   c0-1.143,0.332-2.05,0.996-2.722c0.664-0.671,1.503-1.007,2.518-1.007C17.107,8.272,18.164,8.85,18.793,10.007z"/>
+	</svg>
+
+	<div class="decl-card__body">
+		<p class="decl-card__kicker">Declaration</p>
+
+		<div class="decl-card__row">
+			<svg class="decl-card__icon" viewBox="0 0 24 24" aria-hidden="true">
+				<path d="M21,11H6.83l3.58-3.59L9,6l-6,6,6,6,1.41-1.41L6.83,13H21Z" fill="currentColor"/>
+			</svg>
+			<span class="decl-card__label">本站网址</span>
+			<a class="decl-card__link" href={SITE_URL} target="_blank" rel="noopener noreferrer">{SITE_URL}</a>
+		</div>
+
+		<div class="decl-card__row">
+			<svg class="decl-card__icon" viewBox="0 0 24 24" aria-hidden="true">
+				<path d="M19.333,14.667a4.66,4.66,0,0,0-3.839,2.024L8.985,13.752a4.574,4.574,0,0,0,.005-3.488l6.5-2.954a4.66,4.66,0,1,0-.827-2.643,4.633,4.633,0,0,0,.08.786L7.833,8.593a4.668,4.668,0,1,0-.015,6.827l6.928,3.128a4.736,4.736,0,0,0-.079.785,4.667,4.667,0,1,0,4.666-4.666ZM19.333,2a2.667,2.667,0,1,1-2.666,2.667A2.669,2.669,0,0,1,19.333,2ZM4.667,14.667A2.667,2.667,0,1,1,7.333,12,2.67,2.67,0,0,1,4.667,14.667ZM19.333,22A2.667,2.667,0,1,1,22,19.333,2.669,2.669,0,0,1,19.333,22Z" fill="currentColor"/>
+			</svg>
+			<span class="decl-card__label">分享本文</span>
+			<a class="decl-card__link" href={canonicalUrl} target="_blank" rel="noopener noreferrer">{canonicalUrl}</a>
+            <span>（使用左侧分享按钮快速复制链接）</span>
+		</div>
+
+		<div class="decl-card__row">
+			<svg class="decl-card__icon" viewBox="0 0 24 24" aria-hidden="true">
+				<path d="M12,2A10,10,0,1,0,22,12,10.011,10.011,0,0,0,12,2Zm0,18a8,8,0,1,1,8-8A8.009,8.009,0,0,1,12,20Zm.5-13H11v6l5.25,3.15.75-1.23-4.5-2.67Z" fill="currentColor"/>
+			</svg>
+			<span class="decl-card__label">发布日期</span>
+			<span>{publishedLabel}</span>
+		</div>
+
+		<div class="decl-card__row">
+			<svg class="decl-card__icon" viewBox="0 0 24 24" aria-hidden="true">
+				<path d="M11.979,0c5.404,0,10.519,3.906,11.719,9.225C23.903,10.135,24,11.068,24,12c0,1.643-0.289,3.182-0.868,4.618C21.354,21.03,16.699,24,11.979,24C6.145,24,1.047,19.528,0.141,13.791C0.048,13.199,0,12.6,0,12C0,6.212,4.33,1.109,10.032,0.161C10.675,0.054,11.327,0,11.979,0z M12.021,2.164c-5.289,0-9.857,4.541-9.857,9.836c0,5.279,4.611,9.793,9.857,9.793c5.35,0,9.814-4.458,9.814-9.793C21.836,6.632,17.393,2.164,12.021,2.164z M11.871,10.007l-1.607,0.836c-0.171-0.357-0.382-0.607-0.632-0.75C9.382,9.95,9.15,9.879,8.936,9.879c-1.071,0-1.607,0.707-1.607,2.121c0,0.643,0.136,1.157,0.407,1.543c0.271,0.386,0.671,0.579,1.2,0.579c0.7,0,1.193-0.343,1.479-1.029l1.479,0.75c-0.314,0.586-0.75,1.047-1.307,1.382c-0.557,0.336-1.171,0.504-1.843,0.504c-1.071,0-1.936-0.329-2.593-0.986C5.493,14.086,5.164,13.172,5.164,12c0-1.143,0.332-2.05,0.997-2.722c0.664-0.671,1.503-1.007,2.518-1.007C10.164,8.272,11.229,8.85,11.871,10.007z M18.793,10.007l-1.586,0.836c-0.171-0.357-0.382-0.607-0.632-0.75c-0.25-0.143-0.489-0.214-0.718-0.214c-1.071,0-1.607,0.707-1.607,2.121c0,0.643,0.136,1.157,0.407,1.543c0.271,0.386,0.671,0.579,1.2,0.579c0.7,0,1.193-0.343,1.479-1.029l1.5,0.75c-0.329,0.586-0.771,1.047-1.329,1.382c-0.557,0.336-1.164,0.504-1.821,0.504c-1.086,0-1.954-0.329-2.603-0.986c-0.65-0.657-0.975-1.571-0.975-2.743c0-1.143,0.332-2.05,0.996-2.722c0.664-0.671,1.503-1.007,2.518-1.007C17.107,8.272,18.164,8.85,18.793,10.007z" fill="currentColor"/>
+			</svg>
+			<span class="decl-card__label">版权协议</span>
+			<a
+				class="decl-card__link"
+				href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans"
+				target="_blank"
+				rel="noopener noreferrer"
+			>{license}</a>
+		</div>
+	</div>
+</div>
+
+<style>
+	.decl-card {
+		position: relative;
+		overflow: hidden;
+		padding: clamp(1.4rem, 3vw, 2rem) clamp(1.4rem, 3vw, 2rem);
+		background: linear-gradient(135deg, #dbeeff 0%, #c8e4fb 100%);
+		border: 1px solid #9fc8f0;
+		font-family: 'Microsoft YaHei UI', 'Microsoft YaHei', 'Segoe UI', sans-serif;
+	}
+
+	:root[data-theme='dark'] .decl-card {
+		background: linear-gradient(135deg, #0d2340 0%, #112d4a 100%);
+		border-color: #1e4a73;
+	}
+
+	.decl-card__watermark {
+		position: absolute;
+		right: -1.5rem;
+		top: 50%;
+		transform: translateY(-50%);
+		width: clamp(7rem, 18vw, 12rem);
+		height: auto;
+		fill: rgba(15, 108, 189, 0.1);
+		pointer-events: none;
+		user-select: none;
+	}
+
+	:root[data-theme='dark'] .decl-card__watermark {
+		fill: rgba(76, 194, 255, 0.08);
+	}
+
+	.decl-card__body {
+		position: relative;
+		z-index: 1;
+		display: grid;
+		gap: 0.75rem;
+		max-width: calc(100% - 8rem);
+	}
+
+	.decl-card__kicker {
+		margin: 0 0 0.25rem;
+		font-size: 0.72rem;
+		font-weight: 600;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: #0f6cbd;
+	}
+
+	:root[data-theme='dark'] .decl-card__kicker {
+		color: #4cc2ff;
+	}
+
+	.decl-card__row {
+		display: flex;
+		align-items: center;
+		gap: 0.55rem;
+		font-size: 0.88rem;
+		color: #1b3a5c;
+		line-height: 1.4;
+	}
+
+	:root[data-theme='dark'] .decl-card__row {
+		color: #c0d8f0;
+	}
+
+	.decl-card__icon {
+		flex: none;
+		width: 1rem;
+		height: 1rem;
+		color: #0f6cbd;
+		opacity: 0.8;
+	}
+
+	:root[data-theme='dark'] .decl-card__icon {
+		color: #4cc2ff;
+	}
+
+	.decl-card__label {
+		flex: none;
+		font-weight: 600;
+		min-width: 5rem;
+		color: #1b3a5c;
+	}
+
+	:root[data-theme='dark'] .decl-card__label {
+		color: #90c4e8;
+	}
+
+	.decl-card__link {
+		color: #0f6cbd;
+		text-decoration: underline;
+		text-decoration-thickness: 0.08em;
+		text-underline-offset: 0.15em;
+		word-break: break-all;
+	}
+
+	:root[data-theme='dark'] .decl-card__link {
+		color: #4cc2ff;
+	}
+</style>

@@ -1,9 +1,8 @@
 ---
 title: 信息系统中的延迟与响应
 excerpt: 延迟的不可避免性，问题不在于消除延迟，而在于如何管理它。
-description: a
-publishDate: 2026-04-29
-readingTime: 4 min read
+publishDate: 2026-05-01
+updatedAt: 2026-05-01
 tags:
   - 性能
   - 信息

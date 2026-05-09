@@ -228,6 +228,10 @@ export const initPostPage = () => {
 
 	const shareBtn = document.querySelector<HTMLElement>('[data-share]');
 	if (shareBtn) {
+		const shareIconEl = shareBtn.querySelector<SVGElement>('.post-action-icon--share');
+		const successIconEl = shareBtn.querySelector<SVGElement>('.post-action-icon--success');
+		let shareResetTimeout: ReturnType<typeof setTimeout> | null = null;
+
 		shareBtn.addEventListener('click', async () => {
 			const url = SITE_URL + window.location.pathname;
 			try {
@@ -241,7 +245,15 @@ export const initPostPage = () => {
 				document.execCommand('copy');
 				document.body.removeChild(textarea);
 			}
-			showShareToast('已复制浏览器地址，感谢分享喵~');
+			showShareToast('感谢分享，当前博客地址已经复制到剪贴板了喵~');
+			// Show success icon
+			if (shareIconEl) shareIconEl.style.display = 'none';
+			if (successIconEl) successIconEl.style.display = 'block';
+			if (shareResetTimeout !== null) clearTimeout(shareResetTimeout);
+			shareResetTimeout = setTimeout(() => {
+				if (shareIconEl) shareIconEl.style.display = '';
+				if (successIconEl) successIconEl.style.display = 'none';
+			}, 2200);
 		});
 	}
 

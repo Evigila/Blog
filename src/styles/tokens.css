@@ -1,5 +1,5 @@
 :root {
-	--font-display: 'Bahnschrift', 'Aptos Narrow', 'Segoe UI Variable Display', sans-serif;
+	--font-display: 'Microsoft YaHei UI', 'Microsoft YaHei', 'Bahnschrift', 'Segoe UI', sans-serif;
 	--font-body: 'Microsoft YaHei UI', 'Microsoft YaHei', 'Segoe UI', sans-serif;
 	--font-mono: 'Cascadia Code', 'Consolas', monospace;
 	--font-ui: var(--font-body);

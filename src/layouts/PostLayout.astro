@@ -1,6 +1,7 @@
 ---
 import SiteLayout from './SiteLayout.astro';
 import { siteConfig } from '../data/site';
+import DeclarationCard from '../components/DeclarationCard.astro';
 
 interface TocHeading {
 	depth: number;
@@ -12,12 +13,15 @@ interface Props {
 	title: string;
 	excerpt: string;
 	publishDate: Date;
+	updatedAt: Date;
 	readingTime: string;
+	wordCount: number;
+	license: string;
 	tags: string[];
 	headings: TocHeading[];
 }
 
-const { title, excerpt, publishDate, readingTime, tags, headings } = Astro.props;
+const { title, excerpt, publishDate, updatedAt, readingTime, wordCount, license, tags, headings } = Astro.props;
 const postNavigation = siteConfig.navigation.map((item) => ({
 	...item,
 	label: item.href === '/' ? '主页' : item.label,
@@ -28,6 +32,11 @@ const postFooterLinks = siteConfig.socials.map((item) => ({
 }));
 
 const publishedLabel = publishDate.toLocaleDateString('zh-CN', {
+	year: 'numeric',
+	month: 'long',
+	day: 'numeric',
+});
+const updatedLabel = updatedAt.toLocaleDateString('zh-CN', {
 	year: 'numeric',
 	month: 'long',
 	day: 'numeric',
@@ -123,8 +132,11 @@ const publishedLabel = publishDate.toLocaleDateString('zh-CN', {
 							data-share
 							aria-label="分享当前页面"
 						>
-							<svg class="post-action-icon" viewBox="0 0 24 24" aria-hidden="true">
+							<svg class="post-action-icon post-action-icon--share" viewBox="0 0 24 24" aria-hidden="true">
 								<path d="M19.333,14.667a4.66,4.66,0,0,0-3.839,2.024L8.985,13.752a4.574,4.574,0,0,0,.005-3.488l6.5-2.954a4.66,4.66,0,1,0-.827-2.643,4.633,4.633,0,0,0,.08.786L7.833,8.593a4.668,4.668,0,1,0-.015,6.827l6.928,3.128a4.736,4.736,0,0,0-.079.785,4.667,4.667,0,1,0,4.666-4.666ZM19.333,2a2.667,2.667,0,1,1-2.666,2.667A2.669,2.669,0,0,1,19.333,2ZM4.667,14.667A2.667,2.667,0,1,1,7.333,12,2.67,2.67,0,0,1,4.667,14.667ZM19.333,22A2.667,2.667,0,1,1,22,19.333,2.669,2.669,0,0,1,19.333,22Z" fill="currentColor"></path>
+							</svg>
+							<svg class="post-action-icon post-action-icon--success" viewBox="0 0 24 24" aria-hidden="true">
+								<path d="M7.8,20.53a2.99,2.99,0,0,1-2.121-.877L.086,14.061,1.5,12.646l5.593,5.593a1,1,0,0,0,1.414,0L22.5,4.246,23.914,5.66,9.921,19.653A2.99,2.99,0,0,1,7.8,20.53Z" fill="currentColor"></path>
 							</svg>
 							<span class="sr-only">分享</span>
 						</button>
@@ -149,8 +161,13 @@ const publishedLabel = publishDate.toLocaleDateString('zh-CN', {
 						<h1>{title}</h1>
 						<p class="post-excerpt">{excerpt}</p>
 						<div class="post-meta">
-							<span>{publishedLabel}</span>
-							<span>{readingTime}</span>
+							<span>发布日期 {publishedLabel}</span>
+							<span>·</span>
+							<span>最后更新 {updatedLabel}</span>
+							<span>·</span>
+							<span>阅读时长 {readingTime}</span>
+							<span>·</span>
+							<span>{wordCount.toLocaleString('zh-CN')} 字</span>
 						</div>
 						<div class="post-tags">
 							{tags.map((tag) => <span>{tag}</span>)}
@@ -159,6 +176,7 @@ const publishedLabel = publishDate.toLocaleDateString('zh-CN', {
 					<div class="post-content" data-post-content>
 						<slot />
 					</div>
+					<DeclarationCard publishDate={publishDate} license={license} />
 				</article>
 
 				<section class="post-panel post-comments" id="post-comments" aria-label="评论区">

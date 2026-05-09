@@ -1,9 +1,8 @@
 ---
 title: 空间设计中的节奏感
 excerpt: 空间设计需要考虑多种使用场景，而不仅仅是静态结构。
-description: a
-publishDate: 2026-04-26
-readingTime: 3 min read
+publishDate: 2026-05-01
+updatedAt: 2026-05-01
 tags:
   - 设计
   - 哲学

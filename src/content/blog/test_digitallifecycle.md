@@ -1,9 +1,8 @@
 ---
 title: 数字内容的生命周期
 excerpt: 内容的生命周期，并不是单向衰减，而是可以循环利用的过程。
-description: a
-publishDate: 2026-04-23
-readingTime: 4 min read
+publishDate: 2026-05-01
+updatedAt: 2026-05-01
 tags:
   - 哲学
   - 杂项

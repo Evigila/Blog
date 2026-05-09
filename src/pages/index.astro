@@ -1,12 +1,12 @@
 ---
 import { getCollection } from 'astro:content';
-import { getSortedTagNamesByCount, sortPostsByPublishDate } from '../data/blog';
+import { getSortedTagNamesByCount, sortPostsByUpdatedAt } from '../data/blog';
 import Hero from '../components/Hero.astro';
 import PostGrid from '../components/PostGrid.astro';
 import { siteConfig } from '../data/site';
 import SiteLayout from '../layouts/SiteLayout.astro';
 
-const posts = sortPostsByPublishDate(await getCollection('blog'));
+const posts = sortPostsByUpdatedAt(await getCollection('blog'));
 const tags = getSortedTagNamesByCount(posts);
 ---
 

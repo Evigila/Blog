@@ -1,6 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import { getPostSlug } from '../data/blog';
+import { getPostSlug, calcReadingTime, calcWordCount, getUpdatedAt } from '../data/blog';
 import { siteConfig } from '../data/site';
 
 interface Props {
@@ -12,10 +12,13 @@ const { post, index } = Astro.props;
 
 const stageDigit = Number(siteConfig.stageSeed[index % siteConfig.stageSeed.length] ?? 5);
 const cardMinHeight = Math.max(18.5, 24.5 + (stageDigit - 5) * 1.15);
-const publishedLabel = post.data.publishDate.toLocaleDateString('zh-CN', {
+const wordCount = calcWordCount(post.body ?? '');
+const updatedAt = getUpdatedAt(post);
+const updatedLabel = updatedAt.toLocaleDateString('zh-CN', {
 	month: 'short',
 	day: 'numeric',
 });
+const readingTime = calcReadingTime(wordCount);
 const tagData = post.data.tags.join('|');
 const postSlug = getPostSlug(post);
 ---
@@ -28,8 +31,8 @@ const postSlug = getPostSlug(post);
 >
 	<a class="post-card__link" href={`/posts/${postSlug}/`}>
 		<div class="post-card__topline">
-			<span class="post-card__date">{publishedLabel}</span>
-			<span class="post-card__reading">{post.data.readingTime}</span>
+			<span class="post-card__date">{updatedLabel}</span>
+			<span class="post-card__reading">{readingTime}</span>
 		</div>
 		<h2>{post.data.title}</h2>
 		<p class="post-card__excerpt">{post.data.excerpt}</p>
