@@ -16,7 +16,7 @@ export const siteConfig = {
 		{ label: '联系', href: '/contact' },
 	],
 	socials: [
-		{ label: 'GitHub', href: 'https://github.com', icon: 'github' },
+		{ label: 'GitHub', href: 'https://github.com/Evigila', icon: 'github' },
 		{ label: '邮箱', href: 'mailto:evigila.shangyi@gmail.com', icon: 'mail' },
 	],
 } as const;

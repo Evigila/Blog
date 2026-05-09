@@ -1,24 +1,7 @@
-.hero-kicker,
-.feed-toolbar,
-.post-kicker,
-.post-meta,
-.post-card__topline,
-.post-card__cta,
-.post-card__index,
-.chip-button,
-.chip-link,
-.action-button,
-.floating-home,
-.post-back {
-	font-family: var(--font-mono);
-	text-transform: uppercase;
-	letter-spacing: 0.08em;
-}
-
+/* Mono kicker — small labels used across hero, cards, and post panels */
 .hero-kicker,
 .post-kicker,
 .feed-toolbar,
-.post-meta,
 .post-card__topline,
 .post-panel__kicker,
 .post-footer__kicker,
@@ -28,6 +11,17 @@
 	text-transform: uppercase;
 	letter-spacing: 0.18em;
 	color: var(--text-2);
+}
+
+/* Standalone UI controls that also use mono (no size override) */
+.chip-button,
+.chip-link,
+.action-button,
+.floating-home,
+.post-back {
+	font-family: var(--font-mono);
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
 }
 
 .hero-kicker,
@@ -187,11 +181,6 @@
 .theme-toggle strong {
 	color: var(--accent-0);
 	font-weight: 700;
-}
-
-.post-card__cta,
-.post-card__index {
-	font-family: var(--font-ui);
 }
 
 .post-card__tags span,

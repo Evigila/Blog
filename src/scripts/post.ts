@@ -1,4 +1,4 @@
-import { initTheme } from './theme';
+import { initTheme, initFontSize } from './theme';
 
 const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
 
@@ -115,6 +115,7 @@ export const initPostPage = () => {
 	}
 
 	initTheme(themeButton, themeLabel);
+	initFontSize('.post-font-wrap');
 	update();
 
 	// ── Giscus theme sync ──────────────────────────────────────────────────────
@@ -143,65 +144,6 @@ export const initPostPage = () => {
 		// 等 initTheme 更新 dataset.theme 后再同步
 		requestAnimationFrame(syncGiscusTheme);
 	});
-
-	// ── Font size ──────────────────────────────────────────────────────────────
-	const FONT_SIZE_KEY = 'evigila-font-size';
-	const fontSizeValues = ['small', 'normal', 'large'] as const;
-	type FontSizeValue = (typeof fontSizeValues)[number];
-
-	const fontToggleBtn = document.querySelector<HTMLElement>('[data-font-toggle]');
-	const fontPopup = document.querySelector<HTMLElement>('[data-font-popup]');
-	const fontSlider = document.querySelector<HTMLInputElement>('[data-font-slider]');
-
-	let currentFontSize: FontSizeValue = (localStorage.getItem(FONT_SIZE_KEY) as FontSizeValue | null) ?? 'normal';
-
-	const applyFontSize = (size: FontSizeValue) => {
-		currentFontSize = size;
-		if (size === 'normal') {
-			delete root.dataset.fontSize;
-		} else {
-			root.dataset.fontSize = size;
-		}
-		localStorage.setItem(FONT_SIZE_KEY, size);
-		if (fontSlider) {
-			fontSlider.value = String(fontSizeValues.indexOf(size));
-		}
-	};
-
-	applyFontSize(currentFontSize);
-
-	if (fontToggleBtn && fontPopup) {
-		fontToggleBtn.addEventListener('click', (e) => {
-			e.stopPropagation();
-			const willOpen = fontPopup.hidden;
-			fontPopup.hidden = !willOpen;
-			fontToggleBtn.setAttribute('aria-expanded', String(willOpen));
-		});
-
-		document.addEventListener('click', (e) => {
-			if (!fontPopup.hidden) {
-				const wrap = fontToggleBtn.closest('.post-font-wrap');
-				if (!wrap?.contains(e.target as Node)) {
-					fontPopup.hidden = true;
-					fontToggleBtn.setAttribute('aria-expanded', 'false');
-				}
-			}
-		});
-
-		document.addEventListener('keydown', (e) => {
-			if (e.key === 'Escape' && !fontPopup.hidden) {
-				fontPopup.hidden = true;
-				fontToggleBtn.setAttribute('aria-expanded', 'false');
-				fontToggleBtn.focus();
-			}
-		});
-	}
-
-	if (fontSlider) {
-		fontSlider.addEventListener('input', () => {
-			applyFontSize(fontSizeValues[parseInt(fontSlider.value, 10)]);
-		});
-	}
 
 	// ── Share ──────────────────────────────────────────────────────────────────
 	const SITE_URL = 'https://evigila.net';
@@ -245,7 +187,7 @@ export const initPostPage = () => {
 				document.execCommand('copy');
 				document.body.removeChild(textarea);
 			}
-			showShareToast('感谢分享，当前博客地址已经复制到剪贴板了喵~');
+			showShareToast('感谢分享，已复制博客地址到剪贴板喵~');
 			// Show success icon
 			if (shareIconEl) shareIconEl.style.display = 'none';
 			if (successIconEl) successIconEl.style.display = 'block';

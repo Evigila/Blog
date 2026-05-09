@@ -68,17 +68,26 @@ const publishedLabel = publishDate.toLocaleDateString('zh-CN', {
 
 <style>
 	.decl-card {
+		--decl-bg: linear-gradient(135deg, #dbeeff 0%, #c8e4fb 100%);
+		--decl-border: #9fc8f0;
+		--decl-text: #1b3a5c;
+		--decl-text-label: #1b3a5c;
+		--decl-watermark: rgba(15, 108, 189, 0.1);
+
 		position: relative;
 		overflow: hidden;
-		padding: clamp(1.4rem, 3vw, 2rem) clamp(1.4rem, 3vw, 2rem);
-		background: linear-gradient(135deg, #dbeeff 0%, #c8e4fb 100%);
-		border: 1px solid #9fc8f0;
-		font-family: 'Microsoft YaHei UI', 'Microsoft YaHei', 'Segoe UI', sans-serif;
+		padding: clamp(1.4rem, 3vw, 2rem);
+		background: var(--decl-bg);
+		border: 1px solid var(--decl-border);
+		font-family: var(--font-body);
 	}
 
 	:root[data-theme='dark'] .decl-card {
-		background: linear-gradient(135deg, #0d2340 0%, #112d4a 100%);
-		border-color: #1e4a73;
+		--decl-bg: linear-gradient(135deg, #0d2340 0%, #112d4a 100%);
+		--decl-border: #1e4a73;
+		--decl-text: #c0d8f0;
+		--decl-text-label: #90c4e8;
+		--decl-watermark: rgba(76, 194, 255, 0.08);
 	}
 
 	.decl-card__watermark {
@@ -88,13 +97,9 @@ const publishedLabel = publishDate.toLocaleDateString('zh-CN', {
 		transform: translateY(-50%);
 		width: clamp(7rem, 18vw, 12rem);
 		height: auto;
-		fill: rgba(15, 108, 189, 0.1);
+		fill: var(--decl-watermark);
 		pointer-events: none;
 		user-select: none;
-	}
-
-	:root[data-theme='dark'] .decl-card__watermark {
-		fill: rgba(76, 194, 255, 0.08);
 	}
 
 	.decl-card__body {
@@ -111,11 +116,7 @@ const publishedLabel = publishDate.toLocaleDateString('zh-CN', {
 		font-weight: 600;
 		letter-spacing: 0.12em;
 		text-transform: uppercase;
-		color: #0f6cbd;
-	}
-
-	:root[data-theme='dark'] .decl-card__kicker {
-		color: #4cc2ff;
+		color: var(--accent-0);
 	}
 
 	.decl-card__row {
@@ -123,46 +124,30 @@ const publishedLabel = publishDate.toLocaleDateString('zh-CN', {
 		align-items: center;
 		gap: 0.55rem;
 		font-size: 0.88rem;
-		color: #1b3a5c;
+		color: var(--decl-text);
 		line-height: 1.4;
-	}
-
-	:root[data-theme='dark'] .decl-card__row {
-		color: #c0d8f0;
 	}
 
 	.decl-card__icon {
 		flex: none;
 		width: 1rem;
 		height: 1rem;
-		color: #0f6cbd;
+		color: var(--accent-0);
 		opacity: 0.8;
-	}
-
-	:root[data-theme='dark'] .decl-card__icon {
-		color: #4cc2ff;
 	}
 
 	.decl-card__label {
 		flex: none;
 		font-weight: 600;
 		min-width: 5rem;
-		color: #1b3a5c;
-	}
-
-	:root[data-theme='dark'] .decl-card__label {
-		color: #90c4e8;
+		color: var(--decl-text-label);
 	}
 
 	.decl-card__link {
-		color: #0f6cbd;
+		color: var(--accent-0);
 		text-decoration: underline;
 		text-decoration-thickness: 0.08em;
 		text-underline-offset: 0.15em;
 		word-break: break-all;
-	}
-
-	:root[data-theme='dark'] .decl-card__link {
-		color: #4cc2ff;
 	}
 </style>
