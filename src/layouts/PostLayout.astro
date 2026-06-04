@@ -171,7 +171,7 @@ const updatedLabel = updatedAt.toLocaleDateString('zh-CN', {
 							<span>{wordCount.toLocaleString('zh-CN')} 字</span>
 						</div>
 						<div class="post-tags">
-						{tags.map((tag: string) => <span>{tag}</span>)}
+						{tags.map((tag) => <span>{tag}</span>)}
 						</div>
 					</header>
 					<div class="post-content" data-post-content>
@@ -220,7 +220,7 @@ const updatedLabel = updatedAt.toLocaleDateString('zh-CN', {
 
 					{headings.length > 0 ? (
 						<ol class="post-outline__list">
-							{headings.map((heading: TocHeading) => (
+							{headings.map((heading) => (
 								<li
 									class={`post-outline__item post-outline__item--depth-${Math.min(Math.max(heading.depth, 2), 6)}`}
 								>
