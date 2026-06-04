@@ -171,7 +171,7 @@ const updatedLabel = updatedAt.toLocaleDateString('zh-CN', {
 							<span>{wordCount.toLocaleString('zh-CN')} 字</span>
 						</div>
 						<div class="post-tags">
-							{tags.map((tag) => <span>{tag}</span>)}
+						{tags.map((tag: string) => <span>{tag}</span>)}
 						</div>
 					</header>
 					<div class="post-content" data-post-content>
@@ -187,7 +187,7 @@ const updatedLabel = updatedAt.toLocaleDateString('zh-CN', {
 						<script
 							is:inline
 							src="https://giscus.app/client.js"
-							data-repo="Evigila/EvigilaAstro"
+							data-repo="Evigila/Blog"
 							data-repo-id="R_kgDOSTv6rQ"
 							data-category="Announcements"
 							data-category-id="DIC_kwDOSTv6rc4C8n35"
@@ -220,7 +220,7 @@ const updatedLabel = updatedAt.toLocaleDateString('zh-CN', {
 
 					{headings.length > 0 ? (
 						<ol class="post-outline__list">
-							{headings.map((heading) => (
+							{headings.map((heading: TocHeading) => (
 								<li
 									class={`post-outline__item post-outline__item--depth-${Math.min(Math.max(heading.depth, 2), 6)}`}
 								>
