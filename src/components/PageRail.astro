@@ -1,0 +1,20 @@
+---
+import AuthorPanel from './AuthorPanel.astro';
+import PageActions from './PageActions.astro';
+import SiteNavPanel from './SiteNavPanel.astro';
+
+interface Props {
+	commentsHref?: string;
+	showShare?: boolean;
+}
+
+const { commentsHref, showShare = true } = Astro.props;
+---
+
+<aside class="post-left-rail" aria-label="Author and site navigation">
+	<div class="post-side-stack">
+		<AuthorPanel />
+		<SiteNavPanel />
+		<PageActions commentsHref={commentsHref} showShare={showShare} />
+	</div>
+</aside>

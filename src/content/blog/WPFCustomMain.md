@@ -8,6 +8,7 @@ tags:
   - C#
   - .NET
   - Desktop
+image: /trueearth-hills.jpg
 ---
 
 本篇文章将教学如何创建WPF时自定义程序启动入口`Main`，以获取项目的完整生命周期控制。
@@ -25,13 +26,13 @@ tags:
 </Application>
 ```
 以及：
-```C#
+```csharp
 public partial class App : Application
 {
 }
 ```
 但是`Main`方法一般是无法看到的，这是因为它是由 WPF 的 XAML 编译器自动生成的。大致等价于：
-```C#
+```csharp
 [STAThread]
 public static void Main()
 {
@@ -51,7 +52,7 @@ StartupUri="MainWindow.xaml"
 一种方便且实用的手动控制启动逻辑的方式是，通过删除`App.xaml`中的`StartupUri`，然后在`App.xaml.cs`中重写`App.OnStartup`方法。
 
 例如以下用法：
-```C#
+```csharp
 public partial class App : Application
 {
     protected override void OnStartup(StartupEventArgs e)
@@ -72,7 +73,7 @@ public partial class App : Application
 首先至少需要新建一个类用于承载入口点，通常来说会被命名为`Program`或者`Startup`。这将后续作为`csproj`中指定自定义入口的关键。
 
 在`Program.cs`中，需要手写以下函数：
-```C#
+```csharp
 public static class Program
 {
     [STAThread]
@@ -105,10 +106,10 @@ public static class Program
 此处的`MainWindow`指的不是新建WPF项目时默认的窗口文件名字，而是`App`上的一个属性，同名为`MainWindow`。
 
 以下这两行代码是窗口渲染的关键：
-```C#
+```csharp
 App.InitializeComponent();
 ```
-```C#
+```csharp
 App.Run(window);
 ```
 其中`InitializeComponent()`的调用时机必须要早，甚至必须早于一些你自定义的逻辑，否则有可能发生引擎错误。因此当你发现输入自定义逻辑之后窗口无法渲染或者引擎崩溃，尝试将`InitializeComponent()`调用放在更早期的位置有可能解决问题。
@@ -118,10 +119,10 @@ App.Run(window);
 要想解决这个问题，仅需要在`App.xaml`中随便定义一个样式或者任意资源即可，例如下图：
 ```xml
 <Application
-  x:Class="LuvLetter.App"
+  x:Class="MyApp.App"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-  xmlns:local="clr-namespace:LuvLetter"
+  xmlns:local="clr-namespace:MyApp"
 >
   <Application.Resources>
     <Style x:Key="Test" />

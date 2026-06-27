@@ -1,133 +1,45 @@
 ---
+import PageRail from '../components/PageRail.astro';
+import SiteFooter from '../components/SiteFooter.astro';
 import SiteLayout from '../layouts/SiteLayout.astro';
-import { siteConfig } from '../data/site';
 
 const friendLinks = [
 	{
 		name: 'Northlight Notes',
 		href: 'https://example.com/northlight',
-		description: '示例网址。',
+		description: 'Example site.',
 	},
 	{
 		name: 'Quiet Build',
 		href: 'https://example.com/quiet-build',
-		description: '示例网址。',
+		description: 'Example site.',
 	},
 	{
 		name: 'Archive Field',
 		href: 'https://example.com/archive-field',
-		description: '示例网址。',
+		description: 'Example site.',
 	},
 ];
-
-const postNavigation = siteConfig.navigation.map((item) => ({
-	...item,
-	label: item.href === '/' ? '主页' : item.label,
-}));
-const postFooterLinks = siteConfig.socials.map((item) => ({
-	...item,
-	label: item.label === '邮箱' ? 'Email' : item.label,
-}));
 ---
 
-<SiteLayout title="友链 | Evigila" description="Evigila 的友链页面。">
+<SiteLayout title="Links | Evigila" description="Evigila's links page.">
 	<main class="post-shell">
 		<div class="post-layout post-layout--no-sidebar">
-			<aside class="post-left-rail" aria-label="作者信息与站点导航">
-				<div class="post-side-stack">
-					<section class="post-panel post-author-card" aria-label="作者信息">
-						<p class="post-panel__kicker">Author</p>
-						<div class="post-author-card__header">
-							<div class="post-author-card__avatar">
-								<img
-									src={siteConfig.author.avatar}
-									alt={`${siteConfig.author.name} avatar`}
-									width="120"
-									height="120"
-									loading="eager"
-								/>
-							</div>
-							<div>
-								<p class="post-panel__title">{siteConfig.author.name}</p>
-								<p class="post-author-card__signature">{siteConfig.author.signature}</p>
-							</div>
-						</div>
-						<p class="post-author-card__bio">{siteConfig.author.bio}</p>
-					</section>
-
-					<nav class="post-panel post-nav-card" aria-label="站点导航">
-						<p class="post-panel__kicker">Navigate</p>
-						<p class="post-panel__title">导航</p>
-						<div class="post-nav-card__list">
-							{postNavigation.map((item) => (
-								<a class="post-nav-card__link" href={item.href}>
-									{item.label}
-								</a>
-							))}
-						</div>
-					</nav>
-
-					<div class="post-action-panel" aria-label="页面快捷操作" role="group">
-						<button
-							class="post-dock__button post-action-button action-button ui-button theme-toggle"
-							type="button"
-							data-theme-toggle
-							aria-pressed="false"
-							aria-label="切换主题"
-						>
-							<svg class="post-action-icon" viewBox="0 0 24 24" aria-hidden="true">
-								<path d="m13 22v1c0 .553-.448 1-1 1s-1-.447-1-1v-1c0-.553.448-1 1-1s1 .447 1 1zm-1-19c.552 0 1-.448 1-1v-1c0-.552-.448-1-1-1s-1 .448-1 1v1c0 .552.448 1 1 1zm11 8h-1c-.553 0-1 .448-1 1s.447 1 1 1h1c.553 0 1-.448 1-1s-.447-1-1-1zm-21 0h-1c-.552 0-1 .448-1 1s.448 1 1 1h1c.552 0 1-.448 1-1s-.448-1-1-1zm2.222 7.364-.707.707c-.391.391-.391 1.023 0 1.414s1.023.391 1.414 0l.707-.707c.391-.391.391-1.023 0-1.414s-1.023-.391-1.414 0zm14.849-14.849-.707.707c-.391.391-.391 1.023 0 1.414s1.023.391 1.414 0l.707-.707c.391-.391.391-1.023 0-1.414s-1.023-.391-1.414 0zm.707 14.85c-.391-.391-1.023-.391-1.414 0s-.391 1.023 0 1.414l.707.707c.391.391 1.023.391 1.414 0s.391-1.023 0-1.414zm-15.556-12.729c.391.391 1.023.391 1.414 0s.391-1.023 0-1.414l-.707-.707c-.391-.391-1.023-.391-1.414 0s-.391 1.023 0 1.414zm14.778 6.364c0 3.859-3.141 7-7 7s-7-3.141-7-7 3.14-7 7-7 7 3.14 7 7zm-2 0c0-2.757-2.243-5-5-5v10c2.757 0 5-2.243 5-5z" fill="currentColor"></path>
-							</svg>
-							<span class="sr-only">切换主题，当前</span>
-							<strong class="sr-only" data-theme-label>浅色</strong>
-						</button>
-						<div class="post-font-wrap" hidden>
-							<button
-								class="post-action-button action-button ui-button"
-								type="button"
-								data-disabled-font-toggle
-								aria-expanded="false"
-								aria-haspopup="true"
-								aria-label="调整字体大小"
-							>
-								<svg class="post-action-icon" viewBox="0 0 24 24" aria-hidden="true">
-									<path d="M23.931,22.634L16.144,2.814c-1.288-3.718-7-3.717-8.288,0L.069,22.634c-.202,.514,.051,1.095,.565,1.296,.515,.203,1.095-.051,1.296-.565l2.501-6.366h15.137l2.501,6.366c.202,.519,.795,.766,1.296,.565,.514-.202,.767-.782,.565-1.296ZM5.217,15L9.717,3.545c.924-2.104,3.641-2.104,4.565,0l4.5,11.455H5.217Z" fill="currentColor"></path>
-								</svg>
-								<span class="sr-only">字体大小</span>
-							</button>
-							<div class="hero-font-popup" data-disabled-font-popup hidden>
-								<p class="hero-font-popup__label">字号</p>
-								<div class="hero-font-popup__track">
-									<span class="hero-font-popup__min">小</span>
-									<input
-										class="hero-font-popup__slider"
-										type="range"
-										min="0"
-										max="2"
-										step="1"
-										value="1"
-										data-disabled-font-slider
-										aria-label="字体大小调节"
-									/>
-									<span class="hero-font-popup__max">大</span>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</aside>
+			<PageRail />
 
 			<div class="post-main">
 				<article class="post-article" data-post-article>
-					<header class="post-hero">
-						<p class="post-kicker">Friends</p>
-						<h1>友链</h1>
-						<p class="post-excerpt">这里先放一组示例友链占位结构。</p>
+					<header class="post-hero post-hero--plain">
+						<div class="post-hero__content">
+							<p class="post-kicker ui-kicker">Friends</p>
+							<h1>Links</h1>
+							<p class="post-excerpt">A small placeholder set for friendly links.</p>
+						</div>
 					</header>
 					<div class="post-content" data-post-content>
-						<ul>
+						<ul class="friend-link-list">
 							{friendLinks.map((link) => (
-								<li>
+								<li class="friend-link-list__item">
 									<strong><a href={link.href}>{link.name}</a></strong>
 									<p>{link.description}</p>
 								</li>
@@ -140,41 +52,15 @@ const postFooterLinks = siteConfig.socials.map((item) => ({
 			<div class="post-sidebar-spacer" aria-hidden="true"></div>
 		</div>
 
-		<nav class="post-dock" aria-label="页面快捷操作">
+		<nav class="post-dock" aria-label="Page actions">
 			<button class="post-dock__button post-dock__secondary action-button ui-button" type="button" data-scroll-top>
-				顶端
+				Top
 			</button>
-			<a class="post-dock__button post-dock__home action-button ui-button" href="/">返回首页</a>
+			<a class="post-dock__button post-dock__home action-button ui-button" href="/">Home</a>
 		</nav>
 	</main>
 
-	<footer class="post-footer" aria-label="友链页底部信息">
-		<div class="post-footer__inner">
-			<div class="post-footer__brand">
-				<p class="post-footer__kicker">STATIC JOURNAL</p>
-				<p class="post-footer__title">{siteConfig.title}</p>
-				<p class="post-footer__text">{siteConfig.description}</p>
-			</div>
-
-			<div class="post-footer__group">
-				<p class="post-footer__label">导航</p>
-				<div class="post-footer__links">
-					{postNavigation.map((item) => (
-						<a class="post-footer__link" href={item.href}>{item.label}</a>
-					))}
-				</div>
-			</div>
-
-			<div class="post-footer__group">
-				<p class="post-footer__label">联系</p>
-				<div class="post-footer__links">
-					{postFooterLinks.map((item) => (
-						<a class="post-footer__link" href={item.href}>{item.label}</a>
-					))}
-				</div>
-			</div>
-		</div>
-	</footer>
+	<SiteFooter ariaLabel="Links footer" />
 
 	<script>
 		import { initPostPage } from '../scripts/post';

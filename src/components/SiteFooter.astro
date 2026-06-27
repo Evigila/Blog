@@ -1,0 +1,43 @@
+---
+import { siteConfig } from '../data/site';
+
+interface Props {
+	ariaLabel?: string;
+}
+
+const { ariaLabel = 'Site footer' } = Astro.props;
+const navigation = siteConfig.navigation.map((item) => ({
+	...item,
+}));
+const contactLinks = siteConfig.socials.map((item) => ({
+	...item,
+}));
+---
+
+<footer class="post-footer" aria-label={ariaLabel}>
+	<div class="post-footer__inner">
+		<div class="post-footer__brand">
+			<p class="post-footer__kicker ui-kicker">STATIC JOURNAL</p>
+			<p class="post-footer__title ui-title">{siteConfig.title}</p>
+			<p class="post-footer__text">{siteConfig.description}</p>
+		</div>
+
+		<div class="post-footer__group">
+			<p class="post-footer__label ui-kicker">Navigation</p>
+			<div class="post-footer__links">
+				{navigation.map((item) => (
+					<a class="post-footer__link" href={item.href}>{item.label}</a>
+				))}
+			</div>
+		</div>
+
+		<div class="post-footer__group">
+			<p class="post-footer__label ui-kicker">Contact</p>
+			<div class="post-footer__links">
+				{contactLinks.map((item) => (
+					<a class="post-footer__link" href={item.href}>{item.label}</a>
+				))}
+			</div>
+		</div>
+	</div>
+</footer>

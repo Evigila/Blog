@@ -48,7 +48,7 @@
 
 .post-card h2 {
 	margin: 0;
-	font-size: clamp(1.35rem, 3.4vw, 2.25rem);
+	font-size: clamp(var(--text-xl), 3.4vw, 2.25rem);
 	line-height: 1.03;
 }
 
@@ -59,7 +59,7 @@
 	margin-bottom: 1.2rem;
 	line-height: 1.4;
 	font-family: var(--font-body);
-	font-size: 0.82rem;
+	font-size: var(--text-sm);
 }
 
 .post-card__excerpt {
@@ -104,7 +104,7 @@
 .post-card__cta {
 	flex: none;
 	margin-left: auto;
-	font-size: 0.76rem;
+	font-size: var(--text-xs);
 	color: var(--accent-0);
 	white-space: nowrap;
 	text-align: right;
@@ -112,7 +112,7 @@
 
 .post-card__tags span {
 	padding: 0.45rem 0.72rem;
-	font-size: 0.75rem;
+	font-size: var(--text-xs);
 	letter-spacing: 0.08em;
 }
 

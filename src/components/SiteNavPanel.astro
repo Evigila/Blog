@@ -1,0 +1,22 @@
+---
+import { siteConfig } from '../data/site';
+
+const navigation = siteConfig.navigation.map((item) => ({
+	...item,
+	isCurrent:
+		item.href === Astro.url.pathname ||
+		(item.href === '/?view=posts' && Astro.url.pathname.startsWith('/posts/')),
+}));
+---
+
+<nav class="post-panel post-nav-card ui-panel" aria-label="Site navigation">
+	<p class="post-panel__kicker ui-kicker">Navigate</p>
+	<p class="post-panel__title ui-title">Navigation</p>
+	<div class="post-nav-card__list">
+		{navigation.map((item) => (
+			<a class="post-nav-card__link" href={item.href} aria-current={item.isCurrent ? 'page' : undefined}>
+				{item.label}
+			</a>
+		))}
+	</div>
+</nav>

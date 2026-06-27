@@ -1,23 +1,20 @@
 ---
 ---
 
-<!-- 氛围光：固定在屏幕底部中央 -->
+<!-- Ambient glow -->
 <div class="site-toast-ambient" aria-hidden="true" id="site-toast-ambient"></div>
 
-<!-- Toast 本体 -->
+<!-- Toast container -->
 <div class="site-toast" id="site-toast" role="status" aria-live="polite" aria-atomic="true">
-	<!-- 旋转浮光边框 -->
 	<div class="site-toast__ring-wrap" aria-hidden="true">
 		<div class="site-toast__ring-spin"></div>
 	</div>
-	<!-- 内容层 -->
 	<div class="site-toast__body">
 		<span id="site-toast-text"></span>
 	</div>
 </div>
 
 <style>
-	/* ── 氛围光 ─────────────────────────────────────────────── */
 	.site-toast-ambient {
 		position: fixed;
 		bottom: 0;
@@ -28,12 +25,7 @@
 		pointer-events: none;
 		z-index: 198;
 		opacity: 0;
-		background: radial-gradient(
-			ellipse 75% 80% at 50% 100%,
-			rgba(13, 133, 67, 0.3) 0%,
-			rgba(10, 181, 224, 0.18) 38%,
-			transparent 72%
-		);
+		background: radial-gradient(ellipse 75% 80% at 50% 100%, var(--page-tint) 0%, var(--page-tint-alt) 38%, transparent 72%);
 		filter: blur(22px);
 		transition: opacity 1500ms ease;
 	}
@@ -52,7 +44,6 @@
 		100% { opacity: 1;    filter: blur(22px); }
 	}
 
-	/* ── Toast 容器（仅做定位，无背景） ───────────────────── */
 	.site-toast {
 		position: fixed;
 		left: 50%;
@@ -61,6 +52,7 @@
 		z-index: 200;
 		opacity: 0;
 		pointer-events: none;
+		border-radius: var(--radius-md);
 		transition: opacity 260ms ease, transform 260ms ease;
 	}
 
@@ -69,12 +61,11 @@
 		transform: translateX(-50%) translateY(0);
 	}
 
-	/* ── 旋转浮光边框 ────────────────────────────────────────── */
 	.site-toast__ring-wrap {
 		position: absolute;
 		inset: -1px;
 		overflow: hidden;
-		/* 默认隐藏，出现时淡入 */
+		border-radius: inherit;
 		opacity: 0;
 		transition: opacity 260ms ease;
 	}
@@ -83,10 +74,8 @@
 		opacity: 1;
 	}
 
-	/* 旋转的圆锥渐变正方形 */
 	.site-toast__ring-spin {
 		position: absolute;
-		/* 足够大，旋转时覆盖整个边框 */
 		width: 220%;
 		aspect-ratio: 1;
 		top: 50%;
@@ -95,9 +84,9 @@
 		background: conic-gradient(
 			from 0deg,
 			transparent 0%,
-			#00d4ff 15%,
-			#00ffcc 32%,
-			#3399ff 50%,
+			var(--accent-0) 15%,
+			var(--accent-1) 32%,
+			color-mix(in srgb, var(--accent-0) 62%, var(--accent-1)) 50%,
 			transparent 65%,
 			transparent 100%
 		);
@@ -108,7 +97,6 @@
 		to { rotate: 360deg; }
 	}
 
-	/* ── 内容层（拥有背景和毛玻璃） ───────────────────────── */
 	.site-toast__body {
 		position: relative;
 		z-index: 1;
@@ -116,12 +104,12 @@
 		background: var(--surface-0);
 		backdrop-filter: blur(24px);
 		-webkit-backdrop-filter: blur(24px);
+		border-radius: inherit;
 		box-shadow: var(--shadow-0);
 		font-family: var(--font-ui);
-		font-size: 0.9rem;
+		font-size: var(--text-sm);
 		color: var(--text-0);
 		white-space: nowrap;
-		/* 内边距补偿边框的 2px 缩进 */
 		margin: 1px;
 	}
 </style>
@@ -145,6 +133,5 @@
 		}, duration);
 	}
 
-	// 挂载到 window，供其他脚本调用
 	(window as unknown as { showToast: typeof showToast }).showToast = showToast;
 </script>

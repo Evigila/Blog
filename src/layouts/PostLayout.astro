@@ -1,8 +1,8 @@
 ---
 import SiteLayout from './SiteLayout.astro';
-import { siteConfig } from '../data/site';
 import DeclarationCard from '../components/DeclarationCard.astro';
-import { ICONS } from '../data/icons';
+import PageRail from '../components/PageRail.astro';
+import SiteFooter from '../components/SiteFooter.astro';
 
 interface TocHeading {
 	depth: number;
@@ -35,24 +35,13 @@ const {
 	headings,
 	heroImage = '/trueearth-hills.jpg',
 } = Astro.props;
-const postNavigation = siteConfig.navigation.map((item) => ({
-	...item,
-	label: item.href === '/' ? '主页' : item.label,
-	isCurrent:
-		item.href === Astro.url.pathname ||
-		(item.href === '/?view=posts' && Astro.url.pathname.startsWith('/posts/')),
-}));
-const postFooterLinks = siteConfig.socials.map((item) => ({
-	...item,
-	label: item.label === '邮箱' ? 'Email' : item.label,
-}));
 
-const publishedLabel = publishDate.toLocaleDateString('zh-CN', {
+const publishedLabel = publishDate.toLocaleDateString('en-US', {
 	year: 'numeric',
 	month: 'long',
 	day: 'numeric',
 });
-const updatedLabel = updatedAt.toLocaleDateString('zh-CN', {
+const updatedLabel = updatedAt.toLocaleDateString('en-US', {
 	year: 'numeric',
 	month: 'long',
 	day: 'numeric',
@@ -62,113 +51,7 @@ const updatedLabel = updatedAt.toLocaleDateString('zh-CN', {
 <SiteLayout title={`${title} | Evigila`} description={excerpt}>
 	<main class="post-shell">
 		<div class="post-layout">
-			<aside class="post-left-rail" aria-label="作者信息与站点导航">
-				<div class="post-side-stack">
-					<section class="post-panel post-author-card" aria-label="作者信息">
-						<p class="post-panel__kicker">Author</p>
-						<div class="post-author-card__header">
-							<div class="post-author-card__avatar">
-								<img
-									src={siteConfig.author.avatar}
-									alt={`${siteConfig.author.name} avatar`}
-									width="120"
-									height="120"
-									loading="eager"
-								/>
-							</div>
-							<div>
-								<p class="post-panel__title">{siteConfig.author.name}</p>
-								<p class="post-author-card__signature">{siteConfig.author.signature}</p>
-							</div>
-						</div>
-						<p class="post-author-card__bio">{siteConfig.author.bio}</p>
-					</section>
-
-					<nav class="post-panel post-nav-card" aria-label="站点导航">
-						<p class="post-panel__kicker">Navigate</p>
-						<p class="post-panel__title">导航</p>
-						<div class="post-nav-card__list">
-							{postNavigation.map((item) => (
-								<a class="post-nav-card__link" href={item.href} aria-current={item.isCurrent ? 'page' : undefined}>
-									{item.label}
-								</a>
-							))}
-						</div>
-					</nav>
-
-					<div class="post-action-panel" aria-label="页面快捷操作" role="group">
-						<button
-							class="post-dock__button post-action-button action-button ui-button theme-toggle"
-							type="button"
-							data-theme-toggle
-							aria-pressed="false"
-							aria-label="切换主题"
-						>
-							<svg class="post-action-icon" viewBox="0 0 24 24" aria-hidden="true">
-								<path d={ICONS.theme} fill="currentColor"/>
-							</svg>
-							<span class="sr-only">切换主题，当前</span>
-							<strong class="sr-only" data-theme-label>浅色</strong>
-						</button>
-						<div class="post-font-wrap" hidden>
-							<button
-								class="post-action-button action-button ui-button"
-								type="button"
-								data-disabled-font-toggle
-								aria-expanded="false"
-								aria-haspopup="true"
-								aria-label="调整字体大小"
-							>
-								<svg class="post-action-icon" viewBox="0 0 24 24" aria-hidden="true">
-									<path d={ICONS.font} fill="currentColor"/>
-								</svg>
-								<span class="sr-only">字体大小</span>
-							</button>
-							<div class="hero-font-popup" data-disabled-font-popup hidden>
-								<p class="hero-font-popup__label">字号</p>
-								<div class="hero-font-popup__track">
-									<span class="hero-font-popup__min">小</span>
-									<input
-										class="hero-font-popup__slider"
-										type="range"
-										min="0"
-										max="2"
-										step="1"
-										value="1"
-										data-disabled-font-slider
-										aria-label="字体大小调节"
-									/>
-									<span class="hero-font-popup__max">大</span>
-								</div>
-							</div>
-						</div>
-						<button
-							class="post-dock__button post-action-button action-button ui-button"
-							type="button"
-							data-share
-							aria-label="分享当前页面"
-						>
-							<svg class="post-action-icon post-action-icon--share" viewBox="0 0 24 24" aria-hidden="true">
-							<path d={ICONS.share} fill="currentColor"/>
-						</svg>
-						<svg class="post-action-icon post-action-icon--success" viewBox="0 0 24 24" aria-hidden="true">
-							<path d={ICONS.check} fill="currentColor"/>
-							</svg>
-							<span class="sr-only">分享</span>
-						</button>
-						<a
-							class="post-dock__button post-action-button action-button ui-button"
-							href="#post-comments"
-							aria-label="跳转到评论区"
-						>
-							<svg class="post-action-icon" viewBox="0 0 24 24" aria-hidden="true">
-							<path d={ICONS.comment} fill="currentColor"/>
-							</svg>
-							<span class="sr-only">评论</span>
-						</a>
-					</div>
-				</div>
-			</aside>
+			<PageRail commentsHref="#post-comments" />
 
 			<div class="post-main">
 				<article class="post-article" data-post-article>
@@ -181,13 +64,13 @@ const updatedLabel = updatedAt.toLocaleDateString('zh-CN', {
 							<h1>{title}</h1>
 							<p class="post-excerpt">{excerpt}</p>
 							<div class="post-meta">
-								<span>发布日期 {publishedLabel}</span>
+								<span>Published {publishedLabel}</span>
 								<span>·</span>
-								<span>最后更新 {updatedLabel}</span>
+								<span>Updated {updatedLabel}</span>
 								<span>·</span>
-								<span>阅读时长 {readingTime}</span>
+								<span>{readingTime}</span>
 								<span>·</span>
-								<span>{wordCount.toLocaleString('zh-CN')} 字</span>
+								<span>{wordCount.toLocaleString('en-US')} words</span>
 							</div>
 							<div class="post-tags">
 								{tags.map((tag) => <span>{tag}</span>)}
@@ -200,9 +83,9 @@ const updatedLabel = updatedAt.toLocaleDateString('zh-CN', {
 					<DeclarationCard publishDate={publishDate} license={license} />
 				</article>
 
-				<section class="post-panel post-comments" id="post-comments" aria-label="评论区">
+				<section class="post-panel post-comments" id="post-comments" aria-label="Comments">
 					<p class="post-panel__kicker">Comments</p>
-					<p class="post-panel__title">评论区</p>
+					<p class="post-panel__title">Comments</p>
 					<div class="post-comments__widget">
 						<script
 							is:inline
@@ -217,7 +100,7 @@ const updatedLabel = updatedAt.toLocaleDateString('zh-CN', {
 							data-emit-metadata="0"
 							data-input-position="bottom"
 							data-theme="preferred_color_scheme"
-							data-lang="zh-CN"
+							data-lang="en"
 							crossorigin="anonymous"
 							async
 						></script>
@@ -225,12 +108,12 @@ const updatedLabel = updatedAt.toLocaleDateString('zh-CN', {
 				</section>
 			</div>
 
-			<aside class="post-sidebar" aria-label="文章目录与阅读进度">
+			<aside class="post-sidebar" aria-label="Table of contents and reading progress">
 				<div class="post-panel post-outline" data-post-outline style="--reading-progress: 0%;">
 					<div class="post-outline__top">
 						<div>
 							<p class="post-panel__kicker">Contents</p>
-							<p class="post-panel__title">目录</p>
+							<p class="post-panel__title">Contents</p>
 						</div>
 						<p class="post-outline__progress" data-reading-progress-value>0%</p>
 					</div>
@@ -256,50 +139,24 @@ const updatedLabel = updatedAt.toLocaleDateString('zh-CN', {
 							))}
 						</ol>
 					) : (
-						<p class="post-outline__empty">当前文章暂无可同步的分节标题。</p>
+						<p class="post-outline__empty">This post has no synchronized section headings.</p>
 					)}
 				</div>
 			</aside>
 		</div>
 
-		<nav class="post-dock" aria-label="文章快捷操作">
+		<nav class="post-dock" aria-label="Post actions">
 			<button class="post-dock__button post-dock__secondary action-button ui-button" type="button" data-scroll-top>
-				顶端
+				Top
 			</button>
-			<a class="post-dock__button post-dock__home action-button ui-button" href="/">返回首页</a>
+			<a class="post-dock__button post-dock__home action-button ui-button" href="/">Home</a>
 			<a class="post-dock__button post-dock__secondary action-button ui-button" href="#post-comments">
-				评论区
+				Comments
 			</a>
 		</nav>
 	</main>
 
-	<footer class="post-footer" aria-label="文章页底部信息">
-		<div class="post-footer__inner">
-			<div class="post-footer__brand">
-				<p class="post-footer__kicker">STATIC JOURNAL</p>
-				<p class="post-footer__title">{siteConfig.title}</p>
-				<p class="post-footer__text">{siteConfig.description}</p>
-			</div>
-
-			<div class="post-footer__group">
-				<p class="post-footer__label">导航</p>
-				<div class="post-footer__links">
-					{postNavigation.map((item) => (
-						<a class="post-footer__link" href={item.href}>{item.label}</a>
-					))}
-				</div>
-			</div>
-
-			<div class="post-footer__group">
-				<p class="post-footer__label">联系</p>
-				<div class="post-footer__links">
-					{postFooterLinks.map((item) => (
-						<a class="post-footer__link" href={item.href}>{item.label}</a>
-					))}
-				</div>
-			</div>
-		</div>
-	</footer>
+	<SiteFooter ariaLabel="Post footer" />
 
 	<script>
 		import { initPostPage } from '../scripts/post';

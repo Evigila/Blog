@@ -1,0 +1,23 @@
+---
+import { siteConfig } from '../data/site';
+---
+
+<section class="post-panel post-author-card ui-panel" aria-label="Author information">
+	<p class="post-panel__kicker ui-kicker">Author</p>
+	<div class="post-author-card__header">
+		<div class="post-author-card__avatar">
+			<img
+				src={siteConfig.author.avatar}
+				alt={`${siteConfig.author.name} avatar`}
+				width="120"
+				height="120"
+				loading="eager"
+			/>
+		</div>
+		<div>
+			<p class="post-panel__title ui-title">{siteConfig.author.name}</p>
+			<p class="post-author-card__signature">{siteConfig.author.signature}</p>
+		</div>
+	</div>
+	<p class="post-author-card__bio">{siteConfig.author.bio}</p>
+</section>

@@ -3,24 +3,24 @@ import type { CollectionEntry } from 'astro:content';
 export const getPostSlug = (post: CollectionEntry<'blog'>) =>
 	post.id.replace(/\.md$/, '').split('/').at(-1) ?? post.id.replace(/\.md$/, '');
 
-/** 从 Markdown 原文动态计算字数（中文字符 + 英文词） */
+/** Calculate word count from Markdown source, mixing CJK characters and Latin words. */
 export const calcWordCount = (body: string): number => {
 	const stripped = body
 		.replace(/^---[\s\S]*?---/, '')        // frontmatter
-		.replace(/```[\s\S]*?```/g, ' ')      // 代码块
-		.replace(/`[^`]+`/g, ' ')             // 行内代码
-		.replace(/!?\[([^\]]*)\]\([^)]*\)/g, '$1') // 链接/图片
-		.replace(/[#*_~>|\-]/g, ' ');         // markdown 符号
+		.replace(/```[\s\S]*?```/g, ' ')      // fenced code
+		.replace(/`[^`]+`/g, ' ')             // inline code
+		.replace(/!?\[([^\]]*)\]\([^)]*\)/g, '$1') // links and images
+		.replace(/[#*_~>|\-]/g, ' ');         // markdown markers
 	const zhChars = (stripped.match(/[\u4e00-\u9fff\u3400-\u4dbf\uf900-\ufaff]/g) ?? []).length;
 	const noZh = stripped.replace(/[\u4e00-\u9fff\u3400-\u4dbf\uf900-\ufaff]/g, ' ');
 	const enWords = noZh.split(/\s+/).filter((w) => /[a-zA-Z0-9]/.test(w)).length;
 	return zhChars + enWords;
 };
 
-/** 阅读时长：中文/英文混合，约 400 字/词 每分钟 */
+/** Mixed CJK/Latin reading time, roughly 400 chars/words per minute. */
 export const calcReadingTime = (wordCount: number): string => {
 	const minutes = Math.max(1, Math.ceil(wordCount / 400));
-	return `约 ${minutes} 分钟`;
+	return `${minutes} min read`;
 };
 
 export const getUpdatedAt = (post: CollectionEntry<'blog'>): Date =>

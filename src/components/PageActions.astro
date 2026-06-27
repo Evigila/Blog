@@ -1,0 +1,56 @@
+---
+import { ICONS } from '../data/icons';
+
+interface Props {
+	commentsHref?: string;
+	showShare?: boolean;
+}
+
+const { commentsHref, showShare = true } = Astro.props;
+---
+
+<div class="post-action-panel" aria-label="Page actions" role="group">
+	<button
+		class="post-dock__button post-action-button action-button ui-button theme-toggle"
+		type="button"
+		data-theme-toggle
+		aria-pressed="false"
+		aria-label="Toggle theme"
+	>
+		<svg class="post-action-icon" viewBox="0 0 24 24" aria-hidden="true">
+			<path d={ICONS.theme} fill="currentColor" />
+		</svg>
+		<span class="sr-only">Theme, current</span>
+		<strong class="sr-only" data-theme-label>Light</strong>
+	</button>
+
+	{showShare && (
+		<button
+			class="post-dock__button post-action-button action-button ui-button"
+			type="button"
+			data-share
+			aria-label="Share current page"
+		>
+			<svg class="post-action-icon post-action-icon--share" viewBox="0 0 24 24" aria-hidden="true">
+				<path d={ICONS.share} fill="currentColor" />
+			</svg>
+			<svg class="post-action-icon post-action-icon--success" viewBox="0 0 24 24" aria-hidden="true">
+				<path d={ICONS.check} fill="currentColor" />
+			</svg>
+			<span class="sr-only">Share</span>
+		</button>
+	)}
+
+	{commentsHref && (
+		<a
+			class="post-dock__button post-action-button action-button ui-button"
+			href={commentsHref}
+			aria-label="Jump to comments"
+		>
+			<svg class="post-action-icon" viewBox="0 0 24 24" aria-hidden="true">
+				<path d={ICONS.comment} fill="currentColor" />
+			</svg>
+			<span class="sr-only">Comments</span>
+		</a>
+	)}
+</div>

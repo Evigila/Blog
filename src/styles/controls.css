@@ -7,9 +7,9 @@
 .post-footer__kicker,
 .post-footer__label {
 	font-family: var(--font-mono);
-	font-size: 0.78rem;
+	font-size: var(--text-xs);
 	text-transform: uppercase;
-	letter-spacing: 0.18em;
+	letter-spacing: var(--tracking-kicker);
 	color: var(--text-2);
 }
 
@@ -21,7 +21,7 @@
 .post-back {
 	font-family: var(--font-mono);
 	text-transform: uppercase;
-	letter-spacing: 0.08em;
+	letter-spacing: var(--tracking-kicker);
 }
 
 .hero-kicker,
@@ -29,11 +29,25 @@
 	margin: 0 0 0.75rem;
 }
 
+.ui-kicker {
+	font-family: var(--font-mono);
+	font-size: var(--text-xs);
+	font-weight: var(--weight-bold);
+	letter-spacing: var(--tracking-kicker);
+	text-transform: uppercase;
+}
+
+.ui-title {
+	font-family: var(--font-display);
+	font-weight: var(--weight-bold);
+	letter-spacing: var(--tracking-title);
+}
+
 .hero-copy h1,
 .post-hero h1,
 .post-card h2 {
 	font-family: var(--font-display);
-	letter-spacing: -0.08em;
+	letter-spacing: var(--tracking-title);
 }
 
 .action-button,
@@ -54,7 +68,7 @@
 		border-color 180ms ease,
 		background 180ms ease,
 		color 180ms ease;
-	font-size: clamp(0.68rem, calc(0.76rem - var(--stage-progress) * 0.08rem), 0.76rem);
+	font-size: var(--text-xs);
 	line-height: 1;
 }
 
@@ -62,9 +76,9 @@
 	min-height: var(--hero-control-size);
 	padding-inline: 1rem;
 	font-family: var(--font-ui);
-	font-size: 1rem;
-	font-weight: 600;
-	letter-spacing: 0.01em;
+	font-size: var(--text-md);
+	font-weight: var(--weight-semibold);
+	letter-spacing: 0;
 	line-height: 1;
 	text-transform: none;
 }
@@ -80,9 +94,9 @@
 .hero-ctrl-row .chip-button,
 .hero-ctrl-row .chip-link {
 	font-family: var(--font-ui);
-	font-size: 0.96rem;
-	font-weight: 600;
-	letter-spacing: 0.01em;
+	font-size: var(--text-md);
+	font-weight: var(--weight-semibold);
+	letter-spacing: 0;
 	text-transform: none;
 	min-height: var(--hero-control-size);
 	padding-inline: 1rem;
@@ -123,8 +137,8 @@
 	background: transparent;
 	color: var(--text-0);
 	font-family: var(--font-ui);
-	font-size: 0.96rem;
-	font-weight: 600;
+	font-size: var(--text-md);
+	font-weight: var(--weight-semibold);
 	line-height: 1;
 }
 
@@ -142,11 +156,11 @@
 .theme-toggle[aria-pressed='true'] {
 	background: var(--accent-0);
 	border-color: var(--accent-0);
-	color: #ffffff;
+	color: var(--on-accent);
 }
 
 .theme-toggle[aria-pressed='true'] strong {
-	color: #ffffff;
+	color: var(--on-accent);
 }
 
 .action-button:hover,
@@ -175,7 +189,7 @@
 
 .theme-toggle strong {
 	color: var(--accent-0);
-	font-weight: 700;
+	font-weight: var(--weight-bold);
 }
 
 .post-card__tags span,
@@ -185,9 +199,9 @@
 	border: 1px solid var(--border-0);
 	background: rgba(255, 255, 255, 0.22);
 	font-family: var(--font-ui);
-	font-size: 0.7rem;
+	font-size: var(--text-xs);
 	text-transform: uppercase;
-	letter-spacing: 0.06em;
+	letter-spacing: var(--tracking-kicker);
 }
 
 :root[data-theme='dark'] .post-card__tags span,
