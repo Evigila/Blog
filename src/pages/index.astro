@@ -22,7 +22,7 @@ const latestPosts = posts.slice(0, 4);
 const githubLink = siteConfig.socials.find((item) => item.icon === 'github')?.href ?? '#';
 const mailLink = siteConfig.socials.find((item) => item.icon === 'mail')?.href ?? 'mailto:evigila.shangyi@gmail.com';
 const tagFilters = Array.from(new Set(posts.flatMap((post) => post.tags))).filter(Boolean);
-const interestTags = ['.NET', 'C#', 'Windows', 'Astro', 'Design Systems', '静态博客'];
+const interestTags = ['.NET', 'C#', 'Desktop', 'Windows', 'Godot'];
 ---
 
 <SiteLayout title={siteConfig.title} description={siteConfig.description}>
@@ -39,13 +39,13 @@ const interestTags = ['.NET', 'C#', 'Windows', 'Astro', 'Design Systems', '静�
 
 			<div class="story-home__cover-stage">
 				<div class="story-home__cover-copy story-home__cover-copy--home is-current" data-intro-panel="cover">
-					<p class="story-home__eyebrow">Personal Static Journal</p>
+					<p class="story-home__eyebrow">Astro Static Journal</p>
 					<div class="story-home__cover-title-lockup">
 						<img src={siteConfig.author.avatar} alt="" width="112" height="112" />
 						<h1 id="cover-title">Evigila</h1>
 					</div>
 					<p>
-						Notes on software, time, systems, and the quiet patterns behind everyday tools.
+						Ne reculer devant aucun sacrifice, surmonter toutes les difficultés, remporter la victoire.
 					</p>
 				</div>
 

@@ -5,8 +5,8 @@ export const siteConfig = {
 	author: {
 		name: 'Evigila',
 		avatar: '/avatar.jpg',
-		bio: 'Ciallo ～(∠・ω< )⌒★! Have a nice day.',
-		signature: '.NET | C# | Windows',
+		bio: '.NET Desktop application developer',
+		signature: '.NET | C#',
 	},
 	stageSeed: '3141592653589793238462643383279',
 	navigation: [
