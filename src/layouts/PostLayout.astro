@@ -20,12 +20,27 @@ interface Props {
 	license: string;
 	tags: string[];
 	headings: TocHeading[];
+	heroImage?: string;
 }
 
-const { title, excerpt, publishDate, updatedAt, readingTime, wordCount, license, tags, headings } = Astro.props;
+const {
+	title,
+	excerpt,
+	publishDate,
+	updatedAt,
+	readingTime,
+	wordCount,
+	license,
+	tags,
+	headings,
+	heroImage = '/trueearth-hills.jpg',
+} = Astro.props;
 const postNavigation = siteConfig.navigation.map((item) => ({
 	...item,
 	label: item.href === '/' ? '主页' : item.label,
+	isCurrent:
+		item.href === Astro.url.pathname ||
+		(item.href === '/?view=posts' && Astro.url.pathname.startsWith('/posts/')),
 }));
 const postFooterLinks = siteConfig.socials.map((item) => ({
 	...item,
@@ -74,7 +89,7 @@ const updatedLabel = updatedAt.toLocaleDateString('zh-CN', {
 						<p class="post-panel__title">导航</p>
 						<div class="post-nav-card__list">
 							{postNavigation.map((item) => (
-								<a class="post-nav-card__link" href={item.href}>
+								<a class="post-nav-card__link" href={item.href} aria-current={item.isCurrent ? 'page' : undefined}>
 									{item.label}
 								</a>
 							))}
@@ -95,11 +110,11 @@ const updatedLabel = updatedAt.toLocaleDateString('zh-CN', {
 							<span class="sr-only">切换主题，当前</span>
 							<strong class="sr-only" data-theme-label>浅色</strong>
 						</button>
-						<div class="post-font-wrap">
+						<div class="post-font-wrap" hidden>
 							<button
 								class="post-action-button action-button ui-button"
 								type="button"
-								data-font-toggle
+								data-disabled-font-toggle
 								aria-expanded="false"
 								aria-haspopup="true"
 								aria-label="调整字体大小"
@@ -109,7 +124,7 @@ const updatedLabel = updatedAt.toLocaleDateString('zh-CN', {
 								</svg>
 								<span class="sr-only">字体大小</span>
 							</button>
-							<div class="hero-font-popup" data-font-popup hidden>
+							<div class="hero-font-popup" data-disabled-font-popup hidden>
 								<p class="hero-font-popup__label">字号</p>
 								<div class="hero-font-popup__track">
 									<span class="hero-font-popup__min">小</span>
@@ -120,7 +135,7 @@ const updatedLabel = updatedAt.toLocaleDateString('zh-CN', {
 										max="2"
 										step="1"
 										value="1"
-										data-font-slider
+										data-disabled-font-slider
 										aria-label="字体大小调节"
 									/>
 									<span class="hero-font-popup__max">大</span>
@@ -158,20 +173,25 @@ const updatedLabel = updatedAt.toLocaleDateString('zh-CN', {
 			<div class="post-main">
 				<article class="post-article" data-post-article>
 					<header class="post-hero">
-						<p class="post-kicker">Static Journal</p>
-						<h1>{title}</h1>
-						<p class="post-excerpt">{excerpt}</p>
-						<div class="post-meta">
-							<span>发布日期 {publishedLabel}</span>
-							<span>·</span>
-							<span>最后更新 {updatedLabel}</span>
-							<span>·</span>
-							<span>阅读时长 {readingTime}</span>
-							<span>·</span>
-							<span>{wordCount.toLocaleString('zh-CN')} 字</span>
+						<div class="post-hero__media" aria-hidden="true">
+							<img src={heroImage} alt="" width="1280" height="720" loading="eager" />
 						</div>
-						<div class="post-tags">
-						{tags.map((tag) => <span>{tag}</span>)}
+						<div class="post-hero__content">
+							<p class="post-kicker">Static Journal</p>
+							<h1>{title}</h1>
+							<p class="post-excerpt">{excerpt}</p>
+							<div class="post-meta">
+								<span>发布日期 {publishedLabel}</span>
+								<span>·</span>
+								<span>最后更新 {updatedLabel}</span>
+								<span>·</span>
+								<span>阅读时长 {readingTime}</span>
+								<span>·</span>
+								<span>{wordCount.toLocaleString('zh-CN')} 字</span>
+							</div>
+							<div class="post-tags">
+								{tags.map((tag) => <span>{tag}</span>)}
+							</div>
 						</div>
 					</header>
 					<div class="post-content" data-post-content>

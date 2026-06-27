@@ -1,4 +1,5 @@
-import { initTheme, initFontSize } from './theme';
+import { initShareControls } from './share';
+import { initTheme } from './theme';
 
 const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
 
@@ -115,13 +116,15 @@ export const initPostPage = () => {
 	}
 
 	initTheme(themeButton, themeLabel);
-	initFontSize('.post-font-wrap');
+	initShareControls();
 	update();
 
-	// ── Giscus theme sync ──────────────────────────────────────────────────────
 	const syncGiscusTheme = () => {
 		const iframe = document.querySelector<HTMLIFrameElement>('iframe.giscus-frame');
-		if (!iframe?.contentWindow) return;
+		if (!iframe?.contentWindow) {
+			return;
+		}
+
 		const isDark = root.dataset.theme === 'dark';
 		iframe.contentWindow.postMessage(
 			{ giscus: { setConfig: { theme: isDark ? 'dark_dimmed' : 'light' } } },
@@ -129,57 +132,25 @@ export const initPostPage = () => {
 		);
 	};
 
-	// 页面加载后 Giscus iframe 就绪时，读取已保存的站点主题并同步一次
 	window.addEventListener(
 		'message',
 		(event: MessageEvent) => {
-			if (event.origin !== 'https://giscus.app') return;
-			if (typeof event.data !== 'object' || !event.data.giscus) return;
+			if (event.origin !== 'https://giscus.app') {
+				return;
+			}
+
+			if (typeof event.data !== 'object' || !event.data.giscus) {
+				return;
+			}
+
 			syncGiscusTheme();
 		},
 		{ once: true },
 	);
 
 	themeButton?.addEventListener('click', () => {
-		// 等 initTheme 更新 dataset.theme 后再同步
-		requestAnimationFrame(syncGiscusTheme);
+		window.requestAnimationFrame(syncGiscusTheme);
 	});
-
-	// ── Share ──────────────────────────────────────────────────────────────────
-	const SITE_URL = 'https://blog.evigila.net';
-	const _showToast = (msg: string) =>
-		(window as unknown as { showToast?: (m: string) => void }).showToast?.(msg);
-
-	const shareBtn = document.querySelector<HTMLElement>('[data-share]');
-	if (shareBtn) {
-		const shareIconEl = shareBtn.querySelector<SVGElement>('.post-action-icon--share');
-		const successIconEl = shareBtn.querySelector<SVGElement>('.post-action-icon--success');
-		let shareResetTimeout: ReturnType<typeof setTimeout> | null = null;
-
-		shareBtn.addEventListener('click', async () => {
-			const url = SITE_URL + window.location.pathname;
-			try {
-				await navigator.clipboard.writeText(url);
-			} catch {
-				const textarea = document.createElement('textarea');
-				textarea.value = url;
-				textarea.style.cssText = 'position:fixed;opacity:0;pointer-events:none;';
-				document.body.appendChild(textarea);
-				textarea.select();
-				document.execCommand('copy');
-				document.body.removeChild(textarea);
-			}
-			_showToast('感谢分享，已复制到剪贴板喵~');
-			// Show success icon
-			if (shareIconEl) shareIconEl.style.display = 'none';
-			if (successIconEl) successIconEl.style.display = 'block';
-			if (shareResetTimeout !== null) clearTimeout(shareResetTimeout);
-			shareResetTimeout = setTimeout(() => {
-				if (shareIconEl) shareIconEl.style.display = '';
-				if (successIconEl) successIconEl.style.display = 'none';
-			}, 2200);
-		});
-	}
 
 	scrollButtons.forEach((button) => {
 		button.addEventListener('click', () => {

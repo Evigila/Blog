@@ -44,14 +44,6 @@ a {
 	font-family: inherit;
 }
 
-:root[data-font-size='small'] {
-	font-size: 70%;
-}
-
-:root[data-font-size='large'] {
-	font-size: 130%;
-}
-
 button,
 input,
 textarea,

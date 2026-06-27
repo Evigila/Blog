@@ -9,6 +9,7 @@ const blog = defineCollection({
 	schema: z.object({
 		title: z.string(),
 		excerpt: z.string(),
+		image: z.string().optional(),
 		tags: z.array(z.string()).min(1),
 		license: z.string().default('CC BY-NC-SA 4.0'),
 		// YAML parses "2026-05-01" as UTC midnight; transform to local midnight so

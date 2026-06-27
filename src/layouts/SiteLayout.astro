@@ -29,10 +29,6 @@ const {
 				const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 				const theme = storedTheme ?? (prefersDark ? 'dark' : 'light');
 				document.documentElement.dataset.theme = theme;
-				const storedFontSize = localStorage.getItem('evigila-font-size');
-				if (storedFontSize && storedFontSize !== 'normal') {
-					document.documentElement.dataset.fontSize = storedFontSize;
-				}
 			})();
 		</script>
 	</head>

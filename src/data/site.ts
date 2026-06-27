@@ -11,7 +11,7 @@ export const siteConfig = {
 	stageSeed: '3141592653589793238462643383279',
 	navigation: [
 		{ label: '首页', href: '/' },
-		{ label: '文章', href: '/#posts' },
+		{ label: '文章', href: '/?view=posts' },
 		{ label: '友链', href: '/friend' },
 		{ label: '主站', href: '#' },
 	],

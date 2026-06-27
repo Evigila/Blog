@@ -81,11 +81,11 @@ const postFooterLinks = siteConfig.socials.map((item) => ({
 							<span class="sr-only">切换主题，当前</span>
 							<strong class="sr-only" data-theme-label>浅色</strong>
 						</button>
-						<div class="post-font-wrap">
+						<div class="post-font-wrap" hidden>
 							<button
 								class="post-action-button action-button ui-button"
 								type="button"
-								data-font-toggle
+								data-disabled-font-toggle
 								aria-expanded="false"
 								aria-haspopup="true"
 								aria-label="调整字体大小"
@@ -95,7 +95,7 @@ const postFooterLinks = siteConfig.socials.map((item) => ({
 								</svg>
 								<span class="sr-only">字体大小</span>
 							</button>
-							<div class="hero-font-popup" data-font-popup hidden>
+							<div class="hero-font-popup" data-disabled-font-popup hidden>
 								<p class="hero-font-popup__label">字号</p>
 								<div class="hero-font-popup__track">
 									<span class="hero-font-popup__min">小</span>
@@ -106,7 +106,7 @@ const postFooterLinks = siteConfig.socials.map((item) => ({
 										max="2"
 										step="1"
 										value="1"
-										data-font-slider
+										data-disabled-font-slider
 										aria-label="字体大小调节"
 									/>
 									<span class="hero-font-popup__max">大</span>
