@@ -1,0 +1,7 @@
+{
+  "name": "blogevigila",
+  "compatibility_date": "2026-06-27",
+  "assets": {
+    "directory": "./dist"
+  }
+}
