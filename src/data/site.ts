@@ -1,7 +1,7 @@
 export const siteConfig = {
 	name: 'Evigila',
-	title: "Evigila's Blog",
-	description: 'A minimal static blog powered by Astro.',
+	title: "Evigila的个人博客网站",
+	description: '极简静态博客，由 Astro 提供驱动',
 	author: {
 		name: 'Evigila',
 		avatar: '/avatar.jpg',
@@ -10,13 +10,13 @@ export const siteConfig = {
 	},
 	stageSeed: '3141592653589793238462643383279',
 	navigation: [
-		{ label: 'Home', href: '/' },
-		{ label: 'Blogs', href: '/?view=posts' },
-		{ label: 'Links', href: '/friend' },
-		{ label: 'Main Site', href: '#' },
+		{ label: '主页', href: '/' },
+		{ label: '博客', href: '/?view=posts' },
+		{ label: '链接', href: '/friend' },
+		{ label: '主站', href: '#' },
 	],
 	socials: [
 		{ label: 'GitHub', href: 'https://github.com/Evigila', icon: 'github' },
-		{ label: 'Email', href: 'mailto:evigila.shangyi@gmail.com', icon: 'mail' },
+		{ label: '邮件', href: 'mailto:evigila.shangyi@gmail.com', icon: 'mail' },
 	],
 } as const;

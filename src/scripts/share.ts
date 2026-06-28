@@ -43,7 +43,7 @@ export const initShareControls = () => {
 				document.body.removeChild(textarea);
 			}
 
-			showToast('Link copied to clipboard');
+			showToast('链接已复制到剪贴板');
 			if (shareIcon) {
 				shareIcon.style.display = 'none';
 			}

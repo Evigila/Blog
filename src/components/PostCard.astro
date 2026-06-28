@@ -14,7 +14,7 @@ const stageDigit = Number(siteConfig.stageSeed[index % siteConfig.stageSeed.leng
 const cardMinHeight = Math.max(18.5, 24.5 + (stageDigit - 5) * 1.15);
 const wordCount = calcWordCount(post.body ?? '');
 const updatedAt = getUpdatedAt(post);
-const updatedLabel = updatedAt.toLocaleDateString('en-US', {
+const updatedLabel = updatedAt.toLocaleDateString('zh-CN', {
 	month: 'short',
 	day: 'numeric',
 });

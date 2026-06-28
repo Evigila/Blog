@@ -36,12 +36,12 @@ const {
 	heroImage = '/trueearth-hills.jpg',
 } = Astro.props;
 
-const publishedLabel = publishDate.toLocaleDateString('en-US', {
+const publishedLabel = publishDate.toLocaleDateString('zh-CN', {
 	year: 'numeric',
 	month: 'long',
 	day: 'numeric',
 });
-const updatedLabel = updatedAt.toLocaleDateString('en-US', {
+const updatedLabel = updatedAt.toLocaleDateString('zh-CN', {
 	year: 'numeric',
 	month: 'long',
 	day: 'numeric',
@@ -64,13 +64,13 @@ const updatedLabel = updatedAt.toLocaleDateString('en-US', {
 							<h1>{title}</h1>
 							<p class="post-excerpt">{excerpt}</p>
 							<div class="post-meta">
-								<span>Published {publishedLabel}</span>
+								<span>发布于 {publishedLabel}</span>
 								<span>·</span>
-								<span>Updated {updatedLabel}</span>
+								<span>更新于 {updatedLabel}</span>
 								<span>·</span>
 								<span>{readingTime}</span>
 								<span>·</span>
-								<span>{wordCount.toLocaleString('en-US')} words</span>
+								<span>{wordCount.toLocaleString('zh-CN')} 词</span>
 							</div>
 							<div class="post-tags">
 								{tags.map((tag) => <span>{tag}</span>)}
@@ -85,7 +85,7 @@ const updatedLabel = updatedAt.toLocaleDateString('en-US', {
 
 				<section class="post-panel post-comments" id="post-comments" aria-label="Comments">
 					<p class="post-panel__kicker">Comments</p>
-					<p class="post-panel__title">Comments</p>
+					<p class="post-panel__title">评论区</p>
 					<div class="post-comments__widget">
 						<script
 							is:inline
@@ -100,7 +100,7 @@ const updatedLabel = updatedAt.toLocaleDateString('en-US', {
 							data-emit-metadata="0"
 							data-input-position="bottom"
 							data-theme="preferred_color_scheme"
-							data-lang="en"
+							data-lang="zh-CN"
 							crossorigin="anonymous"
 							async
 						></script>
@@ -113,7 +113,7 @@ const updatedLabel = updatedAt.toLocaleDateString('en-US', {
 					<div class="post-outline__top">
 						<div>
 							<p class="post-panel__kicker">Contents</p>
-							<p class="post-panel__title">Contents</p>
+							<p class="post-panel__title">文章大纲</p>
 						</div>
 						<p class="post-outline__progress" data-reading-progress-value>0%</p>
 					</div>
@@ -147,11 +147,11 @@ const updatedLabel = updatedAt.toLocaleDateString('en-US', {
 
 		<nav class="post-dock" aria-label="Post actions">
 			<button class="post-dock__button post-dock__secondary action-button ui-button" type="button" data-scroll-top>
-				Top
+				返回顶端
 			</button>
-			<a class="post-dock__button post-dock__home action-button ui-button" href="/">Home</a>
+			<a class="post-dock__button post-dock__home action-button ui-button" href="/">返回主页</a>
 			<a class="post-dock__button post-dock__secondary action-button ui-button" href="#post-comments">
-				Comments
+				评论区
 			</a>
 		</nav>
 	</main>

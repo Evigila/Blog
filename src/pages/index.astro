@@ -11,7 +11,7 @@ const posts = allPosts.map((post) => ({
 	excerpt: post.data.excerpt,
 	href: `/posts/${getPostSlug(post)}`,
 	image: post.data.image,
-	updatedAtLabel: (post.data.updatedAt ?? post.data.publishDate).toLocaleDateString('en-US', {
+	updatedAtLabel: (post.data.updatedAt ?? post.data.publishDate).toLocaleDateString('zh-CN', {
 		year: 'numeric',
 		month: '2-digit',
 		day: '2-digit',
@@ -24,6 +24,11 @@ const githubLink = siteConfig.socials.find((item) => item.icon === 'github')?.hr
 const mailLink = siteConfig.socials.find((item) => item.icon === 'mail')?.href ?? 'mailto:evigila.shangyi@gmail.com';
 const tagFilters = Array.from(new Set(posts.flatMap((post) => post.tags))).filter(Boolean);
 const interestTags = ['.NET', 'C#', 'Desktop', 'Windows', 'Godot'];
+const aboutLines = [
+	'持续打磨 Windows 桌面体验。',
+	'喜欢把工具做得稳定、清晰、顺手。',
+	'也在这里记录技术、想法和一点日常。',
+];
 ---
 
 <SiteLayout title={siteConfig.title} description={siteConfig.description}>
@@ -31,16 +36,16 @@ const interestTags = ['.NET', 'C#', 'Desktop', 'Windows', 'Godot'];
 	<section class="story-home__cover" aria-labelledby="cover-title">
 		<div class="story-home__cover-left">
 			<nav class="story-home__cover-nav" aria-label="Cover navigation">
-				<button class="story-home__cover-nav-item" type="button" data-story-view="cover">Home</button>
-				<button class="story-home__cover-nav-item" type="button" data-story-view="about">About</button>
-				<button class="story-home__cover-nav-item" type="button" data-story-view="posts">Blogs</button>
+				<button class="story-home__cover-nav-item" type="button" data-story-view="cover">主页</button>
+				<button class="story-home__cover-nav-item" type="button" data-story-view="about">关于</button>
+				<button class="story-home__cover-nav-item" type="button" data-story-view="posts">博客</button>
 				<a class="story-home__cover-nav-item" href={githubLink} target="_blank" rel="noreferrer">Github</a>
-				<a class="story-home__cover-nav-item" href="/friend">Links</a>
+				<a class="story-home__cover-nav-item" href="/friend">链接</a>
 			</nav>
 
 			<div class="story-home__cover-stage">
 				<div class="story-home__cover-copy story-home__cover-copy--home is-current" data-intro-panel="cover">
-					<p class="story-home__eyebrow">Astro Static Journal</p>
+					<p class="story-home__eyebrow">Static Journal</p>
 					<div class="story-home__cover-title-lockup">
 						<img src={siteConfig.author.avatar} alt="" width="112" height="112" />
 						<h1 id="cover-title">Evigila</h1>
@@ -54,12 +59,17 @@ const interestTags = ['.NET', 'C#', 'Desktop', 'Windows', 'Godot'];
 					<p class="story-home__eyebrow">About Me</p>
 					<h2>Evigila</h2>
 					<p>{siteConfig.author.bio}</p>
+					<div class="story-home__about-lines">
+						{aboutLines.map((line) => (
+							<span>{line}</span>
+						))}
+					</div>
 					<div class="story-home__interest-tags" aria-label="Interests">
 						{interestTags.map((tag) => (
 							<span>{tag}</span>
 						))}
 					</div>
-					<a class="story-home__contact-me" href={mailLink}>Contact me</a>
+					<a class="story-home__contact-me" href={mailLink}>发送邮件以联系</a>
 				</div>
 			</div>
 
@@ -90,8 +100,8 @@ const interestTags = ['.NET', 'C#', 'Desktop', 'Windows', 'Godot'];
 
 		<aside class="story-home__cover-panel" aria-label="Latest posts">
 			<div class="story-home__cover-panel-header">
-				<p>Recently Updated</p>
-				<button type="button" data-story-view="posts">see all {postCount} posts</button>
+				<p>最近更新</p>
+				<button type="button" data-story-view="posts">查看全部 {postCount} 篇文章</button>
 			</div>
 
 			<div class="story-home__cover-posts">
@@ -111,7 +121,9 @@ const interestTags = ['.NET', 'C#', 'Desktop', 'Windows', 'Godot'];
 						<div class="story-home__cover-post-copy">
 							<span>{post.updatedAtLabel}</span>
 							<strong>{post.title}</strong>
-							<em>{post.tags[0] ?? `Post ${index + 1}`}</em>
+							<div class="story-home__cover-post-tags" aria-label="Post tags">
+								{post.tags.length > 0 ? post.tags.map((tag) => <em>{tag}</em>) : <em>{`Post ${index + 1}`}</em>}
+							</div>
 						</div>
 					</a>
 				))}
@@ -121,11 +133,11 @@ const interestTags = ['.NET', 'C#', 'Desktop', 'Windows', 'Godot'];
 
 	<header class="story-home__header" aria-label="Primary navigation">
 		<nav class="story-home__nav">
-			<button class="story-home__nav-link" type="button" data-story-view="cover">Home</button>
-			<button class="story-home__nav-link" type="button" data-story-view="about">About</button>
-			<button class="story-home__nav-link" type="button" data-story-view="posts">Blogs</button>
+			<button class="story-home__nav-link" type="button" data-story-view="cover">主页</button>
+			<button class="story-home__nav-link" type="button" data-story-view="about">关于</button>
+			<button class="story-home__nav-link" type="button" data-story-view="posts">博客</button>
 			<a class="story-home__nav-link" href={githubLink} target="_blank" rel="noreferrer">Github</a>
-			<a class="story-home__nav-link" href="/friend">Links</a>
+			<a class="story-home__nav-link" href="/friend">链接</a>
 		</nav>
 
 		<a class="story-home__brand" href="/" aria-label={siteConfig.title}>
@@ -154,16 +166,16 @@ const interestTags = ['.NET', 'C#', 'Desktop', 'Windows', 'Godot'];
 	<section class="story-home__title-row" aria-labelledby="home-title">
 		<p class="story-home__eyebrow">Static Journal</p>
 		<h1 id="home-title">
-			What I Write
+			博客文章
 			<span aria-hidden="true">↳</span>
 		</h1>
 	</section>
 
 	<section id="posts" class="story-home__content-row" aria-label="Blog posts">
 		<aside class="story-home__filter-panel" aria-label="Filter posts by tag">
-			<p>Filter · {postCount} posts</p>
+			<p>Filter · {postCount} 篇文章</p>
 			<div class="story-home__tag-list" data-filter-list tabindex="0">
-				<button class="story-home__tag-button is-active" type="button" data-filter-tag="all">All</button>
+				<button class="story-home__tag-button is-active" type="button" data-filter-tag="all">所有标签</button>
 				{tagFilters.map((tag) => (
 					<button class="story-home__tag-button" type="button" data-filter-tag={tag}>{tag}</button>
 				))}
@@ -320,7 +332,7 @@ const interestTags = ['.NET', 'C#', 'Desktop', 'Windows', 'Godot'];
 		inset: var(--page-margin);
 		z-index: 5;
 		display: grid;
-		grid-template-columns: minmax(0, 1fr) minmax(24rem, 34vw);
+		grid-template-columns: minmax(0, 1fr);
 		gap: var(--column-gap);
 		min-height: 0;
 		transition:
@@ -476,6 +488,21 @@ const interestTags = ['.NET', 'C#', 'Desktop', 'Windows', 'Godot'];
 		line-height: 1.52;
 	}
 
+	.story-home__about-lines {
+		display: grid;
+		gap: 0.35rem;
+		max-width: 35rem;
+		margin-top: 1.25rem;
+		color: var(--text-1);
+		font-size: clamp(0.98rem, 1.1vw, 1.12rem);
+		font-weight: var(--weight-semibold);
+		line-height: 1.55;
+	}
+
+	.story-home__about-lines span {
+		display: block;
+	}
+
 	.story-home__interest-tags {
 		display: flex;
 		flex-wrap: wrap;
@@ -602,7 +629,7 @@ const interestTags = ['.NET', 'C#', 'Desktop', 'Windows', 'Godot'];
 
 	.story-home__cover-panel {
 		position: relative;
-		display: grid;
+		display: none;
 		grid-template-rows: auto minmax(0, 1fr);
 		align-self: stretch;
 		min-height: 0;
@@ -633,6 +660,16 @@ const interestTags = ['.NET', 'C#', 'Desktop', 'Windows', 'Godot'];
 		);
 		opacity: 0.52;
 		pointer-events: none;
+	}
+
+	@media (min-width: 1121px) and (hover: hover) and (pointer: fine) {
+		.story-home__cover {
+			grid-template-columns: minmax(0, 1fr) minmax(24rem, 34vw);
+		}
+
+		.story-home__cover-panel {
+			display: grid;
+		}
 	}
 
 	.story-home__cover-panel-header {
@@ -746,6 +783,13 @@ const interestTags = ['.NET', 'C#', 'Desktop', 'Windows', 'Godot'];
 		text-transform: uppercase;
 	}
 
+	.story-home__cover-post-tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.25rem;
+		min-width: 0;
+	}
+
 	.story-home__cover-post-copy span,
 	.story-home__cover-post-copy strong,
 	.story-home__cover-post-copy em {
@@ -760,7 +804,16 @@ const interestTags = ['.NET', 'C#', 'Desktop', 'Windows', 'Godot'];
 	}
 
 	.story-home__cover-post-copy em {
-		color: color-mix(in srgb, #fff 82%, var(--accent-0));
+		display: inline-flex;
+		align-items: center;
+		width: fit-content;
+		min-height: 1.25rem;
+		padding: 0.12rem 0.38rem;
+		border: 1px solid rgba(255, 255, 255, 0.22);
+		border-radius: 4px;
+		background: rgba(255, 255, 255, 0.16);
+		color: rgba(255, 255, 255, 0.88);
+		text-shadow: none;
 	}
 
 	.story-home__header,
@@ -1257,10 +1310,10 @@ const interestTags = ['.NET', 'C#', 'Desktop', 'Windows', 'Godot'];
 		align-items: center;
 		min-height: 1.55rem;
 		padding: 0.2rem 0.45rem;
-		border: 1px solid color-mix(in srgb, var(--accent-0) 28%, var(--border-0));
+		border: 1px solid color-mix(in srgb, var(--border-0) 86%, transparent);
 		border-radius: var(--radius-sm);
-		background: color-mix(in srgb, var(--accent-0) 8%, transparent);
-		color: var(--accent-0);
+		background: color-mix(in srgb, var(--surface-2) 72%, transparent);
+		color: var(--text-2);
 	}
 
 	.story-home__card-footer strong {
@@ -1437,32 +1490,196 @@ const interestTags = ['.NET', 'C#', 'Desktop', 'Windows', 'Godot'];
 		}
 	}
 
-	@media (max-width: 980px) {
+	@media (max-width: 1120px), (hover: none) and (pointer: coarse) {
 		html.story-home-lock,
 		body.story-home-lock,
 		html:has(.story-home),
 		body:has(.story-home) {
-			overflow: auto;
+			overflow: hidden;
+			overscroll-behavior-y: contain;
+		}
+
+		html.story-home-lock[data-story-view='posts'],
+		body.story-home-lock[data-story-view='posts'],
+		html:has(.story-home[data-view='posts']),
+		body:has(.story-home[data-view='posts']) {
+			overflow: hidden;
+			overscroll-behavior-y: contain;
 		}
 
 		.story-home {
+			--page-margin: clamp(1rem, 4vw, 1.5rem);
+			--column-gap: 1.25rem;
+			--row-gap: 1.25rem;
+			--card-width: clamp(18rem, 78vw, 23rem);
+			--mobile-header-space: 8.8rem;
 			display: block;
-			height: auto;
+			height: 100svh;
 			min-height: 100svh;
-			overflow: hidden;
+			padding: var(--page-margin);
+			overflow-x: hidden;
+			overflow-y: hidden;
+			overscroll-behavior-x: none;
+			overscroll-behavior-y: contain;
+		}
+
+		.story-home[data-view='cover'],
+		.story-home.is-cover {
+			touch-action: none;
+			overscroll-behavior: contain;
+		}
+
+		.story-home[data-view='about'],
+		.story-home.is-about {
+			touch-action: none;
+			overscroll-behavior: contain;
+		}
+
+		.story-home[data-view='posts'],
+		.story-home.is-posts {
+			height: 100svh;
+			overflow-x: hidden;
+			overflow-y: auto;
+			touch-action: auto;
+			overscroll-behavior-y: contain;
+			-webkit-overflow-scrolling: touch;
+		}
+
+		.story-home__cover {
+			position: relative;
+			inset: auto;
+			display: grid;
+			grid-template-columns: 1fr;
+			gap: 1.25rem;
+			min-height: calc(100svh - var(--page-margin) * 2);
+		}
+
+		.story-home[data-view='posts'] .story-home__cover,
+		.story-home.is-posts .story-home__cover {
+			position: absolute;
+			inset: var(--page-margin);
+		}
+
+		.story-home__cover-left {
+			display: flex;
+			flex-direction: column;
+			min-width: 0;
+			min-height: calc(100svh - var(--page-margin) * 2);
+		}
+
+		.story-home__cover-nav {
+			justify-self: stretch;
+			width: 100%;
+			min-width: 0;
+			max-width: 100%;
+			overflow-x: auto;
+			scrollbar-width: none;
+			touch-action: pan-x;
+		}
+
+		.story-home__cover-nav::-webkit-scrollbar {
+			display: none;
+		}
+
+		.story-home__cover-nav-item {
+			flex: 0 0 auto;
+			height: 2.65rem;
+			padding: 0 1rem;
+			font-size: var(--text-sm);
+		}
+
+		.story-home__cover-stage {
+			flex: 1 1 auto;
+			align-self: stretch;
+			min-height: 20rem;
+			max-width: none;
+			padding-bottom: 1.25rem;
+		}
+
+		.story-home__cover-title-lockup {
+			align-items: flex-start;
+			flex-direction: column;
+		}
+
+		.story-home .story-home__cover-copy h1 {
+			font-size: clamp(4rem, 18vw, 6rem);
+		}
+
+		.story-home__cover-copy--about h2 {
+			font-size: clamp(2.6rem, 13vw, 4rem);
+		}
+
+		.story-home__interest-tags {
+			gap: 0.55rem;
+		}
+
+		.story-home__interest-tags span {
+			padding: 0.58rem 0.8rem;
+			font-size: var(--text-sm);
+		}
+
+		.story-home__cover-bottom {
+			margin-top: auto;
+			min-width: 0;
+		}
+
+		.story-home__cover-down {
+			width: 4.75rem;
+			height: 4.75rem;
+		}
+
+		.story-home__cover-down svg {
+			width: 4.5rem;
+			height: 4.5rem;
+		}
+
+		.story-home__cover-panel {
+			display: none;
 		}
 
 		.story-home__header {
-			grid-template-columns: 1fr;
+			display: grid;
+			grid-template-columns: 1fr auto;
+			gap: 0.85rem;
 			height: auto;
+			position: fixed;
+			top: 0;
+			right: 0;
+			left: 0;
+			z-index: 20;
+			margin: 0;
+			padding: max(var(--page-margin), env(safe-area-inset-top)) var(--page-margin) 0.65rem;
+			border-bottom: 1px solid color-mix(in srgb, var(--border-0) 56%, transparent);
+			background: color-mix(in srgb, var(--page-bg) 88%, transparent);
+			backdrop-filter: blur(18px);
+		}
+
+		.story-home__nav {
+			grid-column: 1 / -1;
+			order: 3;
+			max-width: 100%;
+			padding: 0.2rem 0.2rem 0.7rem;
+			overflow-x: auto;
+			scrollbar-width: none;
+		}
+
+		.story-home__nav::-webkit-scrollbar {
+			display: none;
+		}
+
+		.story-home__nav-link {
+			flex: 0 0 auto;
+			height: 2.45rem;
+			padding: 0 0.95rem;
 		}
 
 		.story-home__brand {
 			grid-row: 1;
+			align-self: center;
 		}
 
 		.story-home__quick-actions {
-			justify-content: flex-start;
+			justify-content: flex-end;
 		}
 
 		.story-home__title-row,
@@ -1471,24 +1688,158 @@ const interestTags = ['.NET', 'C#', 'Desktop', 'Windows', 'Godot'];
 			margin-top: 2.4rem;
 		}
 
+		.story-home__title-row {
+			scroll-margin-top: 7rem;
+		}
+
+		.story-home[data-view='posts'] .story-home__title-row,
+		.story-home.is-posts .story-home__title-row {
+			margin-top: calc(var(--mobile-header-space) + 1.25rem);
+		}
+
 		.story-home__content-row,
 		.story-home__footer-row {
 			grid-template-columns: 1fr;
+			min-width: 0;
 			row-gap: 1.5rem;
+		}
+
+		.story-home__filter-panel {
+			display: block;
+			min-width: 0;
+			padding: 0;
+			overflow: hidden;
+		}
+
+		.story-home__tag-list {
+			display: flex;
+			grid-template-columns: none;
+			gap: 0.55rem;
+			width: 100%;
+			max-width: 100%;
+			max-height: none;
+			margin: 0 -0.35rem;
+			padding: 0.35rem 0.65rem 0.8rem 0.35rem;
+			overflow-x: auto;
+			overflow-y: hidden;
+			touch-action: pan-x pan-y;
+			overscroll-behavior-inline: contain;
+			scroll-snap-type: x proximity;
+			-webkit-overflow-scrolling: touch;
+			mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 2.4rem), transparent 100%);
+		}
+
+		.story-home__tag-button {
+			flex: 0 0 auto;
+			width: auto;
+			min-width: 4rem;
+			text-align: center;
+			white-space: nowrap;
+			scroll-snap-align: start;
 		}
 
 		.story-home__carousel {
 			margin-right: 0;
-			padding-top: 3rem;
+			padding-top: 1rem;
 		}
 
 		.story-home__track {
-			height: 24rem;
-			padding-right: 20vw;
+			height: auto;
+			min-height: 0;
+			margin: -0.5rem -1rem -1rem;
+			padding: 0.5rem 1rem 1.1rem;
+			touch-action: pan-x pan-y;
+			overscroll-behavior-inline: contain;
+			-webkit-overflow-scrolling: touch;
 		}
 
 		.story-home__side-note {
 			max-width: 28rem;
+		}
+	}
+
+	@media (max-width: 560px) {
+		.story-home {
+			--page-margin: 0.9rem;
+			--card-width: calc(100vw - 2rem);
+			--mobile-header-space: 8.5rem;
+		}
+
+		.story-home__cover {
+			min-height: calc(100svh - 1.8rem);
+		}
+
+		.story-home__cover-left {
+			min-height: calc(100svh - 1.8rem);
+		}
+
+		.story-home__cover-nav {
+			justify-self: stretch;
+			box-shadow: 0.28rem 0.28rem 0 color-mix(in srgb, var(--accent-0) 8%, transparent);
+		}
+
+		.story-home__cover-stage {
+			min-height: 18rem;
+		}
+
+		.story-home__cover-title-lockup img {
+			width: 4.5rem;
+			height: 4.5rem;
+		}
+
+		.story-home .story-home__cover-copy h1,
+		.story-home h1 {
+			white-space: normal;
+		}
+
+		.story-home__cover-copy p:last-child,
+		.story-home__cover-copy--about p:not(.story-home__eyebrow) {
+			font-size: var(--text-md);
+			font-weight: var(--weight-semibold);
+		}
+
+		.story-home__utility-button {
+			width: 2.65rem;
+			height: 2.65rem;
+		}
+
+		.story-home__title-row {
+			margin-top: 2rem;
+		}
+
+		.story-home h1 {
+			font-size: clamp(2.75rem, 14vw, 3.6rem);
+		}
+
+		.story-home__card {
+			padding: 1rem;
+		}
+
+		.story-home__card-media {
+			height: 9.25rem;
+			margin-bottom: 1rem;
+		}
+
+		.story-home__card h2 {
+			font-size: clamp(1.45rem, 7vw, 1.9rem);
+		}
+
+		.story-home__card p {
+			-webkit-line-clamp: 4;
+		}
+
+		.story-home__card-footer {
+			align-items: flex-start;
+			flex-direction: column;
+			gap: 0.75rem;
+		}
+
+		.story-home__carousel-controls {
+			gap: 1rem;
+		}
+
+		.story-home__progress {
+			width: min(10rem, 40vw);
 		}
 	}
 </style>
