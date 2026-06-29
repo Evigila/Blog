@@ -6,7 +6,7 @@ updatedAt: 2026-05-09
 tags:
   - Astro
   - CloudFlare
-image: /trueearth-hills.jpg
+image: https://github.com/Evigila/picx-images-hosting/raw/master/astro.7i12511gob.webp
 ---
 
 本篇文章将教学如何使用Astro部署静态博客网站，将资源托管在Github仓库中，并搭配使用CloudFlare的工人完成自动部署在公共互联网中。

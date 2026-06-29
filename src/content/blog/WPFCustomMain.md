@@ -8,7 +8,7 @@ tags:
   - C#
   - .NET
   - Desktop
-image: /trueearth-hills.jpg
+image: https://github.com/Evigila/picx-images-hosting/raw/master/wpf.86ubp1ttcw.webp
 ---
 
 本篇文章将教学如何创建WPF时自定义程序启动入口`Main`，以获取项目的完整生命周期控制。

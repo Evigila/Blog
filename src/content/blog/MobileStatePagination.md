@@ -8,7 +8,7 @@ tags:
   - Mobile
   - JavaScript
   - CSS
-image: https://upload.wikimedia.org/wikipedia/commons/c/c3/Opera_Mini_using_the_new_interface_for_Wikipedia_mobile.jpg
+image: https://github.com/Evigila/picx-images-hosting/raw/master/chrome-displayed-on-screen.232jmlgdt0.webp
 ---
 
 本篇文章展示站点首页移动端适配的处理过程。问题本身并不复杂：页面有 `home`、`about`、`blogs` 三种状态，前两者更像单页展示，最后一个则需要显示文章列表，并保留横向滑动的博客卡片。
@@ -441,16 +441,3 @@ viewButtons.forEach((button) => {
 - `blogs` 是内容页，使用 `.story-home` 原生纵向滚动。
 - `blogs` 内的 carousel 保留原生横向滚动。
 - 只有当 `blogs` 已经在顶部并继续向下拉时，才拦截手势并返回 `about`。
-
-这几条规则看起来简单，但重要的是不要让它们混在一起。状态分页和内容滚动不是同一件事，横向 carousel、Filter 横向滚动和纵向阅读也不是同一件事。移动端浏览器的手势系统很敏感，越是粗暴地统一处理，越容易和浏览器默认行为打架。
-
-## 小结
-
-这类页面的实现顺序应该是：
-
-1. 先定义状态机，明确哪些状态是单屏，哪些状态可以滚动。
-2. 再确定滚动容器，不要让 `body` 和内部容器同时滚动。
-3. 然后处理触摸手势，只在必要边界调用 `preventDefault()`。
-4. 最后补齐横向区域，例如 carousel 和 Filter，让它们保持原生横向滚动。
-
-也就是说，移动端状态分页的核心不是写一个复杂的手势系统，而是尽量少接管浏览器行为。把状态切换、内容滚动、横向滑动分别交给最合适的层级处理，页面反而会更稳定。
