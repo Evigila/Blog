@@ -1,0 +1,209 @@
+---
+import { siteConfig } from '../../data/site';
+import '../../styles/home-desktop.css';
+
+interface HomePost {
+	title: string;
+	excerpt: string;
+	href: string;
+	image?: string;
+	date: string;
+	tags: string[];
+}
+
+interface Props {
+	posts: HomePost[];
+}
+
+const { posts } = Astro.props;
+const githubLink = siteConfig.socials.find((item) => item.icon === 'github')?.href ?? '#';
+const mailLink = siteConfig.socials.find((item) => item.icon === 'mail')?.href ?? '#';
+const latestPost = posts[0];
+---
+
+<main class="desktop-home" data-desktop-home data-active-panel="home" data-window-visibility="open" data-window-mode="normal">
+	<div class="desktop-home__background" aria-hidden="true"></div>
+	<div class="desktop-home__light desktop-home__light--one" aria-hidden="true"></div>
+	<div class="desktop-home__light desktop-home__light--two" aria-hidden="true"></div>
+
+	<nav class="desktop-icons" aria-label="桌面快捷方式">
+		<button class="desktop-icon" type="button" data-open-panel="posts">
+			<span class="desktop-icon__art desktop-icon__art--folder" aria-hidden="true"><i></i></span>
+			<span>博客文章</span>
+		</button>
+		<button class="desktop-icon" type="button" data-open-panel="about">
+			<span class="desktop-icon__art desktop-icon__art--profile" aria-hidden="true"><i></i></span>
+			<span>关于 Evigila</span>
+		</button>
+		<a class="desktop-icon" href="/friend">
+			<span class="desktop-icon__art desktop-icon__art--network" aria-hidden="true"><i></i></span>
+			<span>友情链接</span>
+		</a>
+		<a class="desktop-icon" href={githubLink} target="_blank" rel="noreferrer">
+			<span class="desktop-icon__art desktop-icon__art--terminal" aria-hidden="true"><i>&gt;_</i></span>
+			<span>GitHub</span>
+		</a>
+	</nav>
+
+	<section id="main-desktop-window" class="desktop-window" data-window aria-label="Evigila 个人博客" tabindex="-1">
+		<header class="window-frame" data-window-handle>
+			<div class="window-frame__identity">
+				<span class="window-frame__mini-icon" aria-hidden="true">E</span>
+				<strong data-window-title>主页 · Evigila</strong>
+			</div>
+			<div class="window-frame__controls" aria-label="窗口控制">
+				<button type="button" data-window-action="minimize" aria-label="最小化窗口" title="最小化"><span aria-hidden="true">—</span></button>
+				<button type="button" data-window-action="maximize" aria-label="最大化窗口" title="最大化"><span data-maximize-icon aria-hidden="true">□</span></button>
+				<button class="window-frame__close" type="button" data-window-action="close" aria-label="关闭窗口" title="关闭"><span aria-hidden="true">×</span></button>
+			</div>
+		</header>
+
+		<div class="window-toolbar">
+			<div class="window-toolbar__history" aria-hidden="true">
+				<span>‹</span><span>›</span>
+			</div>
+			<div class="window-toolbar__address">
+				<span class="address-glint" aria-hidden="true"></span>
+				<span data-address-label>Desktop / Evigila / Home</span>
+			</div>
+			<div class="window-toolbar__search" aria-hidden="true">搜索记忆 <span>⌕</span></div>
+		</div>
+
+		<div class="window-body">
+			<aside class="window-sidebar" aria-label="主页导航">
+				<p>收藏夹</p>
+				<button class="is-active" type="button" data-open-panel="home"><span>✦</span> 桌面</button>
+				<button type="button" data-open-panel="posts"><span>▤</span> 博客文章</button>
+				<button type="button" data-open-panel="about"><span>♙</span> 关于我</button>
+				<p>位置</p>
+				<a href="/friend"><span>⌘</span> 友情链接</a>
+				<a href={githubLink} target="_blank" rel="noreferrer"><span>⌁</span> GitHub</a>
+				<a href={mailLink}><span>✉</span> 发送邮件</a>
+			</aside>
+
+			<div class="window-content">
+				<section class="home-panel home-panel--welcome is-active" data-home-panel="home" aria-labelledby="welcome-title">
+					<div class="welcome-copy">
+						<p class="panel-kicker"><span></span> PERSONAL STATIC JOURNAL</p>
+						<h1 id="welcome-title">Fragments<br />of a <em>Daydream</em></h1>
+						<p class="welcome-copy__intro">
+							记录 .NET、Windows 桌面开发，以及那些尚未被系统归档的想法。
+						</p>
+						<div class="welcome-copy__actions">
+							<button class="glass-button glass-button--primary" type="button" data-open-panel="posts">浏览博客</button>
+							<button class="glass-button" type="button" data-open-panel="about">关于这里</button>
+						</div>
+						<p class="welcome-copy__note"><span aria-hidden="true">✦</span> Aether Portal 已连接，桌面信号稳定。</p>
+					</div>
+
+					<div class="welcome-object" aria-hidden="true">
+						<div class="welcome-object__ghost">E</div>
+						<div class="welcome-object__glass"></div>
+						<span>OBJECT_01</span>
+					</div>
+
+					{latestPost && (
+						<a class="latest-file" href={latestPost.href}>
+							<span class="latest-file__icon" aria-hidden="true">✦</span>
+							<span>
+								<small>最近修改 · {latestPost.date}</small>
+								<strong>{latestPost.title}</strong>
+							</span>
+							<i aria-hidden="true">›</i>
+						</a>
+					)}
+				</section>
+
+				<section class="home-panel home-panel--posts" data-home-panel="posts" data-post-layout="grid" aria-labelledby="posts-title" hidden>
+					<header class="panel-heading">
+						<div>
+							<p class="panel-kicker"><span></span> LIBRARY</p>
+							<h2 id="posts-title">博客文章</h2>
+						</div>
+						<div class="panel-heading__tools">
+							<p>{posts.length} 个对象 · 按最近更新排列</p>
+							<div class="post-layout-switch" role="group" aria-label="博客列表布局">
+								<button class="is-active" type="button" data-post-layout-option="grid" aria-pressed="true" aria-controls="post-grid" title="双列视图">
+									<span class="post-layout-switch__grid" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+									<span class="sr-only">双列</span>
+								</button>
+								<button type="button" data-post-layout-option="list" aria-pressed="false" aria-controls="post-grid" title="单列视图">
+									<span class="post-layout-switch__list" aria-hidden="true"><i></i><i></i><i></i></span>
+									<span class="sr-only">单列</span>
+								</button>
+							</div>
+						</div>
+					</header>
+					<div id="post-grid" class="post-grid">
+						{posts.map((post, index) => (
+							<a class="post-file" href={post.href}>
+								<div class={`post-file__preview ${post.image ? 'has-image' : ''}`}>
+									{post.image ? <img src={post.image} alt="" loading={index === 0 ? 'eager' : 'lazy'} /> : <span aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>}
+								</div>
+								<div class="post-file__copy">
+									<small>{post.date}</small>
+									<h3>{post.title}</h3>
+									<p>{post.excerpt}</p>
+									<div>{post.tags.slice(0, 3).map((tag) => <span>{tag}</span>)}</div>
+								</div>
+							</a>
+						))}
+					</div>
+				</section>
+
+				<section class="home-panel home-panel--about" data-home-panel="about" aria-labelledby="about-title" hidden>
+					<div class="about-profile">
+						<div class="about-profile__portrait"><img src={siteConfig.author.avatar} alt="Evigila 的头像" /></div>
+						<div>
+							<p class="panel-kicker"><span></span> LOCAL USER</p>
+							<h2 id="about-title">Evigila</h2>
+							<strong>{siteConfig.author.bio}</strong>
+						</div>
+					</div>
+					<div class="about-grid">
+						<article>
+							<small>DESCRIPTION.TXT</small>
+							<p>持续打磨 Windows 桌面体验。喜欢把工具做得稳定、清晰、顺手，也在这里记录技术、想法和一点日常。</p>
+						</article>
+						<article>
+							<small>INTERESTS.INI</small>
+							<div class="about-tags"><span>.NET</span><span>C#</span><span>Desktop</span><span>Windows</span><span>Godot</span></div>
+						</article>
+					</div>
+					<div class="about-actions">
+						<a class="glass-button glass-button--primary" href={mailLink}>发送邮件</a>
+						<a class="glass-button" href={githubLink} target="_blank" rel="noreferrer">访问 GitHub</a>
+					</div>
+				</section>
+			</div>
+		</div>
+
+		<footer class="window-status">
+			<span data-status-label aria-live="polite">{posts.length} 个对象</span>
+			<span>玻璃透明度：极低</span>
+		</footer>
+	</section>
+
+	<aside class="desktop-gadget" aria-label="桌面状态">
+		<header><span>今日状态</span><i aria-hidden="true">×</i></header>
+		<div class="desktop-gadget__time" data-gadget-time>--:--</div>
+		<p data-gadget-date>正在读取本地时间</p>
+		<div class="desktop-gadget__weather" aria-hidden="true"><span>☼</span><strong>室内</strong><small>天气服务拒绝想象</small></div>
+	</aside>
+
+	<footer class="taskbar" aria-label="Windows 风格任务栏">
+		<button class="start-orb" type="button" data-open-panel="home" aria-label="打开主页窗口" aria-controls="main-desktop-window"><span>e</span></button>
+		<nav class="taskbar__apps" aria-label="任务栏导航">
+			<button class="taskbar-app is-active is-running" type="button" data-taskbar-panel="home" aria-controls="main-desktop-window"><span aria-hidden="true">⌂</span><strong>主页</strong></button>
+			<button class="taskbar-app" type="button" data-taskbar-panel="posts" aria-controls="main-desktop-window"><span aria-hidden="true">▤</span><strong>博客</strong></button>
+			<button class="taskbar-app" type="button" data-taskbar-panel="about" aria-controls="main-desktop-window"><span aria-hidden="true">♙</span><strong>关于</strong></button>
+			<a class="taskbar-app" href="/friend"><span aria-hidden="true">⌘</span><strong>链接</strong></a>
+		</nav>
+		<div class="taskbar__tray">
+			<span class="tray-signal" aria-hidden="true">▂▄▆</span>
+			<span aria-hidden="true">♢</span>
+			<div><strong data-taskbar-time>--:--</strong><small data-taskbar-date>----/--/--</small></div>
+			<i aria-hidden="true"></i>
+		</div>
+	</footer>
+</main>
