@@ -1,0 +1,11 @@
+---
+import EditorialTagDirectory from '../../components/EditorialTagDirectory.astro';
+import { getBlogDirectory } from '../../data/blog';
+import EditorialPageLayout from '../../layouts/EditorialPageLayout.astro';
+
+const { posts, tags } = await getBlogDirectory();
+---
+
+<EditorialPageLayout documentTitle="内容标签 | Evigila" title="内容标签" eyebrow="FILTER" description="通过标签筛选和整理文章">
+		<EditorialTagDirectory posts={posts} tags={tags} />
+</EditorialPageLayout>

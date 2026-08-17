@@ -1,85 +1,20 @@
 ---
-import { getCollection } from 'astro:content';
-import DesktopHome from '../components/home/DesktopHome.astro';
-import { getPostSlug, sortPostsByUpdatedAt } from '../data/blog';
+import EditorialHome from '../components/home/EditorialHome.astro';
+import { getBlogDirectory } from '../data/blog';
+import { carouselSamplePosts } from '../data/carousel-samples';
 import { siteConfig } from '../data/site';
 import SiteLayout from '../layouts/SiteLayout.astro';
 
-const posts = sortPostsByUpdatedAt(await getCollection('blog')).map((post) => ({
-	title: post.data.title,
-	excerpt: post.data.excerpt,
-	href: `/posts/${getPostSlug(post)}`,
-	image: post.data.image,
-	date: (post.data.updatedAt ?? post.data.publishDate).toLocaleDateString('zh-CN', {
-		year: 'numeric',
-		month: '2-digit',
-		day: '2-digit',
-	}),
-	tags: post.data.tags,
-}));
+const { posts: realPosts } = await getBlogDirectory();
+const posts = [...realPosts, ...carouselSamplePosts].slice(0, 10);
 ---
 
 <SiteLayout title={siteConfig.title} description={siteConfig.description}>
-	<DesktopHome posts={posts} />
-
-	<section class="mobile-home-slot" data-mobile-home-slot aria-label="移动端主页预留区域">
-		<p>Mobile workspace reserved.</p>
-		<span>移动端界面将在独立样式层中接入。</span>
-	</section>
+	<EditorialHome posts={posts} archiveCount={realPosts.length} />
 </SiteLayout>
 
 <script>
-	import { initDesktopHome } from '../scripts/desktop-home';
+	import { initEditorialHome } from '../scripts/editorial-home';
 
-	initDesktopHome();
+	initEditorialHome();
 </script>
-
-<style is:global>
-	@media (min-width: 1121px) and (hover: hover) and (pointer: fine) {
-		html:has(.desktop-home),
-		body:has(.desktop-home) {
-			height: 100%;
-			overflow: hidden;
-		}
-
-		body:has(.desktop-home) {
-			background: #f5f8fc;
-		}
-
-		body:has(.desktop-home)::before {
-			display: none;
-		}
-	}
-
-	.mobile-home-slot {
-		display: none;
-	}
-
-	@media (max-width: 1120px), (hover: none) and (pointer: coarse) {
-		.desktop-home {
-			display: none !important;
-		}
-
-		.mobile-home-slot {
-			display: grid;
-			place-content: center;
-			gap: 0.5rem;
-			min-height: 100svh;
-			padding: 2rem;
-			background: #f7faff;
-			color: #536477;
-			text-align: center;
-		}
-
-		.mobile-home-slot p {
-			margin: 0;
-			color: #27425e;
-			font-size: 1.15rem;
-			font-weight: 700;
-		}
-
-		.mobile-home-slot span {
-			font-size: 0.82rem;
-		}
-	}
-</style>

@@ -1,0 +1,20 @@
+---
+import EditorialPageShell from '../components/EditorialPageShell.astro';
+import SiteLayout from './SiteLayout.astro';
+
+interface Props {
+	documentTitle: string;
+	title: string;
+	eyebrow: string;
+	description: string;
+	metaDescription?: string;
+}
+
+const { documentTitle, title, eyebrow, description, metaDescription = description } = Astro.props;
+---
+
+<SiteLayout title={documentTitle} description={metaDescription}>
+	<EditorialPageShell title={title} eyebrow={eyebrow} description={description}>
+		<slot />
+	</EditorialPageShell>
+</SiteLayout>

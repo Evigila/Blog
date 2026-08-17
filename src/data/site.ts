@@ -1,5 +1,21 @@
+export const siteNavigation = [
+	{ key: 'home', label: 'HOME', postLabel: 'Home', href: '/', section: '/', showInFooter: true, showInPostInspector: true },
+	{ key: 'articles', label: 'ARTICLES', postLabel: 'Articles', href: '/articles', section: '/articles', showInFooter: true, showInPostInspector: true },
+	{ key: 'tags', label: 'TAGS', postLabel: 'Tags', href: '/tags', section: '/tags', showInFooter: true, showInPostInspector: true },
+	{ key: 'links', label: 'LINKS', postLabel: 'Links', href: '/friend', section: '/friend', showInFooter: true, showInPostInspector: true },
+	{ key: 'about', label: 'ABOUT', postLabel: 'About', href: '/#about', section: undefined, showInFooter: false, showInPostInspector: false },
+] as const;
+
+export const normalizePath = (path: string) => path === '/' ? path : path.replace(/\/+$/, '');
+
+export const isNavigationCurrent = (section: string | undefined, path: string) => {
+	if (!section) return false;
+	const pathname = normalizePath(path);
+	if (section === '/') return pathname === '/';
+	return pathname === section || pathname.startsWith(`${section}/`);
+};
+
 export const siteConfig = {
-	name: 'Evigila',
 	title: "Evigila的个人博客网站",
 	description: '极简静态博客，由 Astro 提供驱动',
 	author: {
@@ -8,13 +24,6 @@ export const siteConfig = {
 		bio: '.NET Desktop application developer',
 		signature: '.NET | C#',
 	},
-	stageSeed: '3141592653589793238462643383279',
-	navigation: [
-		{ label: '主页', href: '/' },
-		{ label: '博客', href: '/?view=posts' },
-		{ label: '链接', href: '/friend' },
-		{ label: '主站', href: '#' },
-	],
 	socials: [
 		{ label: 'GitHub', href: 'https://github.com/Evigila', icon: 'github' },
 		{ label: '邮件', href: 'mailto:evigila.shangyi@gmail.com', icon: 'mail' },

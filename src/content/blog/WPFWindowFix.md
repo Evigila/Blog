@@ -8,7 +8,7 @@ tags:
   - C#
   - .NET
   - Desktop
-image: https://github.com/Evigila/picx-images-hosting/raw/master/maxresdefault.9gx92d8d5t.webp
+image: /images/posts/wpf-window-fix.webp
 ---
 
 本篇文章将教学如何修复 WPF 自定义窗口 Chrome 后，窗口在最大化时出现的边界错误。

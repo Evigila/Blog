@@ -1,0 +1,32 @@
+---
+import EditorialNav from './EditorialNav.astro';
+import { siteNavigation } from '../data/site';
+import '../styles/editorial-frame.css';
+
+interface Props {
+	class?: string;
+	home?: boolean;
+}
+
+const { class: className, home = false } = Astro.props;
+---
+
+<main class:list={['editorial-frame', className]} data-editorial-home={home ? '' : undefined}>
+	<div class="editorial-frame__sheet">
+		<header class="editorial-frame__header">
+			<EditorialNav />
+			<slot name="header" />
+		</header>
+
+		<slot />
+
+		<footer class="editorial-frame__footer">
+			<span>© {new Date().getFullYear()} EVIGILA</span>
+			<div>
+				{siteNavigation.filter((item) => item.showInFooter).map((item) => (
+					<a href={item.href}>{item.label}</a>
+				))}
+			</div>
+		</footer>
+	</div>
+</main>

@@ -1,0 +1,16 @@
+---
+import EditorialPostIndex from '../components/EditorialPostIndex.astro';
+import { getBlogDirectory } from '../data/blog';
+import EditorialPageLayout from '../layouts/EditorialPageLayout.astro';
+
+const { posts } = await getBlogDirectory();
+---
+
+<EditorialPageLayout documentTitle="所有文章 | Evigila" title="全部文章" eyebrow="ALL BLOGS" description="浏览所有发布文章">
+		<section class="editorial-page__section">
+			<div class="editorial-page__section-head">
+				<a class="editorial-text-action journal-control" href="/tags">按标签筛选 ↗</a>
+			</div>
+			<EditorialPostIndex posts={posts} />
+		</section>
+</EditorialPageLayout>

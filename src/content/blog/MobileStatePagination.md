@@ -8,7 +8,7 @@ tags:
   - Mobile
   - JavaScript
   - CSS
-image: https://github.com/Evigila/picx-images-hosting/raw/master/chrome-displayed-on-screen.232jmlgdt0.webp
+image: /images/posts/mobile-state-pagination.webp
 ---
 
 本篇文章展示站点首页移动端适配的处理过程。问题本身并不复杂：页面有 `home`、`about`、`blogs` 三种状态，前两者更像单页展示，最后一个则需要显示文章列表，并保留横向滑动的博客卡片。

@@ -1,6 +1,5 @@
 ---
 import '../styles/global.css';
-import Toast from '../components/Toast.astro';
 
 interface Props {
 	title: string;
@@ -14,7 +13,7 @@ const {
 ---
 
 <!doctype html>
-<html lang="zh-CN" data-theme="light">
+<html lang="zh-CN">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -23,17 +22,14 @@ const {
 		<link rel="icon" type="image/jpeg" href="/avatar.jpg" />
 		<link rel="apple-touch-icon" href="/avatar.jpg" />
 		<title>{title}</title>
-		<script is:inline>
-			(() => {
-				const storedTheme = localStorage.getItem('evigila-theme');
-				const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-				const theme = storedTheme ?? (prefersDark ? 'dark' : 'light');
-				document.documentElement.dataset.theme = theme;
-			})();
-		</script>
 	</head>
 	<body>
 		<slot />
-		<Toast />
+		<div class="site-cursor" data-site-cursor aria-hidden="true"></div>
+		<script>
+			import { initSiteCursor } from '../scripts/cursor';
+
+			initSiteCursor();
+		</script>
 	</body>
 </html>

@@ -1,70 +1,21 @@
 ---
-import PageRail from '../components/PageRail.astro';
-import SiteFooter from '../components/SiteFooter.astro';
-import SiteLayout from '../layouts/SiteLayout.astro';
-
-const friendLinks = [
-	{
-		name: '奇妙诺尔 SlimeNull',
-		href: 'https://slimenull.com/',
-		description: '微软MVP，致力于更美好的开源世界。',
-	},
-	{
-		name: '魔法薇ㄦ的书馆',
-		href: 'https://wherewhere.github.io/',
-		description: '哼',
-	},
-	{
-		name: 'yiyun',
-		href: 'https://moeci.com/',
-		description: '数据科学、机器学习、全栈Web开发。',
-	},
-];
+import { friendLinks } from '../data/links';
+import EditorialPageLayout from '../layouts/EditorialPageLayout.astro';
 ---
 
-<SiteLayout title="Links | Evigila" description="Evigila's links page.">
-	<main class="post-shell">
-		<div class="post-layout post-layout--no-sidebar">
-			<PageRail />
+<EditorialPageLayout documentTitle="链接 | Evigila" title="友链" eyebrow="FRIEND BLOG" description="也请关注更多优秀伙伴" metaDescription="Evigila 推荐的个人网站与技术博客。">
+		<section class="editorial-page__section">
 
-			<div class="post-main">
-				<article class="post-article" data-post-article>
-					<header class="post-hero post-hero--plain">
-						<div class="post-hero__content">
-							<p class="post-kicker ui-kicker">Links</p>
-							<h1>链接</h1>
-							<p class="post-excerpt">尝试浏览其他优秀博客</p>
-						</div>
-					</header>
-					<div class="post-content" data-post-content>
-						<ul class="friend-link-list">
-							{friendLinks.map((link) => (
-								<li class="friend-link-list__item">
-									<strong><a href={link.href}>{link.name}</a></strong>
-									<p>{link.description}</p>
-								</li>
-							))}
-						</ul>
-					</div>
-				</article>
+			<div class="editorial-link-grid">
+				{friendLinks.map((link, index) => (
+					<a class="editorial-link-card" href={link.href} target="_blank" rel="noreferrer">
+						<span class="editorial-link-card__number">{String(index + 1).padStart(2, '0')} / SITE</span>
+						<span class="editorial-link-card__arrow" aria-hidden="true">↗</span>
+						<h2>{link.name}</h2>
+						<p>{link.description}</p>
+						<span class="editorial-link-card__domain">{new URL(link.href).hostname.toUpperCase()}</span>
+					</a>
+				))}
 			</div>
-
-			<div class="post-sidebar-spacer" aria-hidden="true"></div>
-		</div>
-
-		<nav class="post-dock" aria-label="Page actions">
-			<button class="post-dock__button post-dock__secondary action-button ui-button" type="button" data-scroll-top>
-				返回顶端
-			</button>
-			<a class="post-dock__button post-dock__home action-button ui-button" href="/">返回主页</a>
-		</nav>
-	</main>
-
-	<SiteFooter ariaLabel="Links footer" />
-
-	<script>
-		import { initPostPage } from '../scripts/post';
-
-		initPostPage();
-	</script>
-</SiteLayout>
+		</section>
+</EditorialPageLayout>

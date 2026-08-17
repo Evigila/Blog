@@ -1,0 +1,51 @@
+---
+import type { EditorialPostSummary } from '../data/blog';
+import { getTagHref, getTagSlug } from '../data/blog';
+
+interface Props {
+	posts: EditorialPostSummary[];
+	activeSlug?: string;
+}
+
+const { posts, activeSlug = '' } = Astro.props;
+let visiblePostCount = 0;
+---
+
+<div class="editorial-post-index">
+	{posts.map((post) => {
+		const tagSlugs = post.tags.map(getTagSlug);
+		const isVisible = !activeSlug || tagSlugs.includes(activeSlug);
+		if (isVisible) visiblePostCount += 1;
+		const visibleIndex = visiblePostCount;
+		return (
+		<article class="editorial-index-card" data-post-card data-tag-slugs={tagSlugs.join(' ')} hidden={!isVisible}>
+			<a class="editorial-index-card__media" href={post.href} aria-label={`阅读：${post.title}`}>
+				{post.image ? (
+					<img
+						src={post.image}
+						alt=""
+						width="1280"
+						height="720"
+						loading={isVisible && visibleIndex <= 2 ? 'eager' : 'lazy'}
+						fetchpriority={isVisible && visibleIndex === 1 ? 'high' : 'auto'}
+						decoding="async"
+					/>
+				) : <span>EVG</span>}
+			</a>
+			<div class="editorial-index-card__body">
+				<div class="editorial-index-card__meta">
+					<span>{post.date}</span>
+					<span>{post.readingTime}</span>
+				</div>
+				<h2><a class="editorial-index-card__primary-link" href={post.href}>{post.title}</a></h2>
+				<p>{post.excerpt}</p>
+				<div class="editorial-index-card__footer">
+					<div class="editorial-index-card__tags">
+						{post.tags.map((tag) => <a class="journal-control" href={getTagHref(tag)}>#{tag}</a>)}
+					</div>
+					<a class="editorial-index-card__read journal-control" href={post.href}>READ ↗</a>
+				</div>
+			</div>
+		</article>
+	)})}
+</div>

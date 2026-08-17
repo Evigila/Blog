@@ -1,0 +1,45 @@
+---
+import type { EditorialPostSummary, TagSummary } from '../data/blog';
+import { getTagHref } from '../data/blog';
+import EditorialPostIndex from './EditorialPostIndex.astro';
+
+interface Props {
+	posts: EditorialPostSummary[];
+	tags: TagSummary[];
+	activeSlug?: string;
+}
+
+const { posts, tags, activeSlug } = Astro.props;
+const activeTag = tags.find((tag) => tag.slug === activeSlug);
+---
+
+<section class="editorial-page__section" data-tag-directory data-active-slug={activeSlug ?? ''}>
+
+	<div class="editorial-tags">
+		<nav class="editorial-tags__filters" data-tag-filters aria-label="按标签筛选文章">
+			<a class="journal-control" href="/tags" data-tag-slug="" data-tag-label="全部文章" aria-current={!activeSlug ? 'true' : undefined}>
+				<strong>全部文章</strong><span>ALL</span>
+			</a>
+			{tags.map((tag) => (
+				<a class="journal-control" href={getTagHref(tag.name)} data-tag-slug={tag.slug} data-tag-label={`# ${tag.name}`} aria-current={tag.slug === activeSlug ? 'true' : undefined}>
+					<strong># {tag.name}</strong><span>{String(tag.count).padStart(2, '0')}</span>
+				</a>
+			))}
+		</nav>
+
+		<div class="editorial-tags__results" data-tag-results>
+			<div class="editorial-filter-status">
+				<strong data-tag-status-label>{activeTag ? `# ${activeTag.name}` : '全部文章'}</strong>
+				<span data-tag-status-count aria-live="polite">{activeTag ? activeTag.count : posts.length} 篇文章</span>
+			</div>
+			<EditorialPostIndex posts={posts} activeSlug={activeSlug} />
+			<p class="editorial-filter-empty" data-tag-empty hidden>该标签下暂无文章。</p>
+		</div>
+	</div>
+</section>
+
+<script>
+	import { initTagDirectories } from '../scripts/tag-directory';
+
+	initTagDirectories();
+</script>

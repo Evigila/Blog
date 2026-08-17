@@ -1,49 +1,13 @@
 ---
 ---
 
-<!-- Ambient glow -->
-<div class="site-toast-ambient" aria-hidden="true" id="site-toast-ambient"></div>
-
-<!-- Toast container -->
 <div class="site-toast" id="site-toast" role="status" aria-live="polite" aria-atomic="true">
-	<div class="site-toast__ring-wrap" aria-hidden="true">
-		<div class="site-toast__ring-spin"></div>
-	</div>
 	<div class="site-toast__body">
 		<span id="site-toast-text"></span>
 	</div>
 </div>
 
 <style>
-	.site-toast-ambient {
-		position: fixed;
-		bottom: 0;
-		left: 50%;
-		transform: translateX(-50%);
-		width: min(72vw, 920px);
-		height: 48vh;
-		pointer-events: none;
-		z-index: 198;
-		opacity: 0;
-		background: radial-gradient(ellipse 75% 80% at 50% 100%, var(--page-tint) 0%, var(--page-tint-alt) 38%, transparent 72%);
-		filter: blur(22px);
-		transition: opacity 1500ms ease;
-	}
-
-	.site-toast-ambient.is-visible {
-		opacity: 1;
-		animation: toast-ambient-breathe 3.2s ease-in-out infinite;
-	}
-
-	@keyframes toast-ambient-breathe {
-		0%   { opacity: 1;    filter: blur(22px); }
-		22%  { opacity: 0.62; filter: blur(26px); }
-		45%  { opacity: 0.85; filter: blur(20px); }
-		70%  { opacity: 0.54; filter: blur(28px); }
-		88%  { opacity: 0.9;  filter: blur(21px); }
-		100% { opacity: 1;    filter: blur(22px); }
-	}
-
 	.site-toast {
 		position: fixed;
 		left: 50%;
@@ -52,8 +16,11 @@
 		z-index: 200;
 		opacity: 0;
 		pointer-events: none;
-		border-radius: var(--radius-md);
-		transition: opacity 260ms ease, transform 260ms ease;
+		border: 1px solid #d7e0e3;
+		border-radius: 0.35rem;
+		background: #f6f9fa;
+		box-shadow: 0 0.75rem 2.5rem rgba(38, 49, 53, 0.12);
+		transition: opacity 180ms ease, transform 180ms ease;
 	}
 
 	.site-toast.is-visible {
@@ -61,77 +28,44 @@
 		transform: translateX(-50%) translateY(0);
 	}
 
-	.site-toast__ring-wrap {
-		position: absolute;
-		inset: -1px;
-		overflow: hidden;
-		border-radius: inherit;
-		opacity: 0;
-		transition: opacity 260ms ease;
-	}
-
-	.site-toast.is-visible .site-toast__ring-wrap {
-		opacity: 1;
-	}
-
-	.site-toast__ring-spin {
-		position: absolute;
-		width: 220%;
-		aspect-ratio: 1;
-		top: 50%;
-		left: 50%;
-		translate: -50% -50%;
-		background: conic-gradient(
-			from 0deg,
-			transparent 0%,
-			var(--accent-0) 15%,
-			var(--accent-1) 32%,
-			color-mix(in srgb, var(--accent-0) 62%, var(--accent-1)) 50%,
-			transparent 65%,
-			transparent 100%
-		);
-		animation: toast-ring-rotate 2.2s linear infinite;
-	}
-
-	@keyframes toast-ring-rotate {
-		to { rotate: 360deg; }
-	}
-
 	.site-toast__body {
-		position: relative;
-		z-index: 1;
-		padding: 0.65rem 1.4rem;
-		background: var(--surface-0);
-		backdrop-filter: blur(24px);
-		-webkit-backdrop-filter: blur(24px);
-		border-radius: inherit;
-		box-shadow: var(--shadow-0);
+		padding: 0.72rem 1.15rem;
 		font-family: var(--font-ui);
 		font-size: var(--text-sm);
-		color: var(--text-0);
+		font-weight: var(--weight-medium);
+		color: #2d383c;
 		white-space: nowrap;
-		margin: 1px;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.site-toast { transition: none; }
 	}
 </style>
 
 <script>
 	const _toastEl = document.getElementById('site-toast') as HTMLElement;
-	const _ambientEl = document.getElementById('site-toast-ambient') as HTMLElement;
 	const _toastTextEl = document.getElementById('site-toast-text') as HTMLElement;
 	let _toastTimer: ReturnType<typeof setTimeout> | null = null;
 
 	function showToast(message: string, duration = 3000): void {
 		_toastTextEl.textContent = message;
 		_toastEl.classList.add('is-visible');
-		_ambientEl.classList.add('is-visible');
 
 		if (_toastTimer !== null) clearTimeout(_toastTimer);
 		_toastTimer = setTimeout(() => {
 			_toastEl.classList.remove('is-visible');
-			_ambientEl.classList.remove('is-visible');
 			_toastTimer = null;
 		}, duration);
 	}
 
+	function hideToast(): void {
+		if (_toastTimer !== null) clearTimeout(_toastTimer);
+		_toastTimer = null;
+		_toastEl.classList.remove('is-visible');
+		_toastTextEl.textContent = '';
+	}
+
 	(window as unknown as { showToast: typeof showToast }).showToast = showToast;
+	window.addEventListener('pagehide', hideToast);
+	window.addEventListener('pageshow', hideToast);
 </script>
