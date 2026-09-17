@@ -3,6 +3,7 @@ import SiteLayout from './SiteLayout.astro';
 import Toast from '../components/Toast.astro';
 import WorkspaceShell from '../components/WorkspaceShell.astro';
 import WorkspaceIcon from '../components/WorkspaceIcon.astro';
+import SiteFooter from '../components/SiteFooter.astro';
 import { siteConfig } from '../data/site';
 import { getTagHref } from '../data/blog';
 import '../styles/post.css';
@@ -40,7 +41,6 @@ const readingMinutes = Math.max(1, Number.parseInt(readingTime, 10) || 1);
 				<div>
 					<a class="post-parent-link" href="/articles">← 全部文章</a>
 					<h1>{title}</h1>
-					<p>{excerpt}</p>
 					<div class="post-meta" aria-label="文章信息">
 						<time datetime={publishedISO}>发布 {publishedLabel}</time>
 						<time datetime={updatedISO}>更新 {updatedLabel}</time>
@@ -122,7 +122,7 @@ const readingMinutes = Math.max(1, Number.parseInt(readingTime, 10) || 1);
 				</aside>
 			</div>
 
-			<footer class="post-footer"><span>© {new Date().getFullYear()} EVIGILA</span><a href="/articles">返回全部文章</a></footer>
+			<SiteFooter />
 		</div>
 	</WorkspaceShell>
 	<Toast />

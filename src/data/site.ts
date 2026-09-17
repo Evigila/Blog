@@ -3,7 +3,7 @@ export const siteNavigation = [
 	{ key: 'articles', label: 'ARTICLES', postLabel: 'Articles', href: '/articles', section: '/articles', showInFooter: true, showInPostInspector: true },
 	{ key: 'tags', label: 'TAGS', postLabel: 'Tags', href: '/tags', section: '/tags', showInFooter: true, showInPostInspector: true },
 	{ key: 'links', label: 'LINKS', postLabel: 'Links', href: '/friend', section: '/friend', showInFooter: true, showInPostInspector: true },
-	{ key: 'about', label: 'ABOUT', postLabel: 'About', href: '/#about', section: undefined, showInFooter: false, showInPostInspector: false },
+	{ key: 'github', label: 'GITHUB', postLabel: 'GitHub', href: 'https://github.com/Evigila', section: undefined, showInFooter: false, showInPostInspector: false },
 ] as const;
 
 export const normalizePath = (path: string) => path === '/' ? path : path.replace(/\/+$/, '');

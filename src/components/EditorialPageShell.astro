@@ -4,18 +4,15 @@ import '../styles/editorial-pages.css';
 
 interface Props {
 	title: string;
-	eyebrow: string;
-	description: string;
 }
 
-const { title, eyebrow, description } = Astro.props;
+const { title } = Astro.props;
 ---
 
 <EditorialFrame class="editorial-page">
 	<div slot="header" class="editorial-frame__intro editorial-page__intro">
 		<div class="editorial-frame__intro-main">
 			<h1 class="editorial-frame__title">{title}</h1>
-			<p class="editorial-frame__description">{description}</p>
 		</div>
 	</div>
 

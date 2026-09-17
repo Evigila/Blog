@@ -6,11 +6,8 @@ import EditorialPageLayout from '../layouts/EditorialPageLayout.astro';
 const { posts } = await getBlogDirectory();
 ---
 
-<EditorialPageLayout documentTitle="全部文章 - Evigila 的博客" title="全部文章" eyebrow="ALL BLOGS" description="浏览所有已发布文章。">
+<EditorialPageLayout documentTitle="全部文章 - Evigila 的博客" title="全部文章" metaDescription="Evigila 发布的技术文章列表。">
 		<section class="editorial-page__section">
-			<div class="editorial-page__section-head">
-				<a class="editorial-text-action journal-control" href="/tags">按标签筛选 ↗</a>
-			</div>
-			<EditorialPostIndex posts={posts} />
+			<EditorialPostIndex posts={posts} layout="grid" />
 		</section>
 </EditorialPageLayout>

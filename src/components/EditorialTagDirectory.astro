@@ -10,7 +10,6 @@ interface Props {
 }
 
 const { posts, tags, activeSlug } = Astro.props;
-const activeTag = tags.find((tag) => tag.slug === activeSlug);
 ---
 
 <section class="editorial-page__section" data-tag-directory data-active-slug={activeSlug ?? ''}>
@@ -28,10 +27,7 @@ const activeTag = tags.find((tag) => tag.slug === activeSlug);
 		</nav>
 
 		<div class="editorial-tags__results" data-tag-results>
-			<div class="editorial-filter-status">
-				<strong data-tag-status-label>{activeTag ? `# ${activeTag.name}` : '全部文章'}</strong>
-				<span data-tag-status-count aria-live="polite">{activeTag ? activeTag.count : posts.length} 篇文章</span>
-			</div>
+			<p class="sr-only" data-tag-announcer aria-live="polite" aria-atomic="true"></p>
 			<EditorialPostIndex posts={posts} activeSlug={activeSlug} />
 			<p class="editorial-filter-empty" data-tag-empty hidden>该标签下暂无文章。</p>
 		</div>

@@ -6,18 +6,6 @@ const getTagSlugFromUrl = (value: string) => {
 	return match[1] ? decodeURIComponent(match[1]) : '';
 };
 
-const restoreScrollPosition = (scrollOwner: HTMLElement, left: number, top: number) => {
-	const previousBehavior = scrollOwner.style.getPropertyValue('scroll-behavior');
-	const previousPriority = scrollOwner.style.getPropertyPriority('scroll-behavior');
-	scrollOwner.style.setProperty('scroll-behavior', 'auto', 'important');
-	scrollOwner.scrollTo(left, top);
-	window.requestAnimationFrame(() => {
-		scrollOwner.scrollTo(left, top);
-		if (previousBehavior) scrollOwner.style.setProperty('scroll-behavior', previousBehavior, previousPriority);
-		else scrollOwner.style.removeProperty('scroll-behavior');
-	});
-};
-
 export const initTagDirectories = () => {
 	document.querySelectorAll<HTMLElement>('[data-tag-directory]').forEach((root) => {
 		if (root.dataset.tagDirectoryInitialized === 'true') return;
@@ -31,38 +19,47 @@ export const initTagDirectories = () => {
 			tags: new Set((card.dataset.tagSlugs ?? '').split(/\s+/).filter(Boolean)),
 		}));
 		const results = root.querySelector<HTMLElement>('[data-tag-results]');
-		const statusLabel = root.querySelector<HTMLElement>('[data-tag-status-label]');
-		const statusCount = root.querySelector<HTMLElement>('[data-tag-status-count]');
+		const announcer = root.querySelector<HTMLElement>('[data-tag-announcer]');
 		const emptyState = root.querySelector<HTMLElement>('[data-tag-empty]');
 		const scrollOwner = root.closest<HTMLElement>('[data-workspace-stage]')
 			?? document.scrollingElement as HTMLElement;
 		if (!results || filters.length === 0) return;
 
-		let preservedResultsHeight = 0;
 		const knownFilter = (slug: string) => filterBySlug.get(slug);
+		const revealFilter = (filter: HTMLAnchorElement) => {
+			const owner = filter.closest<HTMLElement>('[data-tag-filters]');
+			if (!owner) return;
+			const ownerRect = owner.getBoundingClientRect();
+			const filterRect = filter.getBoundingClientRect();
+			let top = owner.scrollTop;
+			let left = owner.scrollLeft;
+			if (filterRect.top < ownerRect.top) top -= ownerRect.top - filterRect.top;
+			else if (filterRect.bottom > ownerRect.bottom) top += filterRect.bottom - ownerRect.bottom;
+			if (filterRect.left < ownerRect.left) left -= ownerRect.left - filterRect.left;
+			else if (filterRect.right > ownerRect.right) left += filterRect.right - ownerRect.right;
+			owner.scrollTo({ top, left, behavior: 'auto' });
+		};
+		const alignResults = () => {
+			window.requestAnimationFrame(() => {
+				const ownerRect = scrollOwner.getBoundingClientRect();
+				const resultsTop = results.getBoundingClientRect().top - ownerRect.top + scrollOwner.scrollTop;
+				scrollOwner.scrollTo({ top: Math.max(resultsTop - 128, 0), behavior: 'auto' });
+			});
+		};
 
 		const applyFilter = (
 			slug: string,
-			options: { pushHistory?: boolean; preserveScroll?: boolean; announce?: boolean } = {},
+			options: { pushHistory?: boolean; alignResults?: boolean; announce?: boolean } = {},
 		) => {
 			const selectedFilter = knownFilter(slug);
 			if (!selectedFilter) return false;
 
-			const preserveScroll = options.preserveScroll ?? false;
-			const scrollLeft = scrollOwner.scrollLeft;
-			const scrollTop = scrollOwner.scrollTop;
-			if (preserveScroll) {
-				preservedResultsHeight = Math.max(preservedResultsHeight, results.getBoundingClientRect().height);
-				results.style.minHeight = `${preservedResultsHeight}px`;
-			}
-
-			let visibleIndex = 0;
+			let visibleCount = 0;
 			cardRecords.forEach(({ card, tags: cardTags }) => {
 				const visible = !slug || cardTags.has(slug);
 				const shouldHide = !visible;
 				if (card.hidden !== shouldHide) card.hidden = shouldHide;
-				if (!visible) return;
-				visibleIndex += 1;
+				if (visible) visibleCount += 1;
 			});
 
 			filters.forEach((filter) => {
@@ -70,19 +67,17 @@ export const initTagDirectories = () => {
 				else filter.removeAttribute('aria-current');
 			});
 			root.dataset.activeSlug = slug;
-			if (statusLabel) statusLabel.textContent = selectedFilter.dataset.tagLabel ?? '全部文章';
-			if (statusCount) {
-				statusCount.textContent = `${visibleIndex} 篇文章`;
-				if (options.announce === false) statusCount.setAttribute('aria-live', 'off');
-				else statusCount.setAttribute('aria-live', 'polite');
+			if (emptyState) emptyState.hidden = visibleCount !== 0;
+			if (announcer && options.announce !== false) {
+				announcer.textContent = `已筛选${selectedFilter.dataset.tagLabel ?? '全部文章'}，显示 ${visibleCount} 篇文章。`;
 			}
-			if (emptyState) emptyState.hidden = visibleIndex !== 0;
 
 			if (options.pushHistory && getTagSlugFromUrl(window.location.href) !== slug) {
 				window.history.pushState({ editorialTag: slug }, '', selectedFilter.href);
 			}
 			document.title = slug ? `${selectedFilter.dataset.tagLabel ?? slug} - Evigila 的博客` : '内容标签 - Evigila 的博客';
-			if (preserveScroll) restoreScrollPosition(scrollOwner, scrollLeft, scrollTop);
+			revealFilter(selectedFilter);
+			if (options.alignResults) alignResults();
 			return true;
 		};
 
@@ -96,14 +91,12 @@ export const initTagDirectories = () => {
 			if (slug === undefined || !selectedFilter) return;
 
 			event.preventDefault();
-			const clickedInsideFilters = Boolean(target.closest('[data-tag-filters]'));
-			if (!applyFilter(slug, { pushHistory: true, preserveScroll: true })) return;
-			if (!clickedInsideFilters) selectedFilter.focus({ preventScroll: true });
+			applyFilter(slug, { pushHistory: true, alignResults: true });
 		});
 
 		window.addEventListener('popstate', () => {
 			const slug = getTagSlugFromUrl(window.location.href);
-			if (slug !== undefined) applyFilter(slug, { announce: true });
+			if (slug !== undefined) applyFilter(slug, { alignResults: true });
 		});
 		window.addEventListener('pageshow', (event) => {
 			if (!event.persisted) return;

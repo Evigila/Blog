@@ -6,6 +6,6 @@ import EditorialPageLayout from '../../layouts/EditorialPageLayout.astro';
 const { posts, tags } = await getBlogDirectory();
 ---
 
-<EditorialPageLayout documentTitle="内容标签 - Evigila 的博客" title="内容标签" eyebrow="FILTER" description="通过标签筛选文章。">
+<EditorialPageLayout documentTitle="内容标签 - Evigila 的博客" title="内容标签" metaDescription="通过标签浏览 Evigila 的博客文章。">
 		<EditorialTagDirectory posts={posts} tags={tags} />
 </EditorialPageLayout>

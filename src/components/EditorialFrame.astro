@@ -1,5 +1,6 @@
 ---
 import WorkspaceShell from './WorkspaceShell.astro';
+import SiteFooter from './SiteFooter.astro';
 import '../styles/editorial-frame.css';
 
 interface Props {
@@ -18,9 +19,6 @@ const { class: className, home = false } = Astro.props;
 
 		<slot />
 
-		<footer class="editorial-frame__footer">
-			<span>© {new Date().getFullYear()} EVIGILA</span>
-			<a href="/">返回首页</a>
-		</footer>
+		<SiteFooter />
 	</div>
 </WorkspaceShell>

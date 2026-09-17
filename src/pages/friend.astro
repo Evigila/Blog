@@ -1,21 +1,31 @@
 ---
 import { friendLinks } from '../data/links';
 import EditorialPageLayout from '../layouts/EditorialPageLayout.astro';
+
+const friendGridColumnCount = 3;
+const lastRowStart = Math.floor((friendLinks.length - 1) / friendGridColumnCount) * friendGridColumnCount;
 ---
 
-<EditorialPageLayout documentTitle="友链 - Evigila 的博客" title="友链" eyebrow="FRIEND BLOG" description="我关注的个人网站与技术博客。" metaDescription="Evigila 推荐的个人网站与技术博客。">
-		<section class="editorial-page__section">
-
-			<div class="editorial-link-grid">
-				{friendLinks.map((link, index) => (
-					<a class="editorial-link-card" href={link.href} target="_blank" rel="noreferrer">
-						<span class="editorial-link-card__number">{String(index + 1).padStart(2, '0')} / SITE</span>
-						<span class="editorial-link-card__arrow" aria-hidden="true">↗</span>
-						<h2>{link.name}</h2>
-						<p>{link.description}</p>
-						<span class="editorial-link-card__domain">{new URL(link.href).hostname.toUpperCase()}</span>
-					</a>
-				))}
-			</div>
-		</section>
+<EditorialPageLayout documentTitle="友链 - Evigila 的博客" title="友链" metaDescription="Evigila 推荐的个人网站与技术博客。">
+	<section class="editorial-page__section">
+		<div class="editorial-link-grid">
+			{friendLinks.map((link, index) => (
+				<a
+					class:list={[
+						'editorial-link-card',
+						{ 'is-column-end': (index + 1) % friendGridColumnCount === 0 },
+						{ 'is-last-row': index >= lastRowStart },
+					]}
+					href={link.href}
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					<span class="editorial-link-card__arrow" aria-hidden="true">↗</span>
+					<h2>{link.name}</h2>
+					<p>{link.description}</p>
+					<span class="editorial-link-card__domain">{new URL(link.href).hostname.replace(/^www\./, '')}</span>
+				</a>
+			))}
+		</div>
+	</section>
 </EditorialPageLayout>

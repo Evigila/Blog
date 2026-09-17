@@ -10,30 +10,35 @@ interface Props {
 const { class: className } = Astro.props;
 const pathname = normalizePath(Astro.url.pathname);
 const isArticleModule = pathname === '/articles' || pathname.startsWith('/posts/') || pathname === '/tags' || pathname.startsWith('/tags/');
+const githubHref = siteConfig.socials.find((item) => item.icon === 'github')?.href ?? 'https://github.com/Evigila';
 const primaryNavigation = [
-	{ label: '首页', href: '/', icon: 'home' as const, current: pathname === '/' },
-	{ label: '文章', href: '/articles', icon: 'articles' as const, current: isArticleModule },
-	{ label: '友链', href: '/friend', icon: 'links' as const, current: pathname === '/friend' },
-	{ label: '关于', href: '/#about', icon: 'about' as const, current: false },
+	{ key: 'home', label: '首页', href: '/', icon: 'home' as const, current: pathname === '/' },
+	{ key: 'articles', label: '文章', href: '/articles', icon: 'articles' as const, current: isArticleModule },
+	{ key: 'links', label: '友链', href: '/friend', icon: 'links' as const, current: pathname === '/friend' },
+	{ key: 'github', label: 'GitHub', href: githubHref, icon: 'github' as const, current: false },
 ];
+const selectedNavigationIndex = Math.max(primaryNavigation.findIndex((item) => item.current) + 1, 1);
 ---
 
 <div class:list={['workspace-shell', { 'workspace-shell--secondary': isArticleModule }, className]}>
 	<a class="workspace-skip-link" href="#workspace-content">跳到主要内容</a>
 	<header class="workspace-topbar">
-		<a class="workspace-brand" href="/" aria-label="Evigila 的博客首页">
-			<span class="workspace-brand__logo"><img src={siteConfig.author.avatar} alt="" width="48" height="48" /></span>
-			<strong>Evigila 的博客</strong>
-		</a>
-		<nav class="workspace-topbar__nav" aria-label="博客主要导航">
-			{primaryNavigation.map((item) => (
-				<a class:list={{ 'is-active': item.current }} href={item.href} aria-current={item.current ? 'page' : undefined} aria-label={item.label} data-label={item.label}>
-					<WorkspaceIcon name={item.icon} size={23} />
-					<span>{item.label}</span>
-				</a>
-			))}
+		<nav class="workspace-topbar__nav" aria-label="博客主要导航" data-primary-navigation style={`--workspace-nav-index: ${selectedNavigationIndex}`}>
+			<span class="workspace-nav-selection" aria-hidden="true"></span>
+			<div class="workspace-nav-foreground">
+				<button class="workspace-nav-avatar" type="button" aria-label="Evigila 头像" aria-pressed="false" data-primary-nav data-nav-index="0">
+					<img src={siteConfig.author.avatar} alt="" width="43" height="43" />
+					<span class="workspace-nav-tip" aria-hidden="true">Evigila</span>
+				</button>
+				{primaryNavigation.map((item, index) => {
+					return (
+					<a href={item.href} aria-current={item.current ? 'page' : undefined} aria-label={item.label} data-primary-nav data-nav-index={index + 1} data-nav-selected={item.current ? 'true' : undefined}>
+						<WorkspaceIcon name={item.icon} size={25} />
+						<span class="workspace-nav-tip" aria-hidden="true">{item.label}</span>
+					</a>
+				)})}
+			</div>
 		</nav>
-		<span class="workspace-topbar__balance" aria-hidden="true"></span>
 	</header>
 
 	<div class="workspace-body">
@@ -49,8 +54,8 @@ const primaryNavigation = [
 		<main class="workspace-stage" id="workspace-content" data-workspace-stage tabindex="-1">
 			<slot />
 		</main>
-		<button class="workspace-scroll-top" type="button" data-workspace-scroll-top hidden aria-label="返回页面顶部">
-			<WorkspaceIcon name="arrow-up" size={23} />
+		<button class="workspace-scroll-top" type="button" data-workspace-scroll-top hidden aria-label="返回页面顶部" title="返回页面顶部">
+			<WorkspaceIcon name="arrow-up" size={34} />
 		</button>
 	</div>
 </div>

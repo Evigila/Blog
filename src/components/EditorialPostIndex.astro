@@ -1,51 +1,63 @@
 ---
 import type { EditorialPostSummary } from '../data/blog';
 import { getTagHref, getTagSlug } from '../data/blog';
+import '../styles/post-collection.css';
 
 interface Props {
 	posts: EditorialPostSummary[];
 	activeSlug?: string;
+	layout?: 'list' | 'grid';
 }
 
-const { posts, activeSlug = '' } = Astro.props;
+const { posts, activeSlug = '', layout = 'list' } = Astro.props;
 let visiblePostCount = 0;
 ---
 
-<div class="editorial-post-index">
-	{posts.map((post) => {
+<div class:list={['editorial-post-index', { 'editorial-post-index--grid': layout === 'grid' }]} data-post-collection>
+	{posts.map((post, index) => {
 		const tagSlugs = post.tags.map(getTagSlug);
 		const isVisible = !activeSlug || tagSlugs.includes(activeSlug);
 		if (isVisible) visiblePostCount += 1;
 		const visibleIndex = visiblePostCount;
+		const menuId = `post-index-${layout}-menu-${index}`;
+		const menuTriggerId = `${menuId}-trigger`;
 		return (
-		<article class="editorial-index-card" data-post-card data-tag-slugs={tagSlugs.join(' ')} hidden={!isVisible}>
-			<a class="editorial-index-card__media" href={post.href} aria-label={`阅读：${post.title}`}>
-				{post.image ? (
-					<img
-						src={post.image}
-						alt=""
-						width="1280"
-						height="720"
-						loading={isVisible && visibleIndex <= 2 ? 'eager' : 'lazy'}
-						fetchpriority={isVisible && visibleIndex === 1 ? 'high' : 'auto'}
-						decoding="async"
-					/>
-				) : <span>EVG</span>}
-			</a>
-			<div class="editorial-index-card__body">
-				<div class="editorial-index-card__meta">
-					<span>{post.date}</span>
-					<span>{post.readingTime}</span>
+			<article class="editorial-index-card" data-post-card data-post-href={post.href} data-tag-slugs={tagSlugs.join(' ')} hidden={!isVisible}>
+				<div class="editorial-index-card__media" aria-hidden="true">
+					{post.image ? (
+						<img
+							src={post.image}
+							alt=""
+							width="1280"
+							height="720"
+							loading={isVisible && visibleIndex <= 2 ? 'eager' : 'lazy'}
+							fetchpriority={isVisible && visibleIndex === 1 ? 'high' : 'auto'}
+							decoding="async"
+						/>
+					) : <span>EVG</span>}
 				</div>
-				<h2><a class="editorial-index-card__primary-link" href={post.href}>{post.title}</a></h2>
-				<p>{post.excerpt}</p>
-				<div class="editorial-index-card__footer">
-					<div class="editorial-index-card__tags">
-						{post.tags.map((tag) => <a class="journal-control" href={getTagHref(tag)}>#{tag}</a>)}
+				<div class="editorial-index-card__body">
+					<h2>{post.title}</h2>
+					<p>{post.excerpt}</p>
+					<div class="editorial-index-card__footer">
+						<div class="editorial-index-card__tags">
+							{post.tags.map((tag) => <a class="journal-control" href={getTagHref(tag)}>#{tag}</a>)}
+						</div>
 					</div>
-					<a class="editorial-index-card__read journal-control" href={post.href}>READ ↗</a>
 				</div>
-			</div>
-		</article>
-	)})}
+				<div class="workspace-row-menu" data-row-menu>
+					<button class="workspace-row-menu__trigger" id={menuTriggerId} type="button" aria-label={`${post.title}的操作`} aria-haspopup="menu" aria-expanded="false" aria-controls={menuId} data-row-menu-trigger>···</button>
+					<div class="workspace-row-menu__popup" id={menuId} role="menu" aria-labelledby={menuTriggerId} hidden data-row-menu-popup>
+						<a href={post.href} role="menuitem">阅读文章</a>
+						<a href={post.href} target="_blank" rel="noreferrer" role="menuitem">在新标签页打开</a>
+					</div>
+				</div>
+			</article>
+		);
+	})}
 </div>
+
+<script>
+	import { initPostCollections } from '../scripts/post-collection';
+	initPostCollections();
+</script>

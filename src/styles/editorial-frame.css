@@ -36,14 +36,6 @@
 	transition: font-size 180ms ease;
 }
 
-.editorial-frame__description {
-	max-width: 760px;
-	margin: 16px 0 0;
-	color: var(--workspace-muted);
-	font-size: 17px;
-	line-height: 1.55;
-}
-
 .workspace-shell.is-heading-compact .editorial-frame__intro {
 	min-height: 104px;
 	padding-top: 18px;
@@ -56,26 +48,7 @@
 	letter-spacing: -0.035em;
 }
 
-.workspace-shell.is-heading-compact .editorial-frame__description,
-.workspace-shell.is-heading-compact .editorial-frame__intro > .workspace-primary-action {
-	display: none;
-}
-
-.editorial-frame__footer {
-	display: flex;
-	justify-content: space-between;
-	gap: 24px;
-	margin: clamp(64px, 9vw, 120px) var(--workspace-content-gutter) 0;
-	padding: 24px 0 36px;
-	border-top: 1px solid var(--workspace-line);
-	color: var(--workspace-muted);
-}
-
-.editorial-frame__footer a { color: var(--workspace-accent-strong); font-weight: 700; }
-
-.workspace-primary-action,
-.workspace-secondary-action,
-.workspace-row-action {
+.workspace-secondary-action {
 	display: inline-flex;
 	min-height: var(--workspace-control-height);
 	align-items: center;
@@ -87,14 +60,6 @@
 	white-space: nowrap;
 }
 
-.workspace-primary-action {
-	border: 1px solid var(--workspace-accent);
-	background: var(--workspace-accent);
-	color: #fff;
-}
-
-.workspace-primary-action:hover { border-color: var(--workspace-accent-hover); background: var(--workspace-accent-hover); }
-
 .workspace-secondary-action {
 	border: 1px solid var(--workspace-line-strong);
 	background: transparent;
@@ -102,16 +67,6 @@
 }
 
 .workspace-secondary-action:hover { background: var(--workspace-row-hover); }
-
-.workspace-row-action {
-	min-height: var(--workspace-compact-height);
-	padding: 0 12px;
-	border: 1px solid var(--workspace-line-strong);
-	background: var(--workspace-surface);
-	color: var(--workspace-accent-strong);
-}
-
-.workspace-row-action:hover { background: var(--workspace-accent-soft); }
 
 .workspace-page-module {
 	min-width: 0;
@@ -146,12 +101,10 @@
 	.editorial-frame__title { font-size: clamp(36px, 10vw, 50px); }
 	.workspace-page-module { padding-right: 24px; padding-left: 24px; }
 	.workspace-section-heading { align-items: stretch; flex-direction: column; }
-	.editorial-frame__footer { margin-right: 24px; margin-left: 24px; }
 }
 
 @media (max-width: 520px) {
 	.editorial-frame__intro { padding-right: 18px; padding-left: 18px; }
 	.workspace-page-module { padding-right: 18px; padding-left: 18px; }
-	.workspace-primary-action, .workspace-secondary-action { width: 100%; }
-	.editorial-frame__footer { align-items: flex-start; flex-direction: column; margin-right: 18px; margin-left: 18px; }
+	.workspace-secondary-action { width: 100%; }
 }

@@ -3,13 +3,13 @@ import { siteConfig } from '../../data/site';
 import { getTagHref, type EditorialPostSummary } from '../../data/blog';
 import EditorialFrame from '../EditorialFrame.astro';
 import '../../styles/home-editorial.css';
+import '../../styles/post-collection.css';
 
 interface Props {
 	posts: EditorialPostSummary[];
-	archiveCount?: number;
 }
 
-const { posts, archiveCount = posts.length } = Astro.props;
+const { posts } = Astro.props;
 const githubLink = siteConfig.socials.find((item) => item.icon === 'github')?.href ?? '#';
 const mailLink = siteConfig.socials.find((item) => item.icon === 'mail')?.href ?? '#';
 ---
@@ -17,57 +17,64 @@ const mailLink = siteConfig.socials.find((item) => item.icon === 'mail')?.href ?
 <EditorialFrame class="editorial-home" home>
 	<div slot="header" class="editorial-frame__intro editorial-home__intro">
 		<div class="editorial-frame__intro-main">
-			<h1 class="editorial-frame__title">欢迎来到我的写作空间</h1>
-			<p class="editorial-frame__description">记录 .NET、C#、桌面应用与 Web 开发中的实践和思考。</p>
+			<h1 class="editorial-frame__title">
+				<span data-greeting-line="first">欢迎，早上好。</span>
+				<span data-greeting-line="second">祝你有美好的一天</span>
+			</h1>
 		</div>
-		<a class="workspace-primary-action" href="/articles">浏览全部文章</a>
 	</div>
 
 	<section class="workspace-page-module" aria-labelledby="latest-title">
 		<div class="workspace-section-heading">
-			<div>
-				<h2 id="latest-title">近期发布</h2>
-				<p>共 {archiveCount} 篇文章</p>
-			</div>
-			<a class="workspace-secondary-action" href="/tags">按标签浏览</a>
+			<h2 id="latest-title">近期发布</h2>
+			<a class="workspace-secondary-action" href="/articles">浏览所有</a>
 		</div>
 
-		<div class="workspace-post-list">
-			{posts.length > 0 ? posts.slice(0, 6).map((post) => (
-				<article class="workspace-post-row">
-					<a class="workspace-post-row__media" href={post.href} aria-label={`阅读：${post.title}`}>
+		<div class="workspace-post-list" data-post-collection>
+			{posts.length > 0 ? posts.slice(0, 6).map((post, index) => {
+				const menuId = `home-post-menu-${index}`;
+				const menuTriggerId = `${menuId}-trigger`;
+				return (
+				<article class="workspace-post-row" data-post-row data-post-href={post.href}>
+					<div class="workspace-post-row__media" aria-hidden="true">
 						{post.image ? <img src={post.image} alt="" width="240" height="150" loading="lazy" decoding="async" /> : <span>EVG</span>}
-					</a>
+					</div>
 					<div class="workspace-post-row__body">
-						<div class="workspace-post-row__meta"><span>{post.date}</span><span>{post.readingTime}</span></div>
-						<h3><a href={post.href}>{post.title}</a></h3>
+						<h3>{post.title}</h3>
 						<p>{post.excerpt}</p>
 						<div class="workspace-post-row__tags">{post.tags.slice(0, 3).map((tag) => <a href={getTagHref(tag)}>#{tag}</a>)}</div>
 					</div>
-					<a class="workspace-row-action" href={post.href} aria-label={`打开文章：${post.title}`}>打开</a>
+					<div class="workspace-row-menu" data-row-menu>
+						<button class="workspace-row-menu__trigger" id={menuTriggerId} type="button" aria-label={`${post.title}的操作`} aria-haspopup="menu" aria-expanded="false" aria-controls={menuId} data-row-menu-trigger>···</button>
+						<div class="workspace-row-menu__popup" id={menuId} role="menu" aria-labelledby={menuTriggerId} hidden data-row-menu-popup>
+							<a href={post.href} role="menuitem">阅读文章</a>
+							<a href={post.href} target="_blank" rel="noreferrer" role="menuitem">在新标签页打开</a>
+						</div>
+					</div>
 				</article>
-			)) : <p class="workspace-empty-state">暂无已发布文章。</p>}
+			)}) : <p class="workspace-empty-state">暂无已发布文章。</p>}
 		</div>
 	</section>
 
 	<section class="workspace-page-module editorial-author" id="about" aria-labelledby="author-title">
 		<div class="workspace-section-heading">
-			<div>
-				<h2 id="author-title">关于 Evigila</h2>
-				<p>{siteConfig.author.signature}</p>
-			</div>
+			<h2 id="author-title">关于</h2>
 		</div>
 		<div class="editorial-author__content">
 			<img src={siteConfig.author.avatar} alt="Evigila 的头像" width="160" height="160" loading="lazy" decoding="async" />
 			<div>
 				<h3>{siteConfig.author.bio}</h3>
-				<p>关注桌面应用与现代 Web 技术，也在这里整理开发过程中的经验。</p>
 				<div class="editorial-author__actions">
 					<a class="workspace-secondary-action" href={githubLink} target="_blank" rel="noreferrer">GitHub</a>
 					<a class="workspace-secondary-action" href={mailLink}>邮件联系</a>
-					<a class="workspace-secondary-action" href="/friend">查看友链</a>
+					<a class="workspace-secondary-action" href="/friend">查看更多</a>
 				</div>
 			</div>
 		</div>
 	</section>
 </EditorialFrame>
+
+<script>
+	import { initEditorialHome } from '../../scripts/editorial-home';
+	initEditorialHome();
+</script>

@@ -13,6 +13,6 @@ const activeSlug = Astro.params.tag ?? '';
 const activeTag = tags.find((tag) => tag.slug === activeSlug)!;
 ---
 
-<EditorialPageLayout documentTitle={`#${activeTag.name} - Evigila 的博客`} title="内容标签" eyebrow="FILTER" description="通过标签筛选文章。" metaDescription={`浏览带有 ${activeTag.name} 标签的博客文章。`}>
+<EditorialPageLayout documentTitle={`#${activeTag.name} - Evigila 的博客`} title="内容标签" metaDescription={`浏览带有 ${activeTag.name} 标签的博客文章。`}>
 		<EditorialTagDirectory posts={posts} tags={tags} activeSlug={activeSlug} />
 </EditorialPageLayout>
