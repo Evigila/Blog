@@ -16,10 +16,10 @@
 		z-index: 200;
 		opacity: 0;
 		pointer-events: none;
-		border: 1px solid #d7e0e3;
-		border-radius: 0.35rem;
-		background: #f6f9fa;
-		box-shadow: 0 0.75rem 2.5rem rgba(38, 49, 53, 0.12);
+		border: 1px solid var(--workspace-line-strong);
+		border-radius: var(--workspace-radius-small);
+		background: var(--workspace-surface);
+		box-shadow: 0 8px 24px rgb(21 58 50 / 18%);
 		transition: opacity 180ms ease, transform 180ms ease;
 	}
 
@@ -31,9 +31,9 @@
 	.site-toast__body {
 		padding: 0.72rem 1.15rem;
 		font-family: var(--font-ui);
-		font-size: var(--text-sm);
+		font-size: 17px;
 		font-weight: var(--weight-medium);
-		color: #2d383c;
+		color: var(--workspace-ink);
 		white-space: nowrap;
 	}
 

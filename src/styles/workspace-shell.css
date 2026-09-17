@@ -1,0 +1,255 @@
+.workspace-shell {
+	display: grid;
+	grid-template-rows: var(--workspace-topbar-height) minmax(0, 1fr);
+	height: 100vh;
+	height: 100dvh;
+	min-height: 0;
+	overflow: hidden;
+	background: var(--workspace-canvas);
+	color: var(--workspace-ink);
+}
+
+.workspace-skip-link {
+	position: fixed;
+	top: 12px;
+	left: 12px;
+	z-index: 100;
+	padding: 10px 14px;
+	border-radius: var(--workspace-radius-small);
+	background: var(--workspace-accent);
+	color: #fff;
+	font-weight: 750;
+	transform: translateY(-180%);
+}
+
+.workspace-skip-link:focus { transform: translateY(0); }
+
+.workspace-topbar {
+	position: relative;
+	z-index: 50;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+	min-width: 0;
+	height: var(--workspace-topbar-height);
+	align-items: center;
+	background: var(--workspace-primary);
+	color: #fff;
+	border-bottom: 1px solid rgb(255 255 255 / 16%);
+}
+
+.workspace-brand {
+	display: flex;
+	min-width: 0;
+	height: 100%;
+	align-items: center;
+	justify-self: start;
+}
+
+.workspace-brand__logo {
+	display: grid;
+	width: 68px;
+	height: 100%;
+	flex: 0 0 68px;
+	place-items: center;
+	padding: 8px;
+}
+
+.workspace-brand__logo img {
+	width: 48px;
+	height: 48px;
+	border-radius: 14px;
+	object-fit: cover;
+}
+
+.workspace-brand > strong {
+	padding: 0 22px 0 4px;
+	overflow: hidden;
+	font-size: 17px;
+	font-weight: 750;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.workspace-topbar__nav {
+	display: flex;
+	min-width: 0;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+}
+
+.workspace-topbar__nav a {
+	position: relative;
+	display: flex;
+	min-width: 0;
+	height: 48px;
+	align-items: center;
+	gap: 9px;
+	padding: 0 14px;
+	border-radius: 14px;
+	color: rgb(255 255 255 / 78%);
+	font-size: 17px;
+	font-weight: 650;
+	white-space: nowrap;
+}
+
+.workspace-topbar__nav a:hover {
+	background: rgb(255 255 255 / 11%);
+	color: #fff;
+}
+
+.workspace-topbar__nav a.is-active {
+	background: var(--workspace-accent);
+	box-shadow: inset 0 0 0 2px rgb(255 255 255 / 20%);
+	color: #fff;
+	font-weight: 750;
+}
+
+.workspace-topbar__nav a.is-active::before {
+	position: absolute;
+	right: 14px;
+	bottom: 5px;
+	left: 14px;
+	height: 3px;
+	border-radius: 3px;
+	background: currentColor;
+	content: '';
+}
+
+.workspace-topbar__nav a:focus-visible { outline-color: #fff; outline-offset: -3px; }
+.workspace-topbar__balance { justify-self: stretch; }
+
+.workspace-body {
+	position: relative;
+	display: grid;
+	grid-template-rows: minmax(0, 1fr);
+	min-width: 0;
+	min-height: 0;
+	overflow: hidden;
+}
+
+.workspace-shell--secondary .workspace-body {
+	grid-template-rows: 62px minmax(0, 1fr);
+}
+
+.workspace-secondary-rail {
+	position: relative;
+	z-index: 18;
+	min-width: 0;
+	overflow-x: auto;
+	overflow-y: hidden;
+	background: var(--workspace-surface-alternate);
+	border-bottom: 1px solid var(--workspace-line);
+	scrollbar-width: thin;
+}
+
+.workspace-secondary-rail nav {
+	display: flex;
+	width: max-content;
+	min-width: 100%;
+	height: 100%;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	padding: 8px var(--workspace-page-gutter);
+}
+
+.workspace-secondary-rail a {
+	display: flex;
+	min-height: 44px;
+	align-items: center;
+	padding: 9px 16px;
+	border-radius: var(--workspace-control-radius);
+	color: var(--workspace-ink-soft);
+	font-size: 17px;
+	font-weight: 650;
+	white-space: nowrap;
+}
+
+.workspace-secondary-rail a:hover { background: var(--workspace-row-hover); color: var(--workspace-ink); }
+.workspace-secondary-rail a.is-active { background: var(--workspace-accent-soft); color: var(--workspace-accent-strong); font-weight: 780; }
+.workspace-secondary-rail a:focus-visible { outline-offset: -3px; }
+
+.workspace-stage {
+	container-name: workspace-stage;
+	container-type: inline-size;
+	min-width: 0;
+	min-height: 0;
+	overflow-x: hidden;
+	overflow-y: auto;
+	overflow-anchor: none;
+	overscroll-behavior: contain;
+	background: var(--workspace-canvas);
+	scrollbar-gutter: stable;
+	scroll-padding-top: 120px;
+}
+
+.workspace-stage:focus { outline: none; }
+
+.workspace-scroll-top {
+	position: absolute;
+	right: 24px;
+	bottom: 24px;
+	z-index: 30;
+	display: grid;
+	width: 48px;
+	height: 48px;
+	place-items: center;
+	border: 1px solid var(--workspace-line-strong);
+	border-radius: var(--workspace-control-radius);
+	background: var(--workspace-surface);
+	color: var(--workspace-accent-strong);
+	box-shadow: 0 8px 24px rgb(21 58 50 / 14%);
+}
+
+.workspace-scroll-top:hover { background: var(--workspace-accent-soft); }
+
+@media (max-width: 760px) {
+	.workspace-shell { --workspace-topbar-height: 60px; }
+	.workspace-topbar { grid-template-columns: auto minmax(0, 1fr); }
+	.workspace-topbar__balance { display: none; }
+	.workspace-topbar__nav { justify-self: end; padding-right: 6px; }
+	.workspace-topbar__nav a { width: 44px; height: 44px; border-radius: 12px; }
+	.workspace-topbar__nav a > span { display: none; }
+	.workspace-topbar__nav a::after {
+		position: absolute;
+		top: calc(100% + 8px);
+		left: 50%;
+		z-index: 80;
+		width: max-content;
+		padding: 7px 10px;
+		border-radius: var(--workspace-radius-small);
+		background: #102b25;
+		color: #fff;
+		content: attr(data-label);
+		font-size: 17px;
+		opacity: 0;
+		pointer-events: none;
+		transform: translate(-50%, -4px);
+		transition: opacity 120ms ease 150ms, transform 120ms ease 150ms;
+	}
+	.workspace-topbar__nav a:hover::after,
+	.workspace-topbar__nav a:focus-visible::after { opacity: 1; transform: translate(-50%, 0); }
+	.workspace-topbar__nav a.is-active::before { right: 10px; bottom: 4px; left: 10px; }
+	.workspace-brand__logo { width: 60px; flex-basis: 60px; padding: 7px; }
+	.workspace-brand__logo img { width: 44px; height: 44px; }
+	.workspace-brand > strong { padding-right: 10px; }
+	.workspace-secondary-rail nav { justify-content: flex-start; padding: 8px 16px; }
+}
+
+@media (max-width: 520px) {
+	.workspace-brand > strong { display: none; }
+	.workspace-topbar__nav { gap: 2px; padding-right: 4px; }
+	.workspace-topbar__nav a { width: 42px; }
+	.workspace-scroll-top { right: 16px; bottom: 16px; }
+}
+
+@media (forced-colors: active) {
+	.workspace-topbar__nav a.is-active,
+	.workspace-secondary-rail a.is-active {
+		border: 2px solid Highlight;
+		forced-color-adjust: none;
+	}
+	.workspace-topbar__nav a.is-active { background: Highlight; color: HighlightText; }
+	.workspace-secondary-rail a.is-active { background: Canvas; color: LinkText; }
+}

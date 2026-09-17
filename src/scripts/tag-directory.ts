@@ -6,16 +6,15 @@ const getTagSlugFromUrl = (value: string) => {
 	return match[1] ? decodeURIComponent(match[1]) : '';
 };
 
-const restoreScrollPosition = (left: number, top: number) => {
-	const rootStyle = document.documentElement.style;
-	const previousBehavior = rootStyle.getPropertyValue('scroll-behavior');
-	const previousPriority = rootStyle.getPropertyPriority('scroll-behavior');
-	rootStyle.setProperty('scroll-behavior', 'auto', 'important');
-	window.scrollTo(left, top);
+const restoreScrollPosition = (scrollOwner: HTMLElement, left: number, top: number) => {
+	const previousBehavior = scrollOwner.style.getPropertyValue('scroll-behavior');
+	const previousPriority = scrollOwner.style.getPropertyPriority('scroll-behavior');
+	scrollOwner.style.setProperty('scroll-behavior', 'auto', 'important');
+	scrollOwner.scrollTo(left, top);
 	window.requestAnimationFrame(() => {
-		window.scrollTo(left, top);
-		if (previousBehavior) rootStyle.setProperty('scroll-behavior', previousBehavior, previousPriority);
-		else rootStyle.removeProperty('scroll-behavior');
+		scrollOwner.scrollTo(left, top);
+		if (previousBehavior) scrollOwner.style.setProperty('scroll-behavior', previousBehavior, previousPriority);
+		else scrollOwner.style.removeProperty('scroll-behavior');
 	});
 };
 
@@ -35,6 +34,8 @@ export const initTagDirectories = () => {
 		const statusLabel = root.querySelector<HTMLElement>('[data-tag-status-label]');
 		const statusCount = root.querySelector<HTMLElement>('[data-tag-status-count]');
 		const emptyState = root.querySelector<HTMLElement>('[data-tag-empty]');
+		const scrollOwner = root.closest<HTMLElement>('[data-workspace-stage]')
+			?? document.scrollingElement as HTMLElement;
 		if (!results || filters.length === 0) return;
 
 		let preservedResultsHeight = 0;
@@ -48,8 +49,8 @@ export const initTagDirectories = () => {
 			if (!selectedFilter) return false;
 
 			const preserveScroll = options.preserveScroll ?? false;
-			const scrollLeft = window.scrollX;
-			const scrollTop = window.scrollY;
+			const scrollLeft = scrollOwner.scrollLeft;
+			const scrollTop = scrollOwner.scrollTop;
 			if (preserveScroll) {
 				preservedResultsHeight = Math.max(preservedResultsHeight, results.getBoundingClientRect().height);
 				results.style.minHeight = `${preservedResultsHeight}px`;
@@ -80,8 +81,8 @@ export const initTagDirectories = () => {
 			if (options.pushHistory && getTagSlugFromUrl(window.location.href) !== slug) {
 				window.history.pushState({ editorialTag: slug }, '', selectedFilter.href);
 			}
-			document.title = slug ? `${selectedFilter.dataset.tagLabel ?? slug} | Evigila` : '内容标签 | Evigila';
-			if (preserveScroll) restoreScrollPosition(scrollLeft, scrollTop);
+			document.title = slug ? `${selectedFilter.dataset.tagLabel ?? slug} - Evigila 的博客` : '内容标签 - Evigila 的博客';
+			if (preserveScroll) restoreScrollPosition(scrollOwner, scrollLeft, scrollTop);
 			return true;
 		};
 

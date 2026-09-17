@@ -1,6 +1,6 @@
 ---
 import { siteConfig } from '../../data/site';
-import type { EditorialPostSummary } from '../../data/blog';
+import { getTagHref, type EditorialPostSummary } from '../../data/blog';
 import EditorialFrame from '../EditorialFrame.astro';
 import '../../styles/home-editorial.css';
 
@@ -10,164 +10,64 @@ interface Props {
 }
 
 const { posts, archiveCount = posts.length } = Astro.props;
-const carouselStepSvh = 34;
-const carouselScrollDistanceSvh = Math.max(posts.length - 1, 0) * carouselStepSvh;
 const githubLink = siteConfig.socials.find((item) => item.icon === 'github')?.href ?? '#';
 const mailLink = siteConfig.socials.find((item) => item.icon === 'mail')?.href ?? '#';
 ---
 
 <EditorialFrame class="editorial-home" home>
 	<div slot="header" class="editorial-frame__intro editorial-home__intro">
-		<div class="editorial-frame__intro-main editorial-intro__copy">
-			<p class="editorial-kicker">WELCOME</p>
-			<h1 class="editorial-frame__title">
-				<span data-greeting-line="first">欢迎，早上好。</span>
-				<span data-greeting-line="second">祝你有美好的一天</span>
-			</h1>
-			<p class="editorial-frame__description">
-				这里是EVIGILA的神秘据点，分享一些各式各样的文章
-			</p>
-			<a class="editorial-text-link journal-control" href="/articles">查看文章 <span aria-hidden="true">↗</span></a>
+		<div class="editorial-frame__intro-main">
+			<h1 class="editorial-frame__title">欢迎来到我的写作空间</h1>
+			<p class="editorial-frame__description">记录 .NET、C#、桌面应用与 Web 开发中的实践和思考。</p>
 		</div>
+		<a class="workspace-primary-action" href="/articles">浏览全部文章</a>
 	</div>
 
-		<section
-			class="editorial-carousel"
-			id="articles"
-			data-carousel-region
-			style={`--carousel-scroll-distance: ${carouselScrollDistanceSvh}svh`}
-			role="region"
-			aria-roledescription="carousel"
-			aria-labelledby="articles-title"
-		>
-			<div class="editorial-carousel__sticky">
-				<div class="editorial-carousel__panel" data-carousel-sticky-panel>
-			<div class="editorial-section-heading">
-				<div>
-					<p class="editorial-kicker">LATEST</p>
-					<h2 id="articles-title">近期发布</h2>
-				</div>
-				<div class="editorial-carousel__controls" aria-label="文章轮播控制">
-					<button class="journal-control" type="button" data-carousel-prev aria-label="上一篇文章" aria-controls="article-carousel-window">←</button>
-					<span data-carousel-counter>01 / {String(posts.length).padStart(2, '0')}</span>
-					<button class="journal-control" type="button" data-carousel-next aria-label="下一篇文章" aria-controls="article-carousel-window">→</button>
-				</div>
+	<section class="workspace-page-module" aria-labelledby="latest-title">
+		<div class="workspace-section-heading">
+			<div>
+				<h2 id="latest-title">近期发布</h2>
+				<p>共 {archiveCount} 篇文章</p>
 			</div>
+			<a class="workspace-secondary-action" href="/tags">按标签浏览</a>
+		</div>
 
-			<div
-				class="editorial-carousel__window"
-				id="article-carousel-window"
-				data-carousel-window
-				tabindex="0"
-				aria-label="文章横向轮播；上下滚动或方向键切换文章"
-			>
-				<a
-					class="editorial-slide editorial-slide--archive"
-					href="/articles"
-					data-carousel-slide
-					data-carousel-archive
-					data-slot="left"
-					aria-label={`浏览全部 ${archiveCount} 篇文章`}
-				>
-					<div class="editorial-slide__archive-grid" aria-hidden="true"></div>
-					<p>SEE ALL</p>
-					<strong>所有<br />文章</strong>
-					<span>{String(archiveCount).padStart(2, '0')} BLOGS</span>
-				</a>
-
-				{posts.map((post, index) => (
-					<a
-						class="editorial-slide editorial-slide--post"
-						href={post.href}
-						data-carousel-slide
-						data-slot={index === 0 ? 'active' : index === 1 ? 'next' : 'future'}
-						aria-hidden={index === 0 ? 'false' : 'true'}
-						aria-current={index === 0 ? 'true' : undefined}
-						tabindex={index === 0 ? 0 : -1}
-					>
-						{post.image ? (
-							<img
-								src={post.image}
-								alt=""
-								width="1280"
-								height="720"
-								loading={index < 2 ? 'eager' : 'lazy'}
-								fetchpriority={index === 0 ? 'high' : 'auto'}
-								decoding="async"
-							/>
-						) : <div class="editorial-slide__fallback">EVG</div>}
-						<div class="editorial-slide__shade"></div>
-						<div class="editorial-slide__left-copy">
-							<span>{post.tags[0] ?? 'BLOG'}</span>
-							<strong>{post.title}</strong>
-						</div>
-						<span class="editorial-slide__open" aria-hidden="true">↗</span>
+		<div class="workspace-post-list">
+			{posts.length > 0 ? posts.slice(0, 6).map((post) => (
+				<article class="workspace-post-row">
+					<a class="workspace-post-row__media" href={post.href} aria-label={`阅读：${post.title}`}>
+						{post.image ? <img src={post.image} alt="" width="240" height="150" loading="lazy" decoding="async" /> : <span>EVG</span>}
 					</a>
-				))}
-			</div>
-
-			<div class="editorial-carousel__meta">
-				{posts.map((post, index) => (
-					<article class="editorial-meta" data-meta-index={index} hidden={index !== 0}>
-						<div class="editorial-meta__title">
-							<span>{post.tags[0] ?? 'ARTICLE'} / {String(index + 1).padStart(2, '0')}</span>
-							<h3>{post.title}</h3>
-						</div>
+					<div class="workspace-post-row__body">
+						<div class="workspace-post-row__meta"><span>{post.date}</span><span>{post.readingTime}</span></div>
+						<h3><a href={post.href}>{post.title}</a></h3>
 						<p>{post.excerpt}</p>
-						<div class="editorial-meta__details">
-							<span>{post.date}</span>
-							<span>{post.readingTime}</span>
-							{post.tags.slice(0, 3).map((tag) => <i>{tag}</i>)}
-						</div>
-						<a class="journal-control" href={post.href}>阅读全文 <span aria-hidden="true">↗</span></a>
-					</article>
-				))}
-			</div>
+						<div class="workspace-post-row__tags">{post.tags.slice(0, 3).map((tag) => <a href={getTagHref(tag)}>#{tag}</a>)}</div>
+					</div>
+					<a class="workspace-row-action" href={post.href} aria-label={`打开文章：${post.title}`}>打开</a>
+				</article>
+			)) : <p class="workspace-empty-state">暂无已发布文章。</p>}
+		</div>
+	</section>
 
-			<p class="sr-only" aria-live="polite" aria-atomic="true" data-carousel-announce>
-				当前文章：{posts[0]?.title}
-			</p>
-				</div>
-			</div>
-			<div class="editorial-carousel__stops" aria-hidden="true">
-				{posts.map((_, index) => (
-					<span data-carousel-stop style={`--carousel-stop: ${index * carouselStepSvh}svh`}></span>
-				))}
-			</div>
-		</section>
-
-		<section class="editorial-author" id="about" aria-labelledby="author-title">
-			<div class="editorial-author__identity">
-				<p class="editorial-kicker">ABOUT</p>
-				<h2 id="author-title">EVIGILA</h2>
+	<section class="workspace-page-module editorial-author" id="about" aria-labelledby="author-title">
+		<div class="workspace-section-heading">
+			<div>
+				<h2 id="author-title">关于 Evigila</h2>
 				<p>{siteConfig.author.signature}</p>
 			</div>
-
-			<div class="editorial-author__profile">
-				<img
-					src={siteConfig.author.avatar}
-					alt="Evigila 的头像"
-					width="160"
-					height="160"
-					loading="lazy"
-					decoding="async"
-				/>
-				<div>
-					<h3>{siteConfig.author.bio}</h3>
-					<p>
-						是一个。网桌面应用开发者哦
-					</p>
+		</div>
+		<div class="editorial-author__content">
+			<img src={siteConfig.author.avatar} alt="Evigila 的头像" width="160" height="160" loading="lazy" decoding="async" />
+			<div>
+				<h3>{siteConfig.author.bio}</h3>
+				<p>关注桌面应用与现代 Web 技术，也在这里整理开发过程中的经验。</p>
+				<div class="editorial-author__actions">
+					<a class="workspace-secondary-action" href={githubLink} target="_blank" rel="noreferrer">GitHub</a>
+					<a class="workspace-secondary-action" href={mailLink}>邮件联系</a>
+					<a class="workspace-secondary-action" href="/friend">查看友链</a>
 				</div>
 			</div>
-
-			<div class="editorial-author__contact">
-				<p>可以通过以下方式联系。</p>
-				<div>
-					<a class="journal-control" href={githubLink} target="_blank" rel="noreferrer">GITHUB <span aria-hidden="true">↗</span></a>
-					<a class="journal-control" href={mailLink}>EMAIL <span aria-hidden="true">↗</span></a>
-					<a class="journal-control" href="/friend">LINKS <span aria-hidden="true">↗</span></a>
-				</div>
-			</div>
-		</section>
-
+		</div>
+	</section>
 </EditorialFrame>

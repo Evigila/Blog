@@ -1,31 +1,54 @@
 :root {
-	/* Shared cold-white journal palette. Layouts expose local aliases so their
-	 * component contracts remain stable while the visual system stays unified. */
-	--journal-canvas: #eceff1;
-	--journal-paper: #fafcfd;
-	--journal-surface: #e8edf0;
-	--journal-line: #dce2e5;
-	--journal-ink: #181d1f;
-	--journal-body: #566166;
-	--journal-muted: #8e9a9f;
-	--journal-charcoal: #202627;
-	--journal-accent: #7893a1;
-	--font-sans: 'Microsoft YaHei', 'Microsoft YaHei UI', 'PingFang SC', sans-serif;
-	--font-body: var(--font-sans);
-	--font-mono: var(--font-sans);
-	--font-code: 'Cascadia Code', 'Consolas', monospace;
-	--font-ui: var(--font-body);
-
-	--text-xs: 0.8125rem;
-	--text-sm: 0.9375rem;
-	--text-md: 1.0625rem;
-
-	--weight-medium: 500;
-	--weight-semibold: 600;
-	--weight-bold: 700;
-
-	--control-radius: 0.75rem;
-	--control-radius-round: 999px;
-	--control-shadow-hover: 0 0.65rem 1.5rem -1rem rgba(23, 31, 34, 0.55);
 	color-scheme: light;
+	--workspace-primary: #153a32;
+	--workspace-accent: #16745f;
+	--workspace-accent-strong: #0e5748;
+	--workspace-focus: #0e5748;
+	--workspace-canvas: color-mix(in srgb, var(--workspace-primary) 5%, #fff);
+	--workspace-surface: #fff;
+	--workspace-surface-alternate: color-mix(in srgb, var(--workspace-primary) 7%, #fff);
+	--workspace-surface-raised: color-mix(in srgb, var(--workspace-primary) 11%, #fff);
+	--workspace-ink: color-mix(in srgb, var(--workspace-primary) 24%, #10241f);
+	--workspace-ink-soft: color-mix(in srgb, var(--workspace-primary) 16%, #314c45);
+	--workspace-muted: color-mix(in srgb, var(--workspace-primary) 5%, #52665f);
+	--workspace-line: color-mix(in srgb, var(--workspace-primary) 16%, #e8ece9);
+	--workspace-line-strong: color-mix(in srgb, var(--workspace-primary) 28%, #d4ddd8);
+	--workspace-row-hover: color-mix(in srgb, var(--workspace-accent) 11%, #fff);
+	--workspace-accent-soft: color-mix(in srgb, var(--workspace-accent) 15%, #fff);
+	--workspace-accent-hover: color-mix(in srgb, var(--workspace-accent) 82%, #000);
+	--workspace-danger: #9d322d;
+	--workspace-warning: #a65300;
+	--workspace-success: #246c43;
+	--workspace-info: #245f9e;
+	--workspace-topbar-height: 68px;
+	--workspace-content-width: 1180px;
+	--workspace-page-gutter: clamp(24px, 5vw, 72px);
+	--workspace-content-gutter: max(var(--workspace-page-gutter), calc((100% - var(--workspace-content-width)) / 2));
+	--workspace-control-height: 48px;
+	--workspace-compact-height: 36px;
+	--workspace-control-radius: 12px;
+	--workspace-radius-small: 10px;
+	--workspace-radius-medium: 16px;
+	--workspace-radius-large: 28px;
+	--font-sans: 'Segoe UI', sans-serif;
+	--font-body: var(--font-sans);
+	--font-ui: var(--font-sans);
+	--font-code: var(--font-sans);
+	--text-xs: 17px;
+	--text-sm: 17px;
+	--text-md: 17px;
+	--weight-medium: 600;
+	--weight-semibold: 700;
+	--weight-bold: 780;
+	--journal-canvas: var(--workspace-canvas);
+	--journal-paper: var(--workspace-surface);
+	--journal-surface: var(--workspace-surface-alternate);
+	--journal-line: var(--workspace-line);
+	--journal-ink: var(--workspace-ink);
+	--journal-body: var(--workspace-ink-soft);
+	--journal-muted: var(--workspace-muted);
+	--journal-charcoal: var(--workspace-primary);
+	--journal-accent: var(--workspace-accent);
+	--control-radius: var(--workspace-control-radius);
+	--control-radius-round: 999px;
 }

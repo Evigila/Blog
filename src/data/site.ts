@@ -16,8 +16,8 @@ export const isNavigationCurrent = (section: string | undefined, path: string) =
 };
 
 export const siteConfig = {
-	title: "Evigila的个人博客网站",
-	description: '极简静态博客，由 Astro 提供驱动',
+	title: 'Evigila 的博客',
+	description: '记录 .NET、C#、桌面应用与 Web 开发实践。',
 	author: {
 		name: 'Evigila',
 		avatar: '/avatar.jpg',

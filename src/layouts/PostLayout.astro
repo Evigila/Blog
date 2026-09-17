@@ -1,7 +1,9 @@
 ---
 import SiteLayout from './SiteLayout.astro';
 import Toast from '../components/Toast.astro';
-import { siteConfig, siteNavigation } from '../data/site';
+import WorkspaceShell from '../components/WorkspaceShell.astro';
+import WorkspaceIcon from '../components/WorkspaceIcon.astro';
+import { siteConfig } from '../data/site';
 import { getTagHref } from '../data/blog';
 import '../styles/post.css';
 
@@ -23,205 +25,110 @@ interface Props {
 	heroImage?: string;
 }
 
-const {
-	title,
-	excerpt,
-	publishDate,
-	updatedAt,
-	readingTime,
-	wordCount,
-	tags,
-	headings,
-	heroImage,
-} = Astro.props;
-
-const publishedLabel = publishDate.toLocaleDateString('zh-CN', {
-	year: 'numeric',
-	month: '2-digit',
-	day: '2-digit',
-});
-const updatedLabel = updatedAt.toLocaleDateString('zh-CN', {
-	year: 'numeric',
-	month: '2-digit',
-	day: '2-digit',
-});
+const { title, excerpt, publishDate, updatedAt, readingTime, wordCount, tags, headings, heroImage } = Astro.props;
+const publishedLabel = publishDate.toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' });
+const updatedLabel = updatedAt.toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' });
 const publishedISO = publishDate.toISOString().slice(0, 10);
 const updatedISO = updatedAt.toISOString().slice(0, 10);
 const readingMinutes = Math.max(1, Number.parseInt(readingTime, 10) || 1);
-const navigation = siteNavigation.filter((item) => item.showInPostInspector).map((item) => ({
-	...item,
-	label: item.postLabel,
-	isCurrent: item.key === 'articles',
-}));
-const githubLink = siteConfig.socials.find((item) => item.icon === 'github')?.href ?? '#';
-const mailLink = siteConfig.socials.find((item) => item.icon === 'mail')?.href ?? '#';
 ---
 
-<SiteLayout title={`${title} | Evigila`} description={excerpt}>
-	<main class="post-workspace">
-		<div class="post-frame">
-			<aside class="post-cover" aria-label="文章封面">
-				<a class="post-cover__back journal-control" href="/articles" aria-label="返回全部文章">
-					<span aria-hidden="true">←</span> 全部文章
-				</a>
-				<div
-					class="post-cover__media"
-					data-cover-media
-					data-cover-state={heroImage ? 'pending' : 'fallback'}
-					aria-busy={heroImage ? 'true' : 'false'}
-				>
-					<div class="post-cover__fallback" aria-hidden="true">EVG</div>
-					{heroImage && (
-						<img
-							data-cover-image
-							data-src={heroImage}
-							alt=""
-							width="1280"
-							height="720"
-							decoding="async"
-						/>
-					)}
-					<div class="post-cover__shade" aria-hidden="true"></div>
+<SiteLayout title={`${title} - Evigila 的博客`} description={excerpt}>
+	<WorkspaceShell>
+		<div class="post-page" data-post-reader>
+			<header class="post-heading">
+				<div>
+					<a class="post-parent-link" href="/articles">← 全部文章</a>
+					<h1>{title}</h1>
+					<p>{excerpt}</p>
+					<div class="post-meta" aria-label="文章信息">
+						<time datetime={publishedISO}>发布 {publishedLabel}</time>
+						<time datetime={updatedISO}>更新 {updatedLabel}</time>
+						<time datetime={`PT${readingMinutes}M`}>{readingTime}</time>
+						<data value={wordCount}>{wordCount.toLocaleString('zh-CN')} 字词</data>
+					</div>
 				</div>
-			</aside>
+			</header>
 
-			<div class="post-reader" data-post-reader tabindex="0" aria-label="文章正文，可独立滚动">
-				<div class="post-reader__sticky-title" data-sticky-title aria-hidden="true">
-					<strong aria-hidden="true">{title}</strong>
-					<button class="post-reader__sticky-action journal-control" type="button" data-scroll-top tabindex="-1">返回顶部</button>
-				</div>
+			<div class="post-page__layout">
 				<article class="post-article" data-post-article>
-					<header class="post-header">
-						<h1>{title}</h1>
-						<p class="post-excerpt">{excerpt}</p>
-						<div class="post-meta">
-							<time class="post-meta__item" datetime={publishedISO}>发布 {publishedLabel}</time>
-							<time class="post-meta__item" datetime={updatedISO}>更新 {updatedLabel}</time>
-							<time class="post-meta__item" datetime={`PT${readingMinutes}M`}>{readingTime}</time>
-							<data class="post-meta__item" value={wordCount}>字词 {wordCount.toLocaleString('zh-CN')}</data>
-						</div>
-					</header>
+					{heroImage && (
+						<figure class="post-cover" data-cover-media data-cover-state="ready" aria-busy="false">
+							<img src={heroImage} alt="" width="1280" height="720" fetchpriority="high" decoding="async" />
+						</figure>
+					)}
 
 					<div class="post-content" data-post-content>
 						<slot />
 					</div>
+
+					<section class="post-comments" id="post-comments" aria-labelledby="post-comments-title">
+						<h2 id="post-comments-title">评论区</h2>
+						<div
+							class="post-comments__widget"
+							data-giscus-root
+							data-giscus-repo="Evigila/Blog"
+							data-giscus-repo-id="R_kgDOSTv6rQ"
+							data-giscus-category="Announcements"
+							data-giscus-category-id="DIC_kwDOSTv6rc4C8n35"
+							data-giscus-mapping="pathname"
+							data-giscus-strict="0"
+							data-giscus-reactions-enabled="1"
+							data-giscus-emit-metadata="0"
+							data-giscus-input-position="bottom"
+							data-giscus-theme="light"
+							data-giscus-lang="zh-CN"
+						>
+							<noscript><p>评论需要启用 JavaScript。你也可以前往 <a href="https://github.com/Evigila/Blog/discussions">GitHub Discussions</a> 查看讨论。</p></noscript>
+						</div>
+					</section>
 				</article>
 
-				<section class="post-comments" id="post-comments" aria-label="评论区">
-					<p class="post-kicker">COMMENTS</p>
-					<h2>评论区</h2>
-					<div
-						class="post-comments__widget"
-						data-giscus-root
-						data-giscus-repo="Evigila/Blog"
-						data-giscus-repo-id="R_kgDOSTv6rQ"
-						data-giscus-category="Announcements"
-						data-giscus-category-id="DIC_kwDOSTv6rc4C8n35"
-						data-giscus-mapping="pathname"
-						data-giscus-strict="0"
-						data-giscus-reactions-enabled="1"
-						data-giscus-emit-metadata="0"
-						data-giscus-input-position="bottom"
-						data-giscus-theme="light"
-						data-giscus-lang="zh-CN"
-					>
-						<noscript>
-							<p>评论需要启用 JavaScript。你也可以前往 <a href="https://github.com/Evigila/Blog/discussions">GitHub Discussions</a> 查看讨论。</p>
-						</noscript>
-					</div>
-				</section>
+				<aside class="post-inspector" aria-label="文章目录与操作">
+					<div class="post-inspector__scroll">
+						<section class="post-outline" data-post-outline style="--reading-progress: 0%;" aria-labelledby="post-contents-title">
+							<div class="post-outline__heading">
+								<strong id="post-contents-title">文章目录</strong>
+								<span data-reading-progress-value>0%</span>
+							</div>
+							<div class="post-outline__bar" aria-hidden="true"><span></span></div>
+							{headings.length > 0 ? (
+								<ol class="post-outline__list">
+									{headings.map((heading) => (
+										<li class={`post-outline__item post-outline__item--depth-${Math.min(Math.max(heading.depth, 2), 6)}`}>
+											<a href={`#${heading.slug}`} data-toc-link data-target-id={heading.slug}>{heading.text}</a>
+										</li>
+									))}
+								</ol>
+							) : <p class="post-outline__empty">本文没有章节标题。</p>}
+						</section>
 
-				<footer class="post-reader__footer">
-					<span>© {new Date().getFullYear()} EVIGILA</span>
-					<a href="/">返回主页 ↗</a>
-				</footer>
+						<section class="post-tag-panel" aria-labelledby="post-tags-title">
+							<strong id="post-tags-title">标签</strong>
+							<div>{tags.map((tag) => <a href={getTagHref(tag)}>#{tag}</a>)}</div>
+						</section>
+
+						<section class="post-author" aria-labelledby="post-author-title">
+							<strong id="post-author-title">作者</strong>
+							<div><img src={siteConfig.author.avatar} alt="" width="56" height="56" /><span><b>{siteConfig.author.name}</b>{siteConfig.author.signature}</span></div>
+						</section>
+					</div>
+
+					<div class="post-inspector__actions">
+						<button type="button" data-scroll-top><WorkspaceIcon name="arrow-up" size={19} />返回顶部</button>
+						<button type="button" data-share><WorkspaceIcon name="share" size={19} />分享文章</button>
+						<a href="#post-comments" data-scroll-comments><WorkspaceIcon name="comments" size={19} />评论区</a>
+					</div>
+				</aside>
 			</div>
 
-			<aside class="post-inspector" aria-label="文章信息与导航">
-				<div class="post-inspector__scroll">
-					<section class="post-inspector__section post-outline" data-post-outline style="--reading-progress: 0%;" aria-labelledby="post-contents-title">
-						<div class="post-inspector__heading">
-							<p id="post-contents-title">01 / 大纲</p>
-							<strong data-reading-progress-value>0%</strong>
-						</div>
-						<div class="post-outline__bar" aria-hidden="true"><span></span></div>
-						{headings.length > 0 ? (
-							<ol class="post-outline__list" tabindex="0" aria-label="文章大纲，滚动查看更多章节">
-								{headings.map((heading) => (
-									<li class={`post-outline__item post-outline__item--depth-${Math.min(Math.max(heading.depth, 2), 6)}`}>
-										<a href={`#${heading.slug}`} data-toc-link data-target-id={heading.slug}>{heading.text}</a>
-									</li>
-								))}
-							</ol>
-						) : <p class="post-outline__empty">本文没有章节标题。</p>}
-					</section>
-
-					<nav class="post-inspector__section post-site-nav" aria-label="站点导航">
-						<div class="post-inspector__heading">
-							<p>02 / 导航</p>
-						</div>
-						<div class="post-site-nav__list">
-							{navigation.map((item) => (
-								<a class="journal-control" href={item.href} aria-current={item.isCurrent ? 'page' : undefined}>
-									<span>{item.label}</span><i aria-hidden="true">↗</i>
-								</a>
-							))}
-						</div>
-					</nav>
-
-					<section class="post-inspector__section post-tag-panel" aria-labelledby="post-tags-title">
-						<div class="post-inspector__heading">
-							<p id="post-tags-title">03 / 标签</p>
-						</div>
-						<div class="post-tag-panel__list">
-							{tags.map((tag) => <a class="journal-control" href={getTagHref(tag)}>{tag}</a>)}
-						</div>
-					</section>
-
-					<section class="post-inspector__section post-author" aria-labelledby="post-author-title">
-						<div class="post-inspector__heading">
-							<p id="post-author-title">04 / 关于</p>
-						</div>
-						<div class="post-author__profile">
-							<img src={siteConfig.author.avatar} alt={`${siteConfig.author.name} 的头像`} width="80" height="80" />
-							<div><strong>{siteConfig.author.name}</strong><span>{siteConfig.author.signature}</span></div>
-						</div>
-						<p>{siteConfig.author.bio}</p>
-						<div class="post-author__links">
-							<a class="journal-control" href={githubLink} target="_blank" rel="noreferrer">GitHub ↗</a>
-							<a class="journal-control" href={mailLink}>Email ↗</a>
-						</div>
-					</section>
-				</div>
-
-				<div class="post-inspector__actions">
-					<button type="button" data-scroll-top>返回顶部</button>
-					<button type="button" data-share>分享文章</button>
-					<a href="#post-comments" data-scroll-comments>评论区</a>
-				</div>
-			</aside>
+			<footer class="post-footer"><span>© {new Date().getFullYear()} EVIGILA</span><a href="/articles">返回全部文章</a></footer>
 		</div>
-	</main>
+	</WorkspaceShell>
 	<Toast />
 
 	<script>
 		import { initPostPage } from '../scripts/post';
-
 		initPostPage();
 	</script>
-
-	<style is:global>
-		@media (min-width: 1280px) {
-			html:has(.post-workspace),
-			body:has(.post-workspace) {
-				height: 100%;
-				overflow: hidden;
-				background: #eceff1;
-			}
-		}
-
-		body:has(.post-workspace)::before {
-			display: none;
-		}
-	</style>
 </SiteLayout>

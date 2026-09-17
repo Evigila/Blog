@@ -1,0 +1,61 @@
+---
+import { normalizePath, siteConfig } from '../data/site';
+import WorkspaceIcon from './WorkspaceIcon.astro';
+import '../styles/workspace-shell.css';
+
+interface Props {
+	class?: string;
+}
+
+const { class: className } = Astro.props;
+const pathname = normalizePath(Astro.url.pathname);
+const isArticleModule = pathname === '/articles' || pathname.startsWith('/posts/') || pathname === '/tags' || pathname.startsWith('/tags/');
+const primaryNavigation = [
+	{ label: '首页', href: '/', icon: 'home' as const, current: pathname === '/' },
+	{ label: '文章', href: '/articles', icon: 'articles' as const, current: isArticleModule },
+	{ label: '友链', href: '/friend', icon: 'links' as const, current: pathname === '/friend' },
+	{ label: '关于', href: '/#about', icon: 'about' as const, current: false },
+];
+---
+
+<div class:list={['workspace-shell', { 'workspace-shell--secondary': isArticleModule }, className]}>
+	<a class="workspace-skip-link" href="#workspace-content">跳到主要内容</a>
+	<header class="workspace-topbar">
+		<a class="workspace-brand" href="/" aria-label="Evigila 的博客首页">
+			<span class="workspace-brand__logo"><img src={siteConfig.author.avatar} alt="" width="48" height="48" /></span>
+			<strong>Evigila 的博客</strong>
+		</a>
+		<nav class="workspace-topbar__nav" aria-label="博客主要导航">
+			{primaryNavigation.map((item) => (
+				<a class:list={{ 'is-active': item.current }} href={item.href} aria-current={item.current ? 'page' : undefined} aria-label={item.label} data-label={item.label}>
+					<WorkspaceIcon name={item.icon} size={23} />
+					<span>{item.label}</span>
+				</a>
+			))}
+		</nav>
+		<span class="workspace-topbar__balance" aria-hidden="true"></span>
+	</header>
+
+	<div class="workspace-body">
+		{isArticleModule && (
+			<aside class="workspace-secondary-rail">
+				<nav aria-label="文章导航">
+					<a class:list={{ 'is-active': pathname === '/articles' || pathname.startsWith('/posts/') }} href="/articles" aria-current={pathname === '/articles' || pathname.startsWith('/posts/') ? 'page' : undefined}>全部文章</a>
+					<a class:list={{ 'is-active': pathname === '/tags' || pathname.startsWith('/tags/') }} href="/tags" aria-current={pathname === '/tags' || pathname.startsWith('/tags/') ? 'page' : undefined}>内容标签</a>
+				</nav>
+			</aside>
+		)}
+
+		<main class="workspace-stage" id="workspace-content" data-workspace-stage tabindex="-1">
+			<slot />
+		</main>
+		<button class="workspace-scroll-top" type="button" data-workspace-scroll-top hidden aria-label="返回页面顶部">
+			<WorkspaceIcon name="arrow-up" size={23} />
+		</button>
+	</div>
+</div>
+
+<script>
+	import { initWorkspaceShells } from '../scripts/workspace-shell';
+	initWorkspaceShells();
+</script>

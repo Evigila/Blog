@@ -1,20 +1,12 @@
 ---
 import EditorialHome from '../components/home/EditorialHome.astro';
 import { getBlogDirectory } from '../data/blog';
-import { carouselSamplePosts } from '../data/carousel-samples';
 import { siteConfig } from '../data/site';
 import SiteLayout from '../layouts/SiteLayout.astro';
 
-const { posts: realPosts } = await getBlogDirectory();
-const posts = [...realPosts, ...carouselSamplePosts].slice(0, 10);
+const { posts } = await getBlogDirectory();
 ---
 
 <SiteLayout title={siteConfig.title} description={siteConfig.description}>
-	<EditorialHome posts={posts} archiveCount={realPosts.length} />
+	<EditorialHome posts={posts} archiveCount={posts.length} />
 </SiteLayout>
-
-<script>
-	import { initEditorialHome } from '../scripts/editorial-home';
-
-	initEditorialHome();
-</script>
