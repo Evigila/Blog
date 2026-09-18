@@ -78,12 +78,20 @@
 	color: var(--about-item-color, var(--workspace-muted));
 }
 
+button.about-icon-tile {
+	appearance: none;
+	border: 0;
+	background: transparent;
+	font: inherit;
+}
+
 .about-icon-tile .about-mark {
 	width: clamp(68px, 10vw, 108px);
 	height: clamp(68px, 10vw, 108px);
 }
 
 .about-icon-tile--link {
+	cursor: pointer;
 	transition: background-color 140ms ease, color 140ms ease;
 }
 
@@ -108,6 +116,105 @@
 .about-icon-tile--passive {
 	color: var(--about-item-color);
 	cursor: default;
+}
+
+.about-icon-tile--game {
+	overflow: hidden;
+	padding: 0;
+	cursor: default;
+}
+
+.about-icon-tile--game img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center;
+}
+
+.about-qq-dialog {
+	width: min(440px, calc(100vw - 32px));
+	max-height: calc(100dvh - 32px);
+	margin: auto;
+	overflow: hidden;
+	padding: 0;
+	border: 1px solid var(--workspace-line-strong);
+	border-radius: var(--workspace-radius-medium);
+	background: var(--workspace-surface);
+	box-shadow: 0 18px 64px rgb(21 58 50 / 18%);
+	color: var(--workspace-ink);
+}
+
+.about-qq-dialog[open] {
+	display: grid;
+	grid-template-rows: auto minmax(0, 1fr);
+}
+
+.about-qq-dialog::backdrop {
+	background: rgb(21 58 50 / 28%);
+}
+
+.about-qq-dialog__header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	padding: 14px 14px 14px 20px;
+	border-bottom: 1px solid var(--workspace-line);
+}
+
+.about-qq-dialog__header h2 {
+	margin: 0;
+	font-size: 24px;
+	font-weight: 720;
+	letter-spacing: -.025em;
+}
+
+.about-qq-dialog__close {
+	display: grid;
+	width: 44px;
+	height: 44px;
+	flex: 0 0 auto;
+	place-items: center;
+	padding: 0;
+	border: 0;
+	border-radius: var(--workspace-radius-small);
+	background: transparent;
+	color: var(--workspace-ink);
+	cursor: pointer;
+	transition: background-color 140ms ease, color 140ms ease;
+}
+
+.about-qq-dialog__close:hover,
+.about-qq-dialog__close:focus-visible {
+	background: var(--workspace-accent);
+	color: white;
+}
+
+.about-qq-dialog__close svg {
+	width: 22px;
+	height: 22px;
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 1.8;
+	stroke-linecap: round;
+}
+
+.about-qq-dialog__body {
+	display: grid;
+	min-height: 0;
+	place-items: center;
+	padding: 20px;
+	background: white;
+}
+
+.about-qq-dialog__body img {
+	display: block;
+	width: auto;
+	max-width: 100%;
+	height: auto;
+	max-height: calc(100dvh - 137px);
+	object-fit: contain;
 }
 
 .about-icon-tooltip {
@@ -154,6 +261,8 @@
 	.about-profile-card img { width: 84px; height: 84px; border-radius: 20px; }
 	.about-icon-tile { padding: 10px; }
 	.about-icon-tile .about-mark { width: 62px; height: 62px; }
+	.about-icon-tile--game { padding: 0; }
+	.about-qq-dialog__body { padding: 12px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -164,4 +273,6 @@
 	.about-icon-tile--link { color: LinkText; }
 	.about-icon-tile--pending { color: GrayText; opacity: 1; }
 	.about-icon-tile--passive { color: CanvasText; }
+	.about-qq-dialog { border-color: CanvasText; }
+	.about-qq-dialog__close { border: 1px solid ButtonText; }
 }

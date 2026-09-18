@@ -82,5 +82,20 @@ export const initAboutPages = () => {
 		});
 		window.addEventListener('resize', () => hideTooltip());
 		stage?.addEventListener('scroll', () => hideTooltip(), { passive: true });
+
+		const qqDialog = page.querySelector<HTMLDialogElement>('[data-qq-dialog]');
+		const qqDialogOpen = page.querySelector<HTMLButtonElement>('[data-qq-dialog-open]');
+		const qqDialogClose = page.querySelector<HTMLButtonElement>('[data-qq-dialog-close]');
+		if (qqDialog && qqDialogOpen && qqDialogClose) {
+			qqDialogOpen.addEventListener('click', () => {
+				hideTooltip();
+				qqDialog.showModal();
+			});
+			qqDialogClose.addEventListener('click', () => qqDialog.close());
+			qqDialog.addEventListener('click', (event) => {
+				if (event.target === qqDialog) qqDialog.close();
+			});
+			qqDialog.addEventListener('close', () => qqDialogOpen.focus());
+		}
 	});
 };
