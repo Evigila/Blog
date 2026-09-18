@@ -1,5 +1,6 @@
 export const siteNavigation = [
 	{ key: 'home', label: 'HOME', postLabel: 'Home', href: '/', section: '/', showInFooter: true, showInPostInspector: true },
+	{ key: 'about', label: 'ABOUT', postLabel: 'About', href: '/about', section: '/about', showInFooter: false, showInPostInspector: false },
 	{ key: 'articles', label: 'ARTICLES', postLabel: 'Articles', href: '/articles', section: '/articles', showInFooter: true, showInPostInspector: true },
 	{ key: 'tags', label: 'TAGS', postLabel: 'Tags', href: '/tags', section: '/tags', showInFooter: true, showInPostInspector: true },
 	{ key: 'links', label: 'LINKS', postLabel: 'Links', href: '/friend', section: '/friend', showInFooter: true, showInPostInspector: true },

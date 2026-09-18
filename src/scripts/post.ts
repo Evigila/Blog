@@ -14,7 +14,6 @@ export const initPostPage = () => {
 	const outline = document.querySelector<HTMLElement>('[data-post-outline]');
 	const progressValue = document.querySelector<HTMLElement>('[data-reading-progress-value]');
 	const comments = document.getElementById('post-comments');
-	const giscusRoot = document.querySelector<HTMLElement>('[data-giscus-root]');
 	if (!stage || !article || !content) return;
 
 	const tocEntries = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]'))
@@ -27,7 +26,7 @@ export const initPostPage = () => {
 	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 	const behavior = (): ScrollBehavior => reducedMotion.matches ? 'auto' : 'smooth';
 	let frame: number | undefined;
-	let giscusObserver: IntersectionObserver | undefined;
+	let activeTocIndex = -2;
 	const scrollToTarget = (target: HTMLElement) => {
 		stage.closest<HTMLElement>('.workspace-shell')?.classList.add('is-heading-compact');
 		window.requestAnimationFrame(() => {
@@ -35,38 +34,6 @@ export const initPostPage = () => {
 			const targetTop = target.getBoundingClientRect().top - stageRect.top + stage.scrollTop;
 			stage.scrollTo({ top: Math.max(targetTop - 120, 0), behavior: behavior() });
 		});
-	};
-
-	const ensureGiscusLoaded = () => {
-		if (!giscusRoot || giscusRoot.dataset.giscusState) return;
-		giscusRoot.dataset.giscusState = 'loading';
-		const script = document.createElement('script');
-		script.src = 'https://giscus.app/client.js';
-		script.async = true;
-		script.crossOrigin = 'anonymous';
-		const config = {
-			repo: giscusRoot.dataset.giscusRepo,
-			'repo-id': giscusRoot.dataset.giscusRepoId,
-			category: giscusRoot.dataset.giscusCategory,
-			'category-id': giscusRoot.dataset.giscusCategoryId,
-			mapping: giscusRoot.dataset.giscusMapping,
-			strict: giscusRoot.dataset.giscusStrict,
-			'reactions-enabled': giscusRoot.dataset.giscusReactionsEnabled,
-			'emit-metadata': giscusRoot.dataset.giscusEmitMetadata,
-			'input-position': giscusRoot.dataset.giscusInputPosition,
-			theme: giscusRoot.dataset.giscusTheme,
-			lang: giscusRoot.dataset.giscusLang,
-		};
-		Object.entries(config).forEach(([name, value]) => {
-			if (value) script.setAttribute(`data-${name}`, value);
-		});
-		script.addEventListener('load', () => { giscusRoot.dataset.giscusState = 'loaded'; }, { once: true });
-		script.addEventListener('error', () => {
-			giscusRoot.removeAttribute('data-giscus-state');
-			script.remove();
-		}, { once: true });
-		giscusRoot.appendChild(script);
-		giscusObserver?.disconnect();
 	};
 
 	const update = () => {
@@ -95,6 +62,21 @@ export const initPostPage = () => {
 			if (active) entry.link.setAttribute('aria-current', 'location');
 			else entry.link.removeAttribute('aria-current');
 		});
+		if (activeIndex !== activeTocIndex) {
+			activeTocIndex = activeIndex;
+			const activeLink = tocEntries[activeIndex]?.link;
+			const list = activeLink?.closest<HTMLElement>('.post-outline__list');
+			if (activeLink && list) {
+				const listRect = list.getBoundingClientRect();
+				const linkRect = activeLink.getBoundingClientRect();
+				if (linkRect.top < listRect.top || linkRect.bottom > listRect.bottom) {
+					list.scrollTo({
+						top: list.scrollTop + linkRect.top - listRect.top - (list.clientHeight - linkRect.height) / 2,
+						behavior: 'auto',
+					});
+				}
+			}
+		}
 	};
 
 	const queueUpdate = () => {
@@ -110,7 +92,6 @@ export const initPostPage = () => {
 		button.addEventListener('click', (event) => {
 			if (!comments) return;
 			event.preventDefault();
-			ensureGiscusLoaded();
 			scrollToTarget(comments);
 			history.replaceState(history.state, '', '#post-comments');
 		});
@@ -124,15 +105,6 @@ export const initPostPage = () => {
 			history.replaceState(history.state, '', `#${section.id}`);
 		});
 	});
-
-	if (comments && giscusRoot) {
-		if ('IntersectionObserver' in window) {
-			giscusObserver = new IntersectionObserver((entries) => {
-				if (entries.some((entry) => entry.isIntersecting)) ensureGiscusLoaded();
-			}, { root: stage, rootMargin: '800px 0px' });
-			giscusObserver.observe(comments);
-		} else ensureGiscusLoaded();
-	}
 
 	stage.addEventListener('scroll', queueUpdate, { passive: true });
 	window.addEventListener('resize', queueUpdate, { passive: true });

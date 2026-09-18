@@ -7,6 +7,7 @@ export const initPostCollections = (scope: ParentNode = document) => {
 
 		const entries = Array.from(collection.querySelectorAll<HTMLElement>('[data-post-href]'));
 		const menus = Array.from(collection.querySelectorAll<HTMLElement>('[data-row-menu]'));
+		const interactiveSelector = 'a, button, input, select, textarea, summary, [data-row-menu], [role="button"], [role="menuitem"], [contenteditable]';
 		let openMenu: HTMLElement | undefined;
 
 		const menuParts = (menu: HTMLElement) => ({
@@ -53,8 +54,9 @@ export const initPostCollections = (scope: ParentNode = document) => {
 		};
 
 		entries.forEach((entry) => {
-			entry.addEventListener('dblclick', (event) => {
-				if (event.target instanceof Element && event.target.closest('a, [data-row-menu]')) return;
+			entry.addEventListener('click', (event) => {
+				if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+				if (event.target instanceof Element && event.target.closest(interactiveSelector)) return;
 				const href = entry.dataset.postHref;
 				if (href) window.location.assign(href);
 			});
@@ -63,7 +65,6 @@ export const initPostCollections = (scope: ParentNode = document) => {
 		menus.forEach((menu) => {
 			const { trigger, popup } = menuParts(menu);
 			if (!trigger || !popup) return;
-			menu.addEventListener('dblclick', (event) => event.stopPropagation());
 			trigger.addEventListener('click', (event) => {
 				event.stopPropagation();
 				if (openMenu === menu) closeMenu(menu, true);

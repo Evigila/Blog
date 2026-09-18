@@ -223,6 +223,7 @@
 }
 
 .workspace-scroll-top[hidden] { display: none; }
+.workspace-shell--post .workspace-scroll-top { display: none; }
 .workspace-scroll-top:hover {
 	background: var(--workspace-accent);
 	box-shadow: 0 18px 38px rgb(16 36 31 / 28%);

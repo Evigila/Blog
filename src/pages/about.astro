@@ -1,0 +1,97 @@
+---
+import AboutIcon from '../components/AboutIcon.astro';
+import { favoriteGameSlots, favoriteProgrammingProjects, profileSocials } from '../data/about';
+import { siteConfig } from '../data/site';
+import EditorialPageLayout from '../layouts/EditorialPageLayout.astro';
+import '../styles/about.css';
+
+const gridColumnCount = 3;
+const getGridItemClasses = (index: number, length: number) => {
+	const lastRowStart = Math.floor((length - 1) / gridColumnCount) * gridColumnCount;
+	return [
+		'about-icon-grid__item',
+		{ 'is-column-end': (index + 1) % gridColumnCount === 0 },
+		{ 'is-last-row': index >= lastRowStart },
+	];
+};
+---
+
+<EditorialPageLayout documentTitle="关于 - Evigila 的博客" title="关于" metaDescription="Evigila 的个人信息、社交平台、游戏与编程兴趣。">
+	<div class="about-page" data-about-page>
+		<div class="about-page__content">
+			<section class="about-section" aria-labelledby="about-profile-title">
+				<h2 id="about-profile-title">个人信息</h2>
+				<div class="about-profile-card">
+					<img src={siteConfig.author.avatar} alt="" width="132" height="132" />
+					<strong>{siteConfig.author.name}</strong>
+				</div>
+			</section>
+
+			<section class="about-section" aria-labelledby="about-social-title">
+				<h2 id="about-social-title">社交软件</h2>
+				<ul class="about-icon-grid" role="list">
+					{profileSocials.map((item, index) => {
+						const href = 'href' in item ? item.href : undefined;
+						const isExternal = href?.startsWith('http');
+						return (
+							<li class:list={getGridItemClasses(index, profileSocials.length)}>
+								{href ? (
+									<a
+										class="about-icon-tile about-icon-tile--link"
+										href={href}
+										target={isExternal ? '_blank' : undefined}
+										rel={isExternal ? 'noopener noreferrer' : undefined}
+										aria-label={item.label}
+										data-about-tip={item.label}
+										style={`--about-item-color: ${item.color}`}
+									>
+										<AboutIcon name={item.icon} />
+									</a>
+								) : (
+									<span class="about-icon-tile about-icon-tile--pending" aria-disabled="true" data-about-tip={`${item.label}（信息尚未补充）`}>
+										<AboutIcon name={item.icon} />
+										<span class="sr-only">{item.label}，信息尚未补充</span>
+									</span>
+								)}
+							</li>
+						);
+					})}
+				</ul>
+			</section>
+
+			<section class="about-section" aria-labelledby="about-games-title">
+				<h2 id="about-games-title">喜爱的游戏</h2>
+				<ul class="about-icon-grid" role="list">
+					{favoriteGameSlots.map((item, index) => (
+						<li class:list={getGridItemClasses(index, favoriteGameSlots.length)}>
+							<span class="about-icon-tile about-icon-tile--pending" aria-disabled="true" data-about-tip={item.label}>
+								<AboutIcon name={item.icon} />
+								<span class="sr-only">{item.label}</span>
+							</span>
+						</li>
+					))}
+				</ul>
+			</section>
+
+			<section class="about-section" aria-labelledby="about-projects-title">
+				<h2 id="about-projects-title">喜欢的编程项目</h2>
+				<ul class="about-icon-grid" role="list">
+					{favoriteProgrammingProjects.map((item, index) => (
+						<li class:list={getGridItemClasses(index, favoriteProgrammingProjects.length)}>
+							<span class="about-icon-tile about-icon-tile--passive" data-about-tip={item.label} style={`--about-item-color: ${item.color}`}>
+								<AboutIcon name={item.icon} />
+								<span class="sr-only">{item.label}</span>
+							</span>
+						</li>
+					))}
+				</ul>
+			</section>
+		</div>
+		<div class="about-icon-tooltip" role="tooltip" aria-hidden="true" data-about-tooltip></div>
+	</div>
+</EditorialPageLayout>
+
+<script>
+	import { initAboutPages } from '../scripts/about';
+	initAboutPages();
+</script>

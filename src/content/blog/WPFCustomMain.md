@@ -11,13 +11,15 @@ tags:
 image: /images/posts/wpf-custom-main.webp
 ---
 
-本篇文章将教学如何创建WPF时自定义程序启动入口`Main`，以获取项目的完整生命周期控制。
+默认情况下，WPF 默认启动入口是 `App.xaml` 对应生成的 `Main() `方法。不过，由于。网的优良传统，以及微软大发慈悲（？），Main 方法被隐藏了起来。正常情况下也无法访问到它，对于一些有代码洁癖~~比如我~~和希望自己全权掌控应用生命周期的小伙伴来说，这无疑是不可接受的。
 
-## 默认程序启动入口
+虽然我们无法访问到内置的 Main，不过我们可以创建另一个 Main，并指定为程序入口~~有牛~~。
 
-默认情况下，WPF 默认启动入口本质上是 `App.xaml` 对应生成的 `Main() `方法。
+“与其寻找主公，不如为自己创造一个主公”（
 
-不过，在项目创建之后你应该会看到：
+## 新建项目
+
+通常情况下，在项目创建之后你应该会看到：
 ```xml
 <Application x:Class="MyApp.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -31,7 +33,7 @@ public partial class App : Application
 {
 }
 ```
-但是`Main`方法一般是无法看到的，这是因为它是由 WPF 的 XAML 编译器自动生成的。大致等价于：
+而`Main`方法一般是无法看到的，这是因为它是由 WPF 的 XAML 编译器自动生成的。大致等价于：
 ```csharp
 [STAThread]
 public static void Main()
@@ -47,7 +49,9 @@ StartupUri="MainWindow.xaml"
 ```
 那么 `app.Run()` 后，WPF 会自动创建并显示 `MainWindow`。
 
-## App.OnStartup
+微软实际上已经将这一部分封装好，但是我不接受（
+
+## App.OnStartup（不推荐）
 
 一种方便且实用的手动控制启动逻辑的方式是，通过删除`App.xaml`中的`StartupUri`，然后在`App.xaml.cs`中重写`App.OnStartup`方法。
 
@@ -64,9 +68,9 @@ public partial class App : Application
     }
 }
 ```
-不过，这个时候启动入口仍然是WPF自动生成的`Main()`，只不过截至到窗口创建之前，程序行为将自定义控制。
+不过，这个时候启动入口仍然是WPF自动生成的`Main()`，只不过截至到窗口创建之前，程序行为允许自定义控制。这无疑是一种临时的措施，想要完整掌控生命周期，这种程度是远远不够的。
 
-## 完全获取启动入口
+## 替换启动入口
 
 实际上，想要创建自定义的`Main`函数，并将其替换WPF自动生成的入口点并不复杂。
 
@@ -87,25 +91,18 @@ public static class Program
     }
 }
 ```
-需要注意的是，`[STAThread]`标签是必须的，如果没有该标签则无法运行。
-
-然后在WPF项目的`csproj`文件中，在`ProjectProperties`中添加一个属性：
+需要注意的是，`[STAThread]`标签是必须的，如果没有该标签则无法运行。然后在WPF项目的`csproj`文件中，在`ProjectProperties`中添加一个属性：
 ```xml
 <StartupObject>Assembly.Class</StartupObject>
 ```
-将此处的`Assembly.Class`替换为上述新建的用于承载入口点的类。注意这里的`Assembly`是你的程序集名称。
+将此处的`Assembly.Class`替换为上述新建的用于承载入口点的类。注意这里的`Assembly`是你的程序集名称。同样的，需要删除`App.xaml`中的`StartupUri`以确保入口点唯一。
 
-同样的，需要删除`App.xaml`中的`StartupUri`以确保入口点唯一。
-
-一切就绪之后，你的WPF项目将会以你自定义的入口开始。
+就这么简单，一切就绪之后，你的WPF项目将会以你自定义的入口开始。
 
 ## 窗口渲染
 
-在自定义程序启动入口之后，可以在自建的`Main`函数中处理初始化逻辑。需要注意的是，要想窗口正常被渲染出来，`App()`或者`MainWindow()`相关的代码是必须的。
+在自定义程序启动入口之后，可以在自建的`Main`函数中处理初始化逻辑。需要注意的是，要想窗口正常被渲染出来，`App()`或者`MainWindow()`相关的代码是必须的。此处的`MainWindow`指的不是新建WPF项目时默认的窗口文件名字，而是`App`上的一个属性，同名为`MainWindow`。
 
-此处的`MainWindow`指的不是新建WPF项目时默认的窗口文件名字，而是`App`上的一个属性，同名为`MainWindow`。
-
-以下这两行代码是窗口渲染的关键：
 ```csharp
 App.InitializeComponent();
 ```
@@ -140,3 +137,17 @@ App.Run(window);
 在获取了程序启动入口之后，可以将窗口单例，登录逻辑，配置初始化等功能写在这里。最普遍的应用是将`Microsoft.Extensions.Hosting`或者`Microsoft.Extensions.DependencyInjection`容器放置于此。
 
 而如果使用了DI容器，不妨将`App`本身也纳入容器，以实现生命周期统一由容器接管的效果。
+
+## 修改脚本属性（极力不推荐！）
+
+注意到有大量的教程教学如何自定义 Main，而通常他们是通过修改脚本的属性，例如将 `App.xaml.cs` 改为 `Page` 从而使得 WPF 引擎无法识别并自动创建隐式 Main。
+
+本人曾经尝试上述方法但失败过，不仅比本篇文章的方法要慢，更加的麻烦，且该操作是不可逆的！
+
+该操作是不可逆的！
+
+该操作是不可逆的！（说三遍
+
+而且App.xaml.cs作为 WPF 应用的核心脚本文件，后续还需要通过它来配置例如全局样式，或者资源文件注入等行为，将App.xaml改为Page可能会触发意想不到的后果！而想要弥补，唯一的方法是重开项目。
+
+鉴于此，完全不推荐通过修改脚本属性的方式来抑制程序生成 Main。

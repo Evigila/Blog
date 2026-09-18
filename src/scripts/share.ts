@@ -2,8 +2,8 @@ const SITE_URL = 'https://blog.evigila.net';
 const SUCCESS_DURATION = 1400;
 
 interface OriginalButtonState {
-	text: string;
 	ariaLabel: string | null;
+	tipText: string | null;
 }
 
 const originalStates = new WeakMap<HTMLElement, OriginalButtonState>();
@@ -20,8 +20,8 @@ const showToast = (message: string) => {
 const rememberButton = (button: HTMLElement) => {
 	if (originalStates.has(button)) return;
 	originalStates.set(button, {
-		text: button.textContent ?? '',
 		ariaLabel: button.getAttribute('aria-label'),
+		tipText: button.querySelector<HTMLElement>('.post-action-tip')?.textContent ?? null,
 	});
 };
 
@@ -32,16 +32,18 @@ const restoreButton = (button: HTMLElement) => {
 
 	const original = originalStates.get(button);
 	if (!original) return;
-	button.textContent = original.text;
 	if (original.ariaLabel === null) button.removeAttribute('aria-label');
 	else button.setAttribute('aria-label', original.ariaLabel);
+	const tip = button.querySelector<HTMLElement>('.post-action-tip');
+	if (tip && original.tipText !== null) tip.textContent = original.tipText;
 	delete button.dataset.shareState;
 };
 
 const showCopiedState = (button: HTMLElement) => {
 	restoreButton(button);
-	button.textContent = '✔';
 	button.setAttribute('aria-label', '链接已复制');
+	const tip = button.querySelector<HTMLElement>('.post-action-tip');
+	if (tip) tip.textContent = '链接已复制';
 	button.dataset.shareState = 'copied';
 	restoreTimers.set(button, setTimeout(() => restoreButton(button), SUCCESS_DURATION));
 };

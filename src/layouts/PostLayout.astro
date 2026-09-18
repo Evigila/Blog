@@ -4,7 +4,6 @@ import Toast from '../components/Toast.astro';
 import WorkspaceShell from '../components/WorkspaceShell.astro';
 import WorkspaceIcon from '../components/WorkspaceIcon.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import { siteConfig } from '../data/site';
 import { getTagHref } from '../data/blog';
 import '../styles/post.css';
 
@@ -64,29 +63,33 @@ const readingMinutes = Math.max(1, Number.parseInt(readingTime, 10) || 1);
 
 					<section class="post-comments" id="post-comments" aria-labelledby="post-comments-title">
 						<h2 id="post-comments-title">评论区</h2>
-						<div
-							class="post-comments__widget"
-							data-giscus-root
-							data-giscus-repo="Evigila/Blog"
-							data-giscus-repo-id="R_kgDOSTv6rQ"
-							data-giscus-category="Announcements"
-							data-giscus-category-id="DIC_kwDOSTv6rc4C8n35"
-							data-giscus-mapping="pathname"
-							data-giscus-strict="0"
-							data-giscus-reactions-enabled="1"
-							data-giscus-emit-metadata="0"
-							data-giscus-input-position="bottom"
-							data-giscus-theme="light"
-							data-giscus-lang="zh-CN"
-						>
+						<div class="post-comments__widget giscus">
+							<script
+								is:inline
+								src="https://giscus.app/client.js"
+								data-repo="Evigila/Blog"
+								data-repo-id="R_kgDOSTv6rQ"
+								data-category="Announcements"
+								data-category-id="DIC_kwDOSTv6rc4C8n35"
+								data-mapping="pathname"
+								data-strict="0"
+								data-reactions-enabled="1"
+								data-emit-metadata="0"
+								data-input-position="bottom"
+								data-theme="light"
+								data-lang="zh-CN"
+								data-loading="lazy"
+								crossorigin="anonymous"
+								async
+							></script>
 							<noscript><p>评论需要启用 JavaScript。你也可以前往 <a href="https://github.com/Evigila/Blog/discussions">GitHub Discussions</a> 查看讨论。</p></noscript>
 						</div>
 					</section>
 				</article>
 
 				<aside class="post-inspector" aria-label="文章目录与操作">
-					<div class="post-inspector__scroll">
-						<section class="post-outline" data-post-outline style="--reading-progress: 0%;" aria-labelledby="post-contents-title">
+					<div class="post-inspector__floating">
+						<section class="post-inspector__panel post-outline" data-post-outline style="--reading-progress: 0%;" aria-labelledby="post-contents-title">
 							<div class="post-outline__heading">
 								<strong id="post-contents-title">文章目录</strong>
 								<span data-reading-progress-value>0%</span>
@@ -103,21 +106,18 @@ const readingMinutes = Math.max(1, Number.parseInt(readingTime, 10) || 1);
 							) : <p class="post-outline__empty">本文没有章节标题。</p>}
 						</section>
 
-						<section class="post-tag-panel" aria-labelledby="post-tags-title">
+						<section class="post-inspector__panel post-tag-panel" aria-labelledby="post-tags-title">
 							<strong id="post-tags-title">标签</strong>
 							<div>{tags.map((tag) => <a href={getTagHref(tag)}>#{tag}</a>)}</div>
 						</section>
 
-						<section class="post-author" aria-labelledby="post-author-title">
-							<strong id="post-author-title">作者</strong>
-							<div><img src={siteConfig.author.avatar} alt="" width="56" height="56" /><span><b>{siteConfig.author.name}</b>{siteConfig.author.signature}</span></div>
-						</section>
-					</div>
-
-					<div class="post-inspector__actions">
-						<button type="button" data-scroll-top><WorkspaceIcon name="arrow-up" size={19} />返回顶部</button>
-						<button type="button" data-share><WorkspaceIcon name="share" size={19} />分享文章</button>
-						<a href="#post-comments" data-scroll-comments><WorkspaceIcon name="comments" size={19} />评论区</a>
+						<nav class="post-inspector__panel post-inspector__navigation" aria-label="文章导航">
+							<div class="post-inspector__actions">
+								<button type="button" aria-label="返回顶部" data-scroll-top><WorkspaceIcon name="arrow-up" size={22} /><span class="post-action-tip" aria-hidden="true">返回顶部</span></button>
+								<button type="button" aria-label="分享文章" data-share><WorkspaceIcon name="share" size={22} /><span class="post-action-tip" aria-hidden="true">分享文章</span></button>
+								<a href="#post-comments" aria-label="前往评论区" data-scroll-comments><WorkspaceIcon name="comments" size={22} /><span class="post-action-tip" aria-hidden="true">评论区</span></a>
+							</div>
+						</nav>
 					</div>
 				</aside>
 			</div>

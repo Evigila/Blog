@@ -1,0 +1,167 @@
+.about-page {
+	min-width: 0;
+	padding: clamp(44px, 7vw, 84px) var(--workspace-content-gutter) 0;
+}
+
+.about-page__content {
+	display: grid;
+	max-width: 780px;
+	gap: clamp(48px, 7vw, 76px);
+}
+
+.about-section { min-width: 0; }
+
+.about-section > h2 {
+	margin: 0 0 20px;
+	font-size: clamp(28px, 3vw, 40px);
+	font-weight: 760;
+	letter-spacing: -0.035em;
+	line-height: 1.15;
+}
+
+.about-profile-card {
+	display: flex;
+	min-width: 0;
+	align-items: center;
+	gap: 28px;
+	padding: 28px;
+	border: 1px solid var(--workspace-line-strong);
+	border-radius: var(--workspace-radius-medium);
+	background: var(--workspace-surface);
+}
+
+.about-profile-card img {
+	width: 132px;
+	height: 132px;
+	flex: 0 0 auto;
+	border-radius: var(--workspace-radius-large);
+	object-fit: cover;
+}
+
+.about-profile-card strong {
+	min-width: 0;
+	font-size: clamp(28px, 4vw, 42px);
+	font-weight: 780;
+	letter-spacing: -0.04em;
+	overflow-wrap: anywhere;
+}
+
+.about-icon-grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	margin: 0;
+	overflow: hidden;
+	padding: 0;
+	border: 1px solid var(--workspace-line-strong);
+	border-radius: var(--workspace-radius-medium);
+	background: var(--workspace-surface);
+	list-style: none;
+}
+
+.about-icon-grid__item {
+	min-width: 0;
+	aspect-ratio: 1;
+	border-right: 1px solid var(--workspace-line);
+	border-bottom: 1px solid var(--workspace-line);
+}
+
+.about-icon-grid__item.is-column-end { border-right: 0; }
+.about-icon-grid__item.is-last-row { border-bottom: 0; }
+
+.about-icon-tile {
+	position: relative;
+	display: grid;
+	width: 100%;
+	height: 100%;
+	place-items: center;
+	padding: clamp(16px, 3vw, 32px);
+	color: var(--about-item-color, var(--workspace-muted));
+}
+
+.about-icon-tile .about-mark {
+	width: clamp(68px, 10vw, 108px);
+	height: clamp(68px, 10vw, 108px);
+}
+
+.about-icon-tile--link {
+	transition: background-color 140ms ease, color 140ms ease;
+}
+
+.about-icon-tile--link:hover,
+.about-icon-tile--link:focus-visible {
+	background: color-mix(in srgb, var(--about-item-color) 12%, var(--workspace-surface));
+	color: var(--about-item-color);
+}
+
+.about-icon-tile--link:focus-visible {
+	position: relative;
+	z-index: 1;
+	outline-offset: -4px;
+}
+
+.about-icon-tile--pending {
+	color: var(--workspace-muted);
+	cursor: default;
+	opacity: .42;
+}
+
+.about-icon-tile--passive {
+	color: var(--about-item-color);
+	cursor: default;
+}
+
+.about-icon-tooltip {
+	position: fixed;
+	z-index: 90;
+	width: max-content;
+	max-width: min(22rem, calc(100vw - 24px));
+	padding: 8px 12px;
+	border: 1px solid var(--workspace-line-strong);
+	border-radius: var(--workspace-radius-small);
+	background: var(--workspace-surface);
+	box-shadow: 0 1px 2px rgb(0 0 0 / 6%);
+	color: var(--workspace-ink);
+	font-family: var(--font-ui);
+	font-size: 17px;
+	font-weight: 400;
+	line-height: 1.4;
+	opacity: 0;
+	pointer-events: none;
+	text-align: center;
+	transform: translateY(4px);
+	transition: opacity 120ms ease, transform 120ms ease, visibility 120ms ease;
+	visibility: hidden;
+	white-space: normal;
+}
+
+.about-icon-tooltip[data-tip-visible='true'] {
+	opacity: 1;
+	transform: translateY(0);
+	visibility: visible;
+}
+
+@media (max-width: 760px) {
+	.about-page { padding-right: 24px; padding-left: 24px; }
+	.about-page__content { max-width: none; }
+	.about-profile-card { gap: 22px; padding: 22px; }
+	.about-profile-card img { width: 108px; height: 108px; border-radius: 24px; }
+}
+
+@media (max-width: 520px) {
+	.about-page { padding-right: 18px; padding-left: 18px; }
+	.about-page__content { gap: 48px; }
+	.about-profile-card { gap: 18px; padding: 18px; }
+	.about-profile-card img { width: 84px; height: 84px; border-radius: 20px; }
+	.about-icon-tile { padding: 10px; }
+	.about-icon-tile .about-mark { width: 62px; height: 62px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.about-icon-tooltip { transition: none; }
+}
+
+@media (forced-colors: active) {
+	.about-icon-tile--link { color: LinkText; }
+	.about-icon-tile--pending { color: GrayText; opacity: 1; }
+	.about-icon-tile--passive { color: CanvasText; }
+}
