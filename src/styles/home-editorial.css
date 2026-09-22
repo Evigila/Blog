@@ -30,7 +30,7 @@
 	border-radius: var(--workspace-radius-small);
 	background: var(--workspace-surface-alternate);
 }
-.workspace-post-row__media img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.workspace-post-row__media img { display: block; width: 100%; height: 100%; object-fit: contain; }
 .workspace-post-row__media > span { display: grid; height: 100%; place-items: center; color: var(--workspace-muted); font-weight: 780; }
 .workspace-post-row__body { min-width: 0; }
 .workspace-post-row__body h3 { margin: 0; font-size: 22px; line-height: 1.25; }

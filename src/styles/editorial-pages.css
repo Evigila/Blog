@@ -36,7 +36,7 @@
 	background: var(--workspace-surface-alternate);
 }
 
-.editorial-index-card__media img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.editorial-index-card__media img { display: block; width: 100%; height: 100%; object-fit: contain; }
 .editorial-index-card__media > span { display: grid; height: 100%; place-items: center; color: var(--workspace-muted); font-weight: 780; }
 .editorial-index-card__body { min-width: 0; }
 .editorial-index-card h2 { margin: 0; font-size: 22px; line-height: 1.25; overflow-wrap: anywhere; }
