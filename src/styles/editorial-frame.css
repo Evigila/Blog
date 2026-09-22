@@ -98,6 +98,7 @@
 		flex-direction: column;
 		padding: 28px 24px;
 	}
+	.workspace-shell.is-heading-compact .editorial-frame__intro { min-height: 0; }
 	.editorial-frame__title { font-size: clamp(36px, 10vw, 50px); }
 	.workspace-page-module { padding-right: 24px; padding-left: 24px; }
 	.workspace-section-heading { align-items: stretch; flex-direction: column; }

@@ -50,7 +50,7 @@
 
 .post-article { min-width: 0; max-width: 860px; }
 .post-cover { margin: 0 0 44px; overflow: hidden; border: 1px solid var(--workspace-line); border-radius: var(--workspace-radius-medium); background: var(--workspace-surface); }
-.post-cover img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.post-cover img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
 
 .post-content { color: var(--workspace-ink-soft); font-size: 17px; line-height: 1.85; }
 .post-content > :first-child { margin-top: 0; }
