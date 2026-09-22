@@ -2,6 +2,10 @@
 
 本文按时间追加记录项目的重要实现变更和验证边界。
 
+## 2026-09-22
+
+- 新增友链「Yuriel404的小窝」，链接至 `https://blog.simpleclover.top/`，简介为「QAQ」。
+
 ## 2026-09-17
 
 - 将博客页面重构为 Colligere Workspace 风格，同时保留 Evigila 的品牌、现有内容和路由。

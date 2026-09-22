@@ -19,4 +19,9 @@ export const friendLinks = [
 		href: 'https://www.zhihu.com/people/comet-88-69-63',
 		description: '在知乎记录技术、思考与日常内容。',
 	},
+	{
+		name: 'Yuriel404的小窝',
+		href: 'https://blog.simpleclover.top/',
+		description: 'QAQ',
+	},
 ] as const;
