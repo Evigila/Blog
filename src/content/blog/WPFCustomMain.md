@@ -8,7 +8,7 @@ tags:
   - C#
   - .NET
   - Desktop
-image: /images/posts/wpf-custom-main.webp
+image: https://github.com/Evigila/picx-images-hosting/raw/master/wpf.86ubp1ttcw.webp
 ---
 
 默认情况下，WPF 默认启动入口是 `App.xaml` 对应生成的 `Main() `方法。不过，由于。网的优良传统，以及微软大发慈悲（？），Main 方法被隐藏了起来。正常情况下也无法访问到它，对于一些有代码洁癖~~比如我~~和希望自己全权掌控应用生命周期的小伙伴来说，这无疑是不可接受的。

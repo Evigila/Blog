@@ -7,7 +7,7 @@ tags:
   - WPF
   - C#
   - .NET
-image: /images/posts/wpf-window-fix.webp
+image: https://github.com/Evigila/picx-images-hosting/raw/master/maxresdefault.9gx92d8d5t.webp
 ---
 
 这是一个由来已久的 WPF 已知问题，当同时设置 `WindowStyle` 为 `None` 且使用 `System.Windows.Shell.WindowChrome`替换原有窗口，会导致 WPF 应用外观发生奇怪反应。在 Github，StackOverflow，Reddit 上都多有提及，然而，多数帖子围绕 WPF 自身属性进行讨论，例如设置某某某个属性可以解决，但适用性非常差。

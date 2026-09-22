@@ -8,11 +8,4 @@ export default defineConfig({
 		// Keep them cacheable instead of duplicating them into each HTML document.
 		inlineStylesheets: 'never',
 	},
-	image: {
-		remotePatterns: [
-			{
-				protocol: 'https',
-			},
-		],
-	},
 });

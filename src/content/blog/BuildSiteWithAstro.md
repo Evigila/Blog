@@ -6,7 +6,7 @@ updatedAt: 2026-05-09
 tags:
   - Astro
   - CloudFlare
-image: /images/posts/build-site-astro.webp
+image: https://github.com/Evigila/picx-images-hosting/raw/master/astro.7i12511gob.webp
 ---
 
 常见的SSG（Static Site Generation）技术有很多，例如 Hugo, Next.js, Nuxt.js 等等，本站使用Astro构建，因此以此为例。但该文章适用于所有SSG技术。

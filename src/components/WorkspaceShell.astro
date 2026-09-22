@@ -14,10 +14,10 @@ const isPostPage = pathname.startsWith('/posts/');
 const isAboutPage = pathname === '/about';
 const githubHref = siteConfig.socials.find((item) => item.icon === 'github')?.href ?? 'https://github.com/Evigila';
 const primaryNavigation = [
-	{ key: 'home', label: '首页', href: '/', icon: 'home' as const, current: pathname === '/' },
-	{ key: 'articles', label: '文章', href: '/articles', icon: 'articles' as const, current: isArticleModule },
-	{ key: 'links', label: '友链', href: '/friend', icon: 'links' as const, current: pathname === '/friend' },
-	{ key: 'github', label: 'GitHub', href: githubHref, icon: 'github' as const, current: false },
+	{ label: '首页', href: '/', icon: 'home' as const, current: pathname === '/' },
+	{ label: '文章', href: '/articles', icon: 'articles' as const, current: isArticleModule },
+	{ label: '友链', href: '/friend', icon: 'links' as const, current: pathname === '/friend' },
+	{ label: 'GitHub', href: githubHref, icon: 'github' as const, current: false },
 ];
 const selectedNavigationIndex = isAboutPage ? 0 : Math.max(primaryNavigation.findIndex((item) => item.current) + 1, 1);
 ---

@@ -22,6 +22,6 @@ export const friendLinks = [
 	{
 		name: 'Yuriel404的小窝',
 		href: 'https://blog.simpleclover.top/',
-		description: 'QAQ',
+		description: '希望可以逐渐修炼成满级人类',
 	},
 ] as const;

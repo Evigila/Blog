@@ -34,7 +34,7 @@ npm run preview
 
 ## 内容维护
 
-文章位于 `src/content/blog`，Frontmatter 结构由 `src/content.config.ts` 定义。文章封面位于 `public/images/posts`。站点名称、作者信息和外部链接集中维护在 `src/data/site.ts`。
+文章位于 `src/content/blog`，Frontmatter 结构由 `src/content.config.ts` 定义；封面地址通过每篇文章的 `image` 字段维护，当前图片托管于 picX。站点基础信息位于 `src/data/site.ts`，友链位于 `src/data/links.ts`，关于页资料位于 `src/data/about.ts`。
 
 ## 设计基线
 
